@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>
+		SiwFood - Homepage
+	</title>
+</head>
+
+<body>
+	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema</div>
+	<ul>
+		<li th:each="recipe : ${recipes}">
+			<a th:href="@{'/recipe' + '/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+		</li>
+	</ul>
+	<div>
+		<a href="/newRecipe">Aggiungi ricetta</a>
+	</div>
+</body>
+
+</html>

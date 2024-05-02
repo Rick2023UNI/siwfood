@@ -2,13 +2,13 @@ package it.uniroma3.siwfood.model;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Cook {
@@ -54,6 +54,7 @@ public class Cook {
 	
 	private Date dateOfBirth;
     
+	@OneToOne
     private Image photo;
     
     public Image getPhoto() {
@@ -72,7 +73,7 @@ public class Cook {
 		this.recipes = recipes;
 	}
 
-	@ManyToMany(mappedBy = "cook")
+	@OneToMany(mappedBy = "cook")
     private List<Recipe> recipes;
     
     

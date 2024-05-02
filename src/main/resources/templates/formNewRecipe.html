@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>  <head>
+    <title>New Artist</title>
+    <link rel="stylesheet" href="/stile.css?version=3" />
+  </head>
+  <body>
+    <h1>Aggiungi una ricetta</h1>
+    <form th:action="@{/recipe}" method="POST" th:object="${recipe}">
+<div>
+        Nome: <span><input required type="text" th:field="${recipe.name}"/></span>
+      </div>
+      <div>
+        Descrizione: <span><input required type="text" th:field="${recipe.description}"/></span>
+      </div>
+      <div>
+        <span><button type="submit">Conferma</button></span>
+      </div>
+    </form>
+  </body>
+</html>
