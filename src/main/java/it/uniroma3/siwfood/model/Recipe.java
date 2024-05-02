@@ -3,6 +3,8 @@ package it.uniroma3.siwfood.model;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,6 +14,14 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class Recipe {
+	public List<Quantity> getQuantities() {
+		return quantities;
+	}
+
+	public void setQuantities(List<Quantity> quantities) {
+		this.quantities = quantities;
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -12,8 +12,17 @@
 		<span th:text="${cook.name}"></span>
 		<br>
 		<span th:text="${cook.surname}"></span>
+		<br>
+		<span th:text='${#dates.format(cook.birthday, "yyyy-MM-dd")}'></span>
 	</div>
 	<div th:unless="${cook}">Non esiste</div>
+	
+	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette per il cuoco corrente</div>
+	<ul>
+		<li th:each="recipe : ${recipes}">
+			<a th:href="@{'/recipe' + '/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+		</li>
+	</ul>
 </body>
 
 </html>

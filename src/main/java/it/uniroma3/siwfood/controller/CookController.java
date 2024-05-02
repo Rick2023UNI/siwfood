@@ -31,6 +31,7 @@ public class CookController {
 	@GetMapping("/cook/{id}")
 	public String getCook(@PathVariable("id") Long id, Model model) {
 	    model.addAttribute("cook", this.cookService.findById(id));
+	    model.addAttribute("recipes", this.cookService.findById(id).getRecipes());
 	    return "cook.html";
 	  }
 }

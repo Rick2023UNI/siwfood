@@ -1,5 +1,7 @@
 package it.uniroma3.siwfood.controller;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +31,8 @@ public class RecipeController {
 	
 	@PostMapping("/recipe")
 	public String newRecipe(@ModelAttribute("recipe") Recipe recipe) {
+		Date today=new Date();
+		recipe.setPublicationDate(today);
 		this.recipeService.save(recipe);
 		return "redirect:recipe/"+recipe.getId();
 	}
@@ -36,6 +40,7 @@ public class RecipeController {
 	@GetMapping("/recipe/{id}")
 	public String getRecipe(@PathVariable("id") Long id, Model model) {
 	    model.addAttribute("recipe", this.recipeService.findById(id));
+	    model.addAttribute("quantities", this.recipeService.findById(id).getQuantities());
 	    return "recipe.html";
 	  }
 	

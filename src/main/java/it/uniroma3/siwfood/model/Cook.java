@@ -3,6 +3,8 @@ package it.uniroma3.siwfood.model;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,12 +38,12 @@ public class Cook {
 		this.surname = surname;
 	}
 
-	public Date getDateOfBirth() {
-		return dateOfBirth;
+	public Date getBirthday() {
+		return birthday;
 	}
 
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
 	}
 
 	@Id
@@ -52,7 +54,8 @@ public class Cook {
 	
 	private String surname;
 	
-	private Date dateOfBirth;
+	@DateTimeFormat(pattern ="yyyy-MM-dd")
+	private Date birthday;
     
 	@OneToOne
     private Image photo;

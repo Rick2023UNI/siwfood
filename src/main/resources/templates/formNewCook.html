@@ -6,11 +6,14 @@
   <body>
     <h1>Aggiungi un cuoco</h1>
     <form th:action="@{/cook}" method="POST" th:object="${cook}">
-<div>
+      <div>
         Nome: <span><input required type="text" th:field="${cook.name}"/></span>
       </div>
       <div>
         Surname: <span><input required type="text" th:field="${cook.surname}"/></span>
+      </div>
+      <div>
+        Birthday: <span><input required type="date" th:field="${cook.birthday}"/></span>
       </div>
       <div>
         <span><button type="submit">Conferma</button></span>

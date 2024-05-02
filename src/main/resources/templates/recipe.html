@@ -12,8 +12,17 @@
 		<span th:text="${recipe.name}"></span>
 		<br>
 		<span th:text="${recipe.description}"></span>
+		<br>
+		<span th:text='${#dates.format(recipe.publicationDate, "yyyy-MM-dd HH:mm")}'></span>
 	</div>
 	<div th:unless="${recipe}">Non esiste</div>
+	
+	<div th:if="${quantities==null || quantities.isEmpty()}">Non ci sono ingredienti per la ricetta corrente</div>
+	<ul>
+		<li th:each="quantity : ${quantities}">
+			<a th:text="${quantity.quantity}"></a>
+		</li>
+	</ul>
 </body>
 
 </html>

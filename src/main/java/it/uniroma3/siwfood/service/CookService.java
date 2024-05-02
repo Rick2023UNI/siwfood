@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import it.uniroma3.siwfood.repository.CookRepository;
 import it.uniroma3.siwfood.model.Cook;
-import it.uniroma3.siwfood.model.Recipe;
 
 @Service
 public class CookService {
