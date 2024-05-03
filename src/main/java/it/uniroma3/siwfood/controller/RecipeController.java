@@ -71,11 +71,17 @@ public class RecipeController {
 		}
 		this.quantityService.save(quantity);
 		this.recipeService.save(recipe);
-		//return "/recipe/"+recipe.getId();
 		
-		model.addAttribute("recipe", this.recipeService.findById(id));
-	    model.addAttribute("quantities", this.recipeService.findById(id).getQuantities());
-	    return "recipe.html";
+		return "redirect:/recipe/"+recipe.getId();
+	}
+	
+	@GetMapping("/removeQuantity/{idRecipe}/{idQuantity}")
+	  public String removeQuantity(@PathVariable("idRecipe") Long idRecipe, @PathVariable("idQuantity") Long idQuantity, Model model) {
+		    Recipe recipe=this.recipeService.findById(idRecipe);
+		    recipe.removeQuantity(this.quantityService.findById(idQuantity));
+		    this.recipeService.save(recipe);
+		    
+		    return "redirect:/recipe/"+recipe.getId();
 	}
 	
 }

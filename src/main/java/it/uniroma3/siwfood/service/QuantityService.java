@@ -14,4 +14,8 @@ public class QuantityService {
 	public void save(Quantity quantity) {
 		quantityRepository.save(quantity);	
 	}
+
+	public Quantity findById(Long id) {
+		return quantityRepository.findById(id).get();
+	}
 }

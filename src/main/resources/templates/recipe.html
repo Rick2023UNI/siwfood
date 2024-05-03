@@ -15,9 +15,9 @@
 		<br>
 		<span th:text='${#dates.format(recipe.publicationDate, "yyyy-MM-dd HH:mm")}'></span>
 	<!--Da questa punto in poi si fa riferimento alla modifica disponibile solamente per il cuoco che ha inizialmente pubblicato la ricetta-->
-	<form th:action="@{/addQuantity/1}" method="POST">
+	<form th:action="@{/addQuantity/}+${recipe.id}" method="POST">
       <div>
-        Quantità: <span><input required type="text" name='quantity'/></span>
+        Quantit&agrave;: <span><input required type="text" name='quantity'/></span>
       </div>
       <div>
         Ingrediente: <span><input required type="text" name='name'/></span>
@@ -33,7 +33,7 @@
 	<div th:if="${quantities==null || quantities.isEmpty()}">Non ci sono ingredienti per la ricetta corrente</div>
 	<ul>
 		<li th:each="quantity : ${quantities}">
-			<a th:text="${quantity.quantity}"></a>
+			<a th:href="@{/removeQuantity/}+${recipe.id}+'/'+${quantity.id}" th:text="${quantity.quantity}+' '+${quantity.getIngredient().name} ">
 		</li>
 	</ul>
 </body>
