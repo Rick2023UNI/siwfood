@@ -1,10 +1,12 @@
 package it.uniroma3.siwfood.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -72,6 +74,9 @@ public class Recipe {
 	}
 	
 	public void addQuantity(Quantity byId) {
+		if (this.quantities==null) {
+			this.quantities= new ArrayList<Quantity>();
+		}
 		if (!(this.quantities.contains(byId))) {
 			this.quantities.add(byId);
 		}
@@ -93,7 +98,7 @@ public class Recipe {
 	@OneToMany
 	private List<Image> images;
 	
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<Quantity> quantities;
 	
 	@ManyToOne
