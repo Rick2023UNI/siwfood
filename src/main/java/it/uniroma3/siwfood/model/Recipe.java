@@ -14,13 +14,6 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class Recipe {
-	public List<Quantity> getQuantities() {
-		return quantities;
-	}
-
-	public void setQuantities(List<Quantity> quantities) {
-		this.quantities = quantities;
-	}
 
 	public Long getId() {
 		return id;
@@ -62,12 +55,30 @@ public class Recipe {
 		this.images = images;
 	}
 
+	public List<Quantity> getQuantities() {
+		return quantities;
+	}
+
+	public void setQuantities(List<Quantity> quantities) {
+		this.quantities = quantities;
+	}
+
 	public Cook getCook() {
 		return cook;
 	}
 
 	public void setCook(Cook cook) {
 		this.cook = cook;
+	}
+	
+	public void addQuantity(Quantity byId) {
+		if (!(this.quantities.contains(byId))) {
+			this.quantities.add(byId);
+		}
+	}
+
+	public void removeQuantity(Quantity byId) {
+		this.quantities.remove(this.quantities.indexOf(byId));
 	}
 
 	@Id

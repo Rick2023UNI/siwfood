@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import it.uniroma3.siwfood.model.Quantity;
 import it.uniroma3.siwfood.model.Recipe;
+import it.uniroma3.siwfood.service.IngredientService;
 import it.uniroma3.siwfood.service.RecipeService;
 
 @Controller 
 public class RecipeController {
 	@Autowired RecipeService recipeService;
+	@Autowired IngredientService ingredientService;
 	
 	@GetMapping("/")
     public String index(Model model) {
@@ -42,6 +45,15 @@ public class RecipeController {
 	    model.addAttribute("recipe", this.recipeService.findById(id));
 	    model.addAttribute("quantities", this.recipeService.findById(id).getQuantities());
 	    return "recipe.html";
-	  }
+	}
+	
+	@PostMapping("/addQuantity/{idRecipe}")
+	public String addQuantity(@PathVariable("idRecipe") Long idRecipe, @ModelAttribute("quantity") Quantity quantity) {
+		Recipe recipe=this.recipeService.findById(idRecipe);
+		if (this.ingredientService.existsByName("test")) {
+			recipe.addQuantity(quantity);
+		}
+		return "redirect:recipe/"+idRecipe;
+	}
 	
 }

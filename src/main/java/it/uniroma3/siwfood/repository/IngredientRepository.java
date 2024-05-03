@@ -11,5 +11,7 @@ public interface IngredientRepository extends CrudRepository<Ingredient, Long> {
 	
 	//Da verificare se funzionante
 	Optional<Ingredient> findByName(String name);
+	
+	public boolean existsByName(String name);
 
 }

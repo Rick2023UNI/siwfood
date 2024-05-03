@@ -27,4 +27,8 @@ public class IngredientService {
 		return ingredientRepository.findByName(name).get();
 	}
 	
+	public boolean existsByName(String name) {
+		return ingredientRepository.existsByName(name);
+	}
+	
 }

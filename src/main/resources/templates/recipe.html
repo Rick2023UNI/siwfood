@@ -14,6 +14,16 @@
 		<span th:text="${recipe.description}"></span>
 		<br>
 		<span th:text='${#dates.format(recipe.publicationDate, "yyyy-MM-dd HH:mm")}'></span>
+	<!--Da questa punto in poi si fa riferimento alla modifica disponibile solamente per il cuoco che ha inizialmente pubblicato la ricetta-->
+	<form th:action="@{/quantity}" method="POST" th:object="${quantity}">
+      <div>
+        Quantità: <span><input required type="text" th:field="${quantity.quantity}"/></span>
+      </div>
+      <div>
+        <span><button type="submit">Aggiungi</button></span>
+      </div>
+    </form>
+    <!--Da questo punto in poi parte generale-->
 	</div>
 	<div th:unless="${recipe}">Non esiste</div>
 	
