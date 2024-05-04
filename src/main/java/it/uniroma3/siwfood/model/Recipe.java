@@ -73,19 +73,33 @@ public class Recipe {
 		this.cook = cook;
 	}
 	
-	public void addQuantity(Quantity byId) {
+	public void addQuantity(Quantity quantity) {
 		if (this.quantities==null) {
 			this.quantities= new ArrayList<Quantity>();
 		}
-		if (!(this.quantities.contains(byId))) {
-			this.quantities.add(byId);
+		if (!(this.quantities.contains(quantity))) {
+			this.quantities.add(quantity);
 		}
 	}
-
+	
 	public void removeQuantity(Quantity byId) {
 		this.quantities.remove(this.quantities.indexOf(byId));
 	}
-
+	
+	public void addImage(Image image) {
+		if (this.images==null) {
+			this.images= new ArrayList<Image>();
+		}
+		if (!(this.images.contains(image))) {
+			this.images.add(image);
+		}
+		
+	}
+	
+	public void removeImage(Image image) {
+		this.images.remove(this.images.indexOf(image));
+	}
+	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -103,5 +117,4 @@ public class Recipe {
 	
 	@ManyToOne
 	private Cook cook;
-
 }

@@ -1,19 +1,26 @@
 package it.uniroma3.siwfood.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.*;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import it.uniroma3.siwfood.model.Image;
 import it.uniroma3.siwfood.model.Ingredient;
 import it.uniroma3.siwfood.model.Quantity;
 import it.uniroma3.siwfood.model.Recipe;
+import it.uniroma3.siwfood.service.ImageService;
 import it.uniroma3.siwfood.service.IngredientService;
 import it.uniroma3.siwfood.service.QuantityService;
 import it.uniroma3.siwfood.service.RecipeService;
@@ -23,6 +30,7 @@ public class RecipeController {
 	@Autowired RecipeService recipeService;
 	@Autowired IngredientService ingredientService;
 	@Autowired QuantityService quantityService;
+	@Autowired ImageService imageService;
 	
 	@GetMapping("/")
     public String index(Model model) {
@@ -52,10 +60,38 @@ public class RecipeController {
 	}
 	
 	@PostMapping("/addQuantity/{id}")
-	public String addQuantity(Model model, @PathVariable("id") Long id, @RequestParam("name") String nameParam, @RequestParam("quantity") String quantityParam) {
+	public String addQuantity(Model model, @PathVariable("id") Long id, @RequestParam("name") String nameParam, @RequestParam("quantity") String quantityParam, @RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
 		Recipe recipe=this.recipeService.findById(id);
-		System.out.println(nameParam);
-		System.out.println(quantityParam);
+		
+		//Image uploading
+		String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
+		Image image=new Image();
+		image.setFileName(fileName);
+		recipe.addImage(image);
+		this.imageService.save(image);
+		
+		String uploadDir="./images/ingredient/"+recipe.getId();
+		Path uploadPath = Paths.get(uploadDir);
+		System.out.println();
+		
+		if (!Files.exists(uploadPath)) {
+			try {
+				Files.createDirectories(uploadPath);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		try {
+			InputStream inputStream = multipartFile.getInputStream();
+			Path filePath = uploadPath.resolve(fileName);
+			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			throw new IOException("Could not save the upload file: " + fileName);
+		}
+		
+		
+		//
 		Quantity quantity=new Quantity();
 		quantity.setQuantity(quantityParam);
 		if (this.ingredientService.existsByName(nameParam)) {
