@@ -100,6 +100,12 @@ public class Recipe {
 		this.images.remove(this.images.indexOf(image));
 	}
 	
+	//Method that updates the recipe
+		public void updateTo(Recipe recipeUpdated) {
+			this.setName(recipeUpdated.getName());
+			this.setDescription(recipeUpdated.getDescription());
+		}
+	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

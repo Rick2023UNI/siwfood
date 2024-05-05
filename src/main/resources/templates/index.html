@@ -8,6 +8,14 @@
 </head>
 
 <body>
+	<p>Menu temporaneo per test</p>
+	 <ul>
+  <li><a href="/newCook">Aggiungi cuoco</a></li>
+  <li><a href="/formUpdateCook/1">Aggiorna cuoco</a></li>
+  <li><a href="/cooks">Lista cuochi</a></li>
+</ul> 
+<br>
+<br>
 	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema</div>
 	<ul>
 		<li th:each="recipe : ${recipes}">

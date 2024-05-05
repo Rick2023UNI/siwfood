@@ -45,6 +45,13 @@ public class Cook {
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
+	
+	//Method that updates the cook
+	public void updateTo(Cook cookUpdated) {
+		this.setName(cookUpdated.getName());
+		this.setSurname(cookUpdated.getSurname());
+		this.setBirthday(cookUpdated.getBirthday());
+	}
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)

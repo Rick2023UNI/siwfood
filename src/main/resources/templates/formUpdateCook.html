@@ -5,8 +5,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   </head>
   <body>
-    <h1>Aggiungi un cuoco</h1>
-    <form th:action="@{/cook}" method="POST" th:object="${cook}" enctype="multipart/form-data">
+    <h1>Aggiorna cuoco</h1>
+    <form th:action="@{'/updateCook/'+${cook.id}}" method="POST" th:object="${cook}" enctype="multipart/form-data">
       <div>
         Nome: <span><input required type="text" th:field="${cook.name}"/></span>
       </div>
