@@ -13,13 +13,14 @@
       <div>
         Descrizione: <span><input required type="text" th:field="${recipe.description}"/></span>
       </div>
-      <div>
+      <div id="images">
         Immagini ricetta: <span><input required type="file" name='fileImage' id="fileImage" accept="image/png, image/jpeg" /></span>
       </div>
       <br>
       <div>
 		  <img id="thumbnail" alt="Image Preview"/>
 	  </div>
+	  <button onClick="AddImageInput()" type="addImage" name="action" value="Add">Aggiungi</button>
       <div>
         <span><button type="submit">Conferma</button></span>
       </div>
@@ -41,6 +42,11 @@
 		};
 		
 		reader.readAsDataURL(file);
+	}
+	
+	function AddImageInput() {
+		var images=document.getElementById("images");
+		images.appendChild(images.lastElementChild);
 	}
 </script>
 </html>

@@ -41,7 +41,9 @@
 	<div th:if="${quantities==null || quantities.isEmpty()}">Non ci sono ingredienti per la ricetta corrente</div>
 	<ul>
 		<li th:each="quantity : ${quantities}">
-			<a th:href="@{/removeQuantity/}+${recipe.id}+'/'+${quantity.id}" th:text="${quantity.quantity}+' '+${quantity.getIngredient().name} ">
+			<a th:href="@{/removeQuantity/}+${recipe.id}+'/'+${quantity.id}" th:text="${quantity.quantity}+' '+${quantity.getIngredient().name} "></a>
+			<!--Da risolvere problemi d'accesso con security-->
+			<img th:src="@{'/images/ingredient/'+${quantity.getIngredient().getId()}+'.jpg'}">
 		</li>
 	</ul>
 </body>

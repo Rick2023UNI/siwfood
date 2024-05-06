@@ -47,38 +47,40 @@ public class RecipeController {
 	
 	@PostMapping("/recipe")
 	public String newRecipe(@ModelAttribute("recipe") Recipe recipe, 
-			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
+			@RequestParam("fileImage") MultipartFile[] multipartFiles) throws IOException {
 		Date today=new Date();
 		recipe.setPublicationDate(today);
-		//Image uploading
-		String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-		Image image=new Image();
-		image.setFileName(fileName);
-		recipe.addImage(image);
-		this.imageService.save(image);
 		//First save to get the recipe to be assigned an id
 		this.recipeService.save(recipe);
-		//File location
-		String uploadDir="./images/recipe/"+recipe.getId();
-		Path uploadPath = Paths.get(uploadDir);
-		System.out.println();
-		
-		if (!Files.exists(uploadPath)) {
-			try {
-				Files.createDirectories(uploadPath);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		for (MultipartFile multipartFile : multipartFiles) {
+			//Image uploading
+			String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
+			Image image=new Image();
+			image.setFileName(fileName);
+			recipe.addImage(image);
+			this.imageService.save(image);
+			//File location
+			String uploadDir="./images/recipe/"+recipe.getId();
+			Path uploadPath = Paths.get(uploadDir);
+			System.out.println();
+			
+			if (!Files.exists(uploadPath)) {
+				try {
+					Files.createDirectories(uploadPath);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			try {
+				InputStream inputStream = multipartFile.getInputStream();
+				Path filePath = uploadPath.resolve(fileName);
+				Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+				throw new IOException("Could not save the upload file: " + fileName);
+			}
+			//
 		}
-		try {
-			InputStream inputStream = multipartFile.getInputStream();
-			Path filePath = uploadPath.resolve(fileName);
-			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			throw new IOException("Could not save the upload file: " + fileName);
-		}
-		//
 		this.recipeService.save(recipe);
 		return "redirect:recipe/"+recipe.getId();
 	}
