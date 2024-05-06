@@ -36,9 +36,9 @@
 			refreshEvents();
 		}
 		
-		function removeImageInput(iPar) {
-			console.log("iPar"+iPar);
-			document.getElementById('image'+iPar).remove();
+		function removeImageInput(event) {
+			//Rimuove il nodo genitore dell'elemento che ha lanciato l'evento
+			event.target.parentElement.remove();
 		}
 	//Inizializzazione evento per l'aggiunta di ulteriori input
 	$(document).ready(function() {
@@ -79,13 +79,14 @@
 		
 		images.appendChild(newDiv);
 		
-		var newA=document.createElement("a");
-		newA.setAttribute("id", 'fileImageRemove'+(i-1));
-		newA.innerHTML="Remove";
-		document.getElementById("image"+(i-1)).appendChild(newA);
-		$('#fileImageRemove'+(i-1)).click(function() { removeImageInput(i-1); });
-		console.log("i originale"+i);
-		
+		if ($('#image'+(i-1)).length > 0) {
+			//Aggiunta possibilità rimozione elemento precedente
+			var newA=document.createElement("a");
+			newA.setAttribute("id", 'fileImageRemove'+(i-1));
+			newA.innerHTML="Rimuovi";
+			document.getElementById("image"+(i-1)).appendChild(newA);
+			$('#fileImageRemove'+(i-1)).click(function(event) { removeImageInput(event); });
+		}		
 	}
 	
 	function refreshEvents() {
