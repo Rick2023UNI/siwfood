@@ -14,22 +14,26 @@
         Descrizione: <span><input required type="text" th:field="${recipe.description}"/></span>
       </div>
       <div id="images">
-        Immagini ricetta: <span><input required type="file" name='fileImage' id="fileImage" accept="image/png, image/jpeg" /></span>
+        <div id="image">
+			Immagini ricetta: <span><input required type="file" id="fileImage" accept="image/png, image/jpeg" class="fileImage"/></span>
+		</div>
       </div>
       <br>
       <div>
 		  <img id="thumbnail" alt="Image Preview"/>
-	  </div>
-	  <button onClick="AddImageInput()" type="addImage" name="action" value="Add">Aggiungi</button>
-      <div>
+      </div>
         <span><button type="submit">Conferma</button></span>
       </div>
-    </form>
+   </form>
   </body>
   <script type="text/javascript">
+	  var i=0;
 	$(document).ready(function() {
-		$('#fileImage').change(function () {
+		$('.fileImage').change(function () {
+			AddImageInput();
 			showImageThumbnail(this);
+			refreshEvents();
+			i++;
 		});
 	});
 	
@@ -46,7 +50,16 @@
 	
 	function AddImageInput() {
 		var images=document.getElementById("images");
-		images.appendChild(images.lastElementChild);
+		images.appendChild(document.getElementById("image").cloneNode(true));
+	}
+	
+	function refreshEvents() {
+		$('#fileImage'+i).change(function () {
+			AddImageInput();
+			showImageThumbnail(this);
+			refreshEvents();
+			i++;
+		});
 	}
 </script>
 </html>

@@ -111,17 +111,17 @@ public class RecipeController {
 			quantity.setIngredient(ingredient);
 			recipe.addQuantity(quantity);
 			
-			//Image uploading
+			//Caricamento dell'immagine
 			String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-			//First save to get the ingredient to be assigned an id
+			//Primo salvataggio per far assegnare all'ingrediente un id
 			this.ingredientService.save(ingredient);
-			//Setting the file name to the ingredient id and the original extension of the file
+			//Impostazione del nome del file all'id dell'ingrediente, mantenendo l'estensione del file originale
 			fileName=ingredient.getId()+fileName.substring(fileName.lastIndexOf('.'));
 			Image image=new Image();
 			image.setFileName(fileName);
 			recipe.addImage(image);
 			this.imageService.save(image);
-			//File location
+			//Percorso del file
 			String uploadDir="./images/ingredient/";
 			Path uploadPath = Paths.get(uploadDir);
 			System.out.println();
@@ -173,13 +173,13 @@ public class RecipeController {
 			@ModelAttribute("recipe") Recipe recipeUpdated, 
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
 		Recipe recipe=this.recipeService.findById(id);
-		//Image uploading
+		//Caricamento dell'immagine
 		String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
 		Image image=new Image();
 		image.setFileName(fileName);
 		recipe.addImage(image);
 		this.imageService.save(image);
-		//File location
+		//Percorso del file
 		String uploadDir="./images/recipe/"+recipe.getId();
 		Path uploadPath = Paths.get(uploadDir);
 		System.out.println();

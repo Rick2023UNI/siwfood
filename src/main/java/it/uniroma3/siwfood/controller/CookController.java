@@ -45,19 +45,18 @@ public class CookController {
 	@PostMapping("/cook")
 	public String newCook(@ModelAttribute("cook") Cook cook,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
-		//First save to get the cook to be assigned an id	
-		this.cookService.save(cook);
-		//Image uploading
+			//Primo salvataggio per far assegnare al cuoco un id
+			this.cookService.save(cook);
+			//Caricamento dell'immagine
 				String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
 				Image image=new Image();
 				image.setFileName(fileName);
-				//Setting the file name to the ingredient id and the original extension of the file
+				//Impostazione del nome del file all'id dell'ingrediente e dell'estensione originale del file
 				fileName=cook.getId()+fileName.substring(fileName.lastIndexOf('.'));
 				cook.setPhoto(image);
 				this.imageService.save(image);
-				//First save to get the recipe to be assigned an id
 				this.cookService.save(cook);
-				//File location
+				//Percorso del file
 				String uploadDir="./images/cook/";
 				Path uploadPath = Paths.get(uploadDir);
 				System.out.println();
@@ -92,7 +91,7 @@ public class CookController {
 	@GetMapping("/formUpdateCook/{id}")
 	  public String formUpdateCook(@PathVariable("id") Long id, Model model) {
 		    model.addAttribute("cook", this.cookService.findById(id));
-		    //To load image if present
+		    //Da caricare un'immagine se presente
 		    return "formUpdateCook.html";
 		  }
 
@@ -101,13 +100,13 @@ public class CookController {
 			@ModelAttribute("cook") Cook cookUpdated,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
 		Cook cook=this.cookService.findById(id);
-			//Image uploading
+				//Caricamento dell'immagine
 				String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
 				Image image=new Image();
 				image.setFileName(fileName);
 				cook.setPhoto(image);
 				this.imageService.save(image);
-				//File location
+				//Percorso del file
 				String uploadDir="./images/cook/"+cook.getId();
 				Path uploadPath = Paths.get(uploadDir);
 				System.out.println();
