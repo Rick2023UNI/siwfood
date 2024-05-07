@@ -8,15 +8,15 @@
     <h1>Aggiungi una ricetta</h1>
     <form th:action="@{/recipe}" method="POST" th:object="${recipe}" enctype="multipart/form-data">
 <div>
-        Nome: <span><input required type="text" th:field="${recipe.name}"/></span>
+        Nome: <span><input type="text" th:field="${recipe.name}"/></span>
       </div>
       <div>
-        Descrizione: <span><input required type="text" th:field="${recipe.description}"/></span>
+        Descrizione: <span><input type="text" th:field="${recipe.description}"/></span>
       </div>
       <div id="images">
 		Immagini ricetta: 
 		<div id="image0">
-			<input required type="file" name='fileImage' id="fileImage0" accept="image/png, image/jpeg" class="fileImage"/>
+			<input type="file" name='fileImage' id="fileImage0" accept="image/png, image/jpeg" class="fileImage"/>
 		</div>
       </div>
       <br>

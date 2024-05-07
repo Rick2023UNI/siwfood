@@ -45,7 +45,7 @@ public class RecipeController {
 		return "formNewRecipe.html";
 	}
 	
-	@PostMapping("/recipe")
+	@PostMapping(value="/recipe", params = {"name", "description", "fileImage"})
 	public String newRecipe(@ModelAttribute("recipe") Recipe recipe, 
 			@RequestParam("fileImage") MultipartFile[] multipartFiles) throws IOException {
 		Date today=new Date();
@@ -92,7 +92,7 @@ public class RecipeController {
 	    return "recipe.html";
 	}
 	
-	@PostMapping("/addQuantity/{id}")
+	@PostMapping(value="/addQuantity/{id}", params = {"id", "name", "quantity", "fileImage"})
 	public String addQuantity(Model model, @PathVariable("id") Long id, @RequestParam("name") String nameParam, 
 			@RequestParam("quantity") String quantityParam, 
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
@@ -202,6 +202,43 @@ public class RecipeController {
 		//
 		recipe.updateTo(recipeUpdated);
 		this.recipeService.save(recipe);
+		return "redirect:/recipe/"+recipe.getId();
+	}
+	
+	//"Overloading" no images uploaded
+	@PostMapping(value="/recipe", params = {"name", "description"})
+	public String newRecipe(@ModelAttribute("recipe") Recipe recipe) {
+		Date today=new Date();
+		recipe.setPublicationDate(today);
+		this.recipeService.save(recipe);
+		return "redirect:recipe/"+recipe.getId();
+	}
+	
+	//"Overloading" no images uploaded
+	@PostMapping(value="/addQuantity/{id}", params = {"id", "name", "quantity"})
+	public String addQuantity(Model model, @PathVariable("id") Long id, 
+			@RequestParam("name") String nameParam, 
+			@RequestParam("quantity") String quantityParam) {
+		
+		Recipe recipe=this.recipeService.findById(id);
+		
+		Quantity quantity=new Quantity();
+		quantity.setQuantity(quantityParam);
+		if (this.ingredientService.existsByName(nameParam)) {
+			quantity.setIngredient(this.ingredientService.findByName(nameParam));
+			recipe.addQuantity(quantity);
+		}
+		else {
+			Ingredient ingredient=new Ingredient();
+			ingredient.setName(nameParam);
+			quantity.setIngredient(ingredient);
+			recipe.addQuantity(quantity);
+			
+			this.ingredientService.save(ingredient);
+		}
+		this.quantityService.save(quantity);
+		this.recipeService.save(recipe);
+		
 		return "redirect:/recipe/"+recipe.getId();
 	}
 }

@@ -18,13 +18,13 @@
 	<!--Da questa punto in poi si fa riferimento alla modifica disponibile solamente per il cuoco che ha inizialmente pubblicato la ricetta-->
 	<form th:action="@{/addQuantity/}+${recipe.id}" method="POST" enctype="multipart/form-data">
       <div>
-        Quantit&agrave;: <span><input required type="text" name='quantity'/></span>
+        Quantit&agrave;: <span><input type="text" name='quantity'/></span>
       </div>
       <div>
-        Ingrediente: <span><input required type="text" name='name'/></span>
+        Ingrediente: <span><input type="text" name='name'/></span>
       </div>
       <div>
-        Immagine ingrediente: <span><input required type="file" name='fileImage' id="fileImage" accept="image/png, image/jpeg" /></span>
+        Immagine ingrediente: <span><input type="file" name='fileImage' id="fileImage" accept="image/png, image/jpeg" /></span>
       <br>
       </div>
       <div>
