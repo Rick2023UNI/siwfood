@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface RecipeRepository extends CrudRepository<Recipe, Long> {
 
+	Iterable<Recipe> findByNameStartingWith(String name);
+
 }

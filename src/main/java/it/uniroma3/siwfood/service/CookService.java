@@ -19,6 +19,10 @@ public class CookService {
 		cookRepository.save(cook);	
 	}
 	
+	public void delete(Cook cook) {
+		cookRepository.delete(cook);	
+	}
+	
 	public Cook findById(Long id) {
 		return cookRepository.findById(id).get();
 	}

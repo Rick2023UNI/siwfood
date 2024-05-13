@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>
+		SiwFood - Homepage
+	</title>
+</head>
+
+<body>
+	<form th:action="@{/searchRecipes}" method="post">
+	   <div>Nome: <input type="text" th:value="${name}" name="name" />
+	   </div>
+	   <button type="submit">Cerca</button>
+	  </form>
+	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema con il nome inserito</div>
+	<ul>
+		<li th:each="recipe : ${recipes}">
+			<span>
+				<a th:href="@{'/recipe' + '/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+				<!-- <a th:href="@{'/cook' + '/' + ${recipe.cook.id}}" th:text="${recipe.cook.name} ${recipe.cook.surname}"></a> -->
+			</span>
+		</li>
+	</ul>
+</body>
+
+</html>

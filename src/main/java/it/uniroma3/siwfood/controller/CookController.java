@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siwfood.model.Cook;
 import it.uniroma3.siwfood.model.Image;
+import it.uniroma3.siwfood.model.Recipe;
 import it.uniroma3.siwfood.service.CookService;
 import it.uniroma3.siwfood.service.ImageService;
 
@@ -137,4 +138,19 @@ public class CookController {
 		model.addAttribute("cooks", this.cookService.findAll());
 		return "cooks.html";
 	}
+	
+	@GetMapping("admin/manageCooks")
+	  public String manageCooks(Model model) {
+			model.addAttribute("cooks", this.cookService.findAll());		    
+		    return "admin/manageCooks.html";
+	}	
+	
+	@GetMapping("admin/removeCook/{id}")
+	  public String removeCook(@PathVariable("id") Long id,
+			  Model model) {
+		    Cook cook=this.cookService.findById(id);
+		    this.cookService.delete(cook);
+		    
+		    return manageCooks(model);
+	}	
 }

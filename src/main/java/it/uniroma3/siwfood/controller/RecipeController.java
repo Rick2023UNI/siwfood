@@ -241,4 +241,31 @@ public class RecipeController {
 		
 		return "redirect:/recipe/"+recipe.getId();
 	}
+	
+	@GetMapping("admin/manageRecipes")
+	  public String manageRecipes(Model model) {
+			model.addAttribute("recipes", this.recipeService.findAll());		    
+		    return "admin/manageRecipes.html";
+	}	
+	
+	@GetMapping("admin/removeRecipe/{id}")
+	  public String removeRecipe(@PathVariable("id") Long id,
+			  Model model) {
+		    Recipe recipe=this.recipeService.findById(id);
+		    this.recipeService.delete(recipe);
+		    
+		    return manageRecipes(model);
+	}	
+	
+	@GetMapping("/searchRecipes")
+	  public String formSearchRecipes(Model model) {
+			model.addAttribute("recipes", this.recipeService.findByNameStartingWith(""));   
+		    return "searchRecipes.html";
+	}	
+	
+	@PostMapping("/searchRecipes")
+	  public String searchRecipes(@ModelAttribute("recipe") Recipe recipe, @RequestParam String name, Model model) {
+			model.addAttribute("recipes", this.recipeService.findByNameStartingWith(name));   
+		    return "searchRecipes.html";
+	}	
 }

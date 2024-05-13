@@ -22,4 +22,12 @@ public class RecipeService {
 	public Recipe findById(Long id) {
 		return recipeRepository.findById(id).get();
 	}
+	
+	public void delete(Recipe recipe) {
+		recipeRepository.delete(recipe);	
+	}
+	
+	public Iterable<Recipe> findByNameStartingWith(String name) {
+		return recipeRepository.findByNameStartingWith(name);
+	}
 }
