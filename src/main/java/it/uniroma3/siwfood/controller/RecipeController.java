@@ -92,7 +92,7 @@ public class RecipeController {
 	    return "recipe.html";
 	}
 	
-	@PostMapping(value="/addQuantity/{id}", params = {"id", "name", "quantity", "fileImage"})
+	@PostMapping(value="/addQuantity/{id}", params = {"name", "quantity", "fileImage"})
 	public String addQuantity(Model model, @PathVariable("id") Long id, @RequestParam("name") String nameParam, 
 			@RequestParam("quantity") String quantityParam, 
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
@@ -215,7 +215,7 @@ public class RecipeController {
 	}
 	
 	//"Overloading" no images uploaded
-	@PostMapping(value="/addQuantity/{id}", params = {"id", "name", "quantity"})
+	@PostMapping(value="/addQuantity/{id}", params = {"name", "quantity"})
 	public String addQuantity(Model model, @PathVariable("id") Long id, 
 			@RequestParam("name") String nameParam, 
 			@RequestParam("quantity") String quantityParam) {
