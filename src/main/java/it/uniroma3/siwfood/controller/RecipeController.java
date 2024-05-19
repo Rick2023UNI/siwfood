@@ -44,8 +44,9 @@ public class RecipeController {
 		model.addAttribute("recipe", new Recipe());
 		return "formNewRecipe.html";
 	}
-	
-	@PostMapping(value="/recipe", params = {"name", "description", "fileImage"})
+	//Causa immagini non caricate
+//    @PostMapping(value="/recipe", params = {"name", "description", "fileImage"})
+    @PostMapping(value="/recipe")
 	public String newRecipe(@ModelAttribute("recipe") Recipe recipe, 
 			@RequestParam("fileImage") MultipartFile[] multipartFiles) throws IOException {
 		Date today=new Date();
@@ -204,15 +205,16 @@ public class RecipeController {
 		this.recipeService.save(recipe);
 		return "redirect:/recipe/"+recipe.getId();
 	}
-	
-	//"Overloading" no images uploaded
-	@PostMapping(value="/recipe", params = {"name", "description"})
-	public String newRecipe(@ModelAttribute("recipe") Recipe recipe) {
-		Date today=new Date();
-		recipe.setPublicationDate(today);
-		this.recipeService.save(recipe);
-		return "redirect:recipe/"+recipe.getId();
-	}
+
+	//Causa immagini non caricate
+//	//"Overloading" no images uploaded
+//	@PostMapping(value="/recipe", params = {"name", "description"})
+//	public String newRecipe(@ModelAttribute("recipe") Recipe recipe) {
+//		Date today=new Date();
+//		recipe.setPublicationDate(today);
+//		this.recipeService.save(recipe);
+//		return "redirect:recipe/"+recipe.getId();
+//	}
 	
 	//"Overloading" no images uploaded
 	@PostMapping(value="/addQuantity/{id}", params = {"name", "quantity"})
