@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siwfood.model.Cook;
+import it.uniroma3.siwfood.model.Credentials;
 import it.uniroma3.siwfood.model.Image;
 import it.uniroma3.siwfood.model.Recipe;
 import it.uniroma3.siwfood.service.CookService;

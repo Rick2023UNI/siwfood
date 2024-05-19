@@ -13,7 +13,7 @@ public class CredentialsService {
 	@Autowired
 	private CredentialsRepository credentialsRepository;
 	
-	public void saveCredentials(Credentials credentials) {
+	public void save(Credentials credentials) {
 		credentialsRepository.save(credentials);	
 	}
 	

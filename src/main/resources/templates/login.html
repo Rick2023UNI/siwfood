@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>  <head>
+    <title>Nuovo cuoco</title>
+    <link rel="stylesheet" href="/stile.css?version=3" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1>Accedi</h1>
+    <form th:action="@{/login}" method="POST" th:object="${credentials}">
+      <div>
+        Username: <span><input required type="text" name='username'/></span>
+      </div>
+      <div>
+        Password: <span><input required type="text" name='password'/></span>
+      </div>
+        <span><button type="submit">Accedi</button></span>
+      </div>
+    </form>
+  </body>
+</html>

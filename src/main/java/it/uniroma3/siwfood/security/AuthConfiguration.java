@@ -1,4 +1,4 @@
-package it.uniroma3.siwfood;
+package it.uniroma3.siwfood.security;
 
 import javax.sql.DataSource;
 
@@ -17,7 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class AuthConfiguration implements WebMvcConfigurer {
 	
-	 private static final String ADMIN_ROLE = "ADMIN";
+	 private static final String ADMIN_ROLE = "admin";
 	 
 	@Autowired
 	 private DataSource dataSource;
