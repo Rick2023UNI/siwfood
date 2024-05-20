@@ -8,6 +8,7 @@
 </head>
 
 <body>
+	<p th:if="${userDetails!=null}" th:text="${userDetails.getUsername()}"></p>
 	<p>Menu temporaneo per test</p>
 	 <ul>
   <li><a href="/newCook">Aggiungi cuoco</a></li>
