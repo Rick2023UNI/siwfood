@@ -44,43 +44,48 @@ public class RecipeController {
 		model.addAttribute("recipe", new Recipe());
 		return "formNewRecipe.html";
 	}
-	//Causa immagini non caricate
-//    @PostMapping(value="/recipe", params = {"name", "description", "fileImage"})
-    @PostMapping(value="/recipe")
+
+	@PostMapping(value="/recipe")
 	public String newRecipe(@ModelAttribute("recipe") Recipe recipe, 
 			@RequestParam("fileImage") MultipartFile[] multipartFiles) throws IOException {
 		Date today=new Date();
 		recipe.setPublicationDate(today);
-		//First save to get the recipe to be assigned an id
+		//Primo salvataggio per far assegnare alla ricetta un id
 		this.recipeService.save(recipe);
 		for (MultipartFile multipartFile : multipartFiles) {
-			//Image uploading
+			//Caricamento delle immagini
 			String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-			Image image=new Image();
-			image.setFileName(fileName);
-			recipe.addImage(image);
-			this.imageService.save(image);
-			//File location
-			String uploadDir="./images/recipe/"+recipe.getId();
-			Path uploadPath = Paths.get(uploadDir);
-			System.out.println();
-			
-			if (!Files.exists(uploadPath)) {
-				try {
-					Files.createDirectories(uploadPath);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			/*Evita tentativo di caricare il file vuoto causato
+			 dall'ultimo input che viene aggiunto in automatico
+			 ed è sempre vuoto
+			 */
+			if (fileName!="") {
+				Image image=new Image();
+				image.setFileName(fileName);
+				recipe.addImage(image);
+				this.imageService.save(image);
+				//File location
+				String uploadDir="./images/recipe/"+recipe.getId();
+				Path uploadPath = Paths.get(uploadDir);
+				System.out.println();
+				
+				if (!Files.exists(uploadPath)) {
+					try {
+						Files.createDirectories(uploadPath);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
+				try {
+					InputStream inputStream = multipartFile.getInputStream();
+					Path filePath = uploadPath.resolve(fileName);
+					Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+				} catch (IOException e) {
+					throw new IOException("Could not save the upload file: " + fileName);
+				}
+				//
 			}
-			try {
-				InputStream inputStream = multipartFile.getInputStream();
-				Path filePath = uploadPath.resolve(fileName);
-				Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-			} catch (IOException e) {
-				throw new IOException("Could not save the upload file: " + fileName);
-			}
-			//
 		}
 		this.recipeService.save(recipe);
 		return "redirect:recipe/"+recipe.getId();
@@ -93,7 +98,7 @@ public class RecipeController {
 	    return "recipe.html";
 	}
 	
-	@PostMapping(value="/addQuantity/{id}", params = {"name", "quantity", "fileImage"})
+	@PostMapping(value="/addQuantity/{id}")
 	public String addQuantity(Model model, @PathVariable("id") Long id, @RequestParam("name") String nameParam, 
 			@RequestParam("quantity") String quantityParam, 
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
@@ -203,44 +208,6 @@ public class RecipeController {
 		//
 		recipe.updateTo(recipeUpdated);
 		this.recipeService.save(recipe);
-		return "redirect:/recipe/"+recipe.getId();
-	}
-
-	//Causa immagini non caricate
-//	//"Overloading" no images uploaded
-//	@PostMapping(value="/recipe", params = {"name", "description"})
-//	public String newRecipe(@ModelAttribute("recipe") Recipe recipe) {
-//		Date today=new Date();
-//		recipe.setPublicationDate(today);
-//		this.recipeService.save(recipe);
-//		return "redirect:recipe/"+recipe.getId();
-//	}
-	
-	//"Overloading" no images uploaded
-	@PostMapping(value="/addQuantity/{id}", params = {"name", "quantity"})
-	public String addQuantity(Model model, @PathVariable("id") Long id, 
-			@RequestParam("name") String nameParam, 
-			@RequestParam("quantity") String quantityParam) {
-		
-		Recipe recipe=this.recipeService.findById(id);
-		
-		Quantity quantity=new Quantity();
-		quantity.setQuantity(quantityParam);
-		if (this.ingredientService.existsByName(nameParam)) {
-			quantity.setIngredient(this.ingredientService.findByName(nameParam));
-			recipe.addQuantity(quantity);
-		}
-		else {
-			Ingredient ingredient=new Ingredient();
-			ingredient.setName(nameParam);
-			quantity.setIngredient(ingredient);
-			recipe.addQuantity(quantity);
-			
-			this.ingredientService.save(ingredient);
-		}
-		this.quantityService.save(quantity);
-		this.recipeService.save(recipe);
-		
 		return "redirect:/recipe/"+recipe.getId();
 	}
 	

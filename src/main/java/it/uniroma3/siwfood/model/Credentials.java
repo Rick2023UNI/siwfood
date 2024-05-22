@@ -56,4 +56,12 @@ public class Credentials {
 	@OneToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
 	private Cook cook;
 
+	public Cook getCook() {
+		return cook;
+	}
+
+	public void setCook(Cook cook) {
+		this.cook = cook;
+	}
+
 }

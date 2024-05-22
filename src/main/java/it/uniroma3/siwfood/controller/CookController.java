@@ -36,14 +36,6 @@ public class CookController {
 		return "formNewCook.html";
 	}
 	
-
-//	@PostMapping(value = "/cook", params = {"cook"})
-//	public String newCook(@ModelAttribute("cook") Cook cook) {
-//		this.cookService.save(cook);
-//		return "redirect:cook/"+cook.getId();
-//	}
-//	
-//	@PostMapping(value = "/cook", params = {"cook", "fileImage"})
 	@PostMapping("/cook")
 	public String newCook(@ModelAttribute("cook") Cook cook,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
