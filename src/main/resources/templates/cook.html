@@ -14,6 +14,8 @@
 		<span th:text="${cook.surname}"></span>
 		<br>
 		<span th:text='${#dates.format(cook.birthday, "yyyy-MM-dd")}'></span>
+		<br>
+		<img th:src="@{${cook.photo.getImagePath}}">
 	</div>
 	<div th:unless="${cook}">Non esiste</div>
 	

@@ -44,9 +44,10 @@ public class CookController {
 			//Caricamento dell'immagine
 				String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
 				Image image=new Image();
-				image.setFileName(fileName);
 				//Impostazione del nome del file all'id dell'ingrediente e dell'estensione originale del file
 				fileName=cook.getId()+fileName.substring(fileName.lastIndexOf('.'));
+				image.setFileName(fileName);
+				image.setFolder("cook");
 				cook.setPhoto(image);
 				this.imageService.save(image);
 				this.cookService.save(cook);

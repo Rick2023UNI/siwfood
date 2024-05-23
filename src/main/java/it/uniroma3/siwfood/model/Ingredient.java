@@ -47,5 +47,5 @@ public class Ingredient {
     private Long id;
 	
 	private String name;
-
+	
 }

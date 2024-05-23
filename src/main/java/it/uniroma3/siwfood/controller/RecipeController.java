@@ -62,6 +62,7 @@ public class RecipeController {
 			if (fileName!="") {
 				Image image=new Image();
 				image.setFileName(fileName);
+				image.setFolder("recipe/"+recipe.getId());
 				recipe.addImage(image);
 				this.imageService.save(image);
 				//File location
@@ -125,6 +126,7 @@ public class RecipeController {
 			fileName=ingredient.getId()+fileName.substring(fileName.lastIndexOf('.'));
 			Image image=new Image();
 			image.setFileName(fileName);
+			image.setFolder("ingredient");
 			recipe.addImage(image);
 			this.imageService.save(image);
 			//Percorso del file

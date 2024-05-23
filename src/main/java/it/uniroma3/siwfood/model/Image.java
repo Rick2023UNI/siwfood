@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 
 @Entity
 public class Image {
@@ -45,8 +46,26 @@ public class Image {
 	
 	private String fileName;
 	
+	private String folder;
+	
 	private String name;
 	
 	private String alternativeText;
+	
+	@Transient
+	public String getImagePath() {
+		if (fileName == null || id == null) return null;
+		
+		return "/images/"+folder+"/"+fileName;
+	}
+
+	public String getFolder() {
+		return folder;
+	}
+
+	public void setFolder(String folder) {
+		this.folder = folder;
+	}
+	
 	
 }

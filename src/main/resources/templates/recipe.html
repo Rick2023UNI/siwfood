@@ -43,7 +43,7 @@
 		<li th:each="quantity : ${quantities}">
 			<a th:href="@{/removeQuantity/}+${recipe.id}+'/'+${quantity.id}" th:text="${quantity.quantity}+' '+${quantity.getIngredient().name} "></a>
 			<!--Da risolvere problemi d'accesso con security-->
-			<img th:src="@{'/images/ingredient/'+${quantity.getIngredient().getId()}+'.jpg'}">
+			<img th:src="@{${quantity.ingredient.image.getImagePath}}">
 		</li>
 	</ul>
 </body>
