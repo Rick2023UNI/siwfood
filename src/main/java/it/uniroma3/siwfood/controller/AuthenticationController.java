@@ -1,6 +1,8 @@
 package it.uniroma3.siwfood.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +15,14 @@ import it.uniroma3.siwfood.model.Cook;
 import it.uniroma3.siwfood.model.Credentials;
 import it.uniroma3.siwfood.service.CookService;
 import it.uniroma3.siwfood.service.CredentialsService;
+import it.uniroma3.siwfood.service.RecipeService;
 
 @Controller 
 public class AuthenticationController {
 	@Autowired CookService cookService;
 	@Autowired CredentialsService credentialsService;
 	@Autowired PasswordEncoder passwordEncoder;
+	@Autowired RecipeService recipeService;
 	
 	
 	@GetMapping("/login")
@@ -42,12 +46,19 @@ public class AuthenticationController {
 	public String registerCook(@ModelAttribute("credentials") Credentials credentials) {
 			credentials.setPassword(passwordEncoder.encode(credentials.getPassword()));
 			credentialsService.save(credentials);
-		    return "index.html";
+		    return "/login";
 	}
 	
 	@GetMapping("/success")
 	  public String success(Model model) {
-		    return "index.html";
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("recipes", this.recipeService.findAll());
+		if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
+			return "admin/index.html";
+		}
+		else {
+			return "index.html";
+		}
 	}
 	
 }

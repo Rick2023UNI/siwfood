@@ -15,7 +15,13 @@
 		<span th:text="${recipe.description}"></span>
 		<br>
 		<span th:text='${#dates.format(recipe.publicationDate, "yyyy-MM-dd HH:mm")}'></span>
-	<!--Da questa punto in poi si fa riferimento alla modifica disponibile solamente per il cuoco che ha inizialmente pubblicato la ricetta-->
+		<div th:if="${images==null || images.isEmpty()}">Non ci sono immagini per la ricetta corrente</div>
+			<ul>
+				<li th:each="image : ${images}">
+					<img th:src="@{${image.getImagePath}}">
+				</li>
+			</ul>
+	<!--Da questa punto in poi si fa riferimento alla modifica disponibile solamente per il cuoco o l'amministratore che ha inizialmente pubblicato la ricetta-->
 	<form th:action="@{/addQuantity/}+${recipe.id}" method="POST" enctype="multipart/form-data">
       <div>
         Quantit&agrave;: <span><input type="text" name='quantity'/></span>
@@ -42,7 +48,6 @@
 	<ul>
 		<li th:each="quantity : ${quantities}">
 			<a th:href="@{/removeQuantity/}+${recipe.id}+'/'+${quantity.id}" th:text="${quantity.quantity}+' '+${quantity.getIngredient().name} "></a>
-			<!--Da risolvere problemi d'accesso con security-->
 			<img th:src="@{${quantity.ingredient.image.getImagePath}}">
 		</li>
 	</ul>

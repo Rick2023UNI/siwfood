@@ -25,7 +25,8 @@ import it.uniroma3.siwfood.service.ImageService;
 import it.uniroma3.siwfood.service.IngredientService;
 import it.uniroma3.siwfood.service.QuantityService;
 import it.uniroma3.siwfood.service.RecipeService;
-
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 @Controller 
 public class RecipeController {
 	@Autowired RecipeService recipeService;
@@ -35,8 +36,20 @@ public class RecipeController {
 	
 	@GetMapping("/")
     public String index(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		model.addAttribute("recipes", this.recipeService.findAll());
-		return "index.html";
+		if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
+			return "admin/index.html";
+		}
+		else {
+			return "index.html";
+		}
+	}
+	
+	@GetMapping("/admin/")
+    public String indexAdmin(Model model) {
+		model.addAttribute("recipes", this.recipeService.findAll());
+		return "admin/index.html";
 	}
 	
 	@GetMapping("/newRecipe")
@@ -96,6 +109,7 @@ public class RecipeController {
 	public String getRecipe(@PathVariable("id") Long id, Model model) {
 	    model.addAttribute("recipe", this.recipeService.findById(id));
 	    model.addAttribute("quantities", this.recipeService.findById(id).getQuantities());
+	    model.addAttribute("images", this.recipeService.findById(id).getImages());
 	    return "recipe.html";
 	}
 	
@@ -150,7 +164,7 @@ public class RecipeController {
 				throw new IOException("Could not save the upload file: " + fileName);
 			}
 			//
-			
+			ingredient.setImage(image);
 			this.ingredientService.save(ingredient);
 		}
 		this.quantityService.save(quantity);
