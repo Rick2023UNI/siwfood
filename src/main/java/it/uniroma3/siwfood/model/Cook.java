@@ -86,5 +86,9 @@ public class Cook {
 	@OneToMany(mappedBy = "cook")
     private List<Recipe> recipes;
     
-    
+	@Override
+	public boolean equals(Object o) {
+		Cook cook=(Cook) o;
+		return cook.getId()==this.getId();
+	}
 }

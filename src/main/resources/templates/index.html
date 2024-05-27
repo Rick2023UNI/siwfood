@@ -8,10 +8,10 @@
 </head>
 
 <body>
-	<div th:if="${userDetails!=null}">
+	<span th:if="${userDetails!=null}">
 		<p th:text="${userDetails.getUsername()}"></p>
 		<a href="/logout">Esci</a>
-	</div>
+	</span>
 	
 	<p th:if="${cookDetails!=null}" th:text="${cookDetails.name} + ', ' + ${cookDetails.surname}"></p>
 	<p>Menu temporaneo per test</p>

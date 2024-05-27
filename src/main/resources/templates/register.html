@@ -2,17 +2,36 @@
 <html>  <head>
     <title>Nuovo cuoco</title>
     <link rel="stylesheet" href="/stile.css?version=3" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="/js/3.7.1_jquery.min.js"></script>
+	<script src="/js/imagePreview.js"></script>
   </head>
   <body>
     <h1>Registrati</h1>
-    <form th:action="@{/register}" method="POST" th:object="${credentials}">
+    <form th:action="@{/register}" method="POST" enctype="multipart/form-data">
       <div>
         Username: <span><input required type="text" th:field="${credentials.username}"/></span>
       </div>
       <div>
         Password: <span><input required type="text" th:field="${credentials.password}"/></span>
       </div>
+      <div>
+		  <div>
+        Nome: <span><input required type="text" th:field="${cook.name}"/></span>
+      </div>
+      <div>
+        Surname: <span><input required type="text" th:field="${cook.surname}"/></span>
+      </div>
+      <div>
+        Birthday: <span><input required type="date" th:field="${cook.birthday}"/></span>
+      </div>
+      <div>
+        Foto profilo: <span><input type="file" name='fileImage' id="fileImage" accept="image/png, image/jpeg" /></span>
+      <br>
+      </div>
+      <div>
+		  <img id="thumbnail" alt="Image Preview"/>
+	  </div>
+	  </div>
         <span><button type="submit">Registrati</button></span>
       </div>
     </form>

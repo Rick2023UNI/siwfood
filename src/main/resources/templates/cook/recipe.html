@@ -22,6 +22,26 @@
 					<img th:src="@{${image.getImagePath}}">
 				</li>
 			</ul>
+	<!--Da questa punto in poi si fa riferimento alla modifica disponibile solamente per il cuoco o l'amministratore che ha inizialmente pubblicato la ricetta-->
+	<form th:action="@{/addQuantity/}+${recipe.id}" method="POST" enctype="multipart/form-data">
+      <div>
+        Quantit&agrave;: <span><input type="text" name='quantity'/></span>
+      </div>
+      <div>
+        Ingrediente: <span><input type="text" name='name'/></span>
+      </div>
+      <div>
+        Immagine ingrediente: <span><input type="file" name='fileImage' id="fileImage" accept="image/png, image/jpeg" /></span>
+      <br>
+      </div>
+      <div>
+		  <img id="thumbnail" alt="Image Preview"/>
+	  </div>
+      <div>
+        <span><button type="submit">Aggiungi</button></span>
+      </div>
+    </form>
+    <!--Da questo punto in poi parte generale-->
 	</div>
 	<div th:unless="${recipe}">Non esiste</div>
 	

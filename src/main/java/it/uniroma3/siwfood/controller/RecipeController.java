@@ -21,18 +21,21 @@ import it.uniroma3.siwfood.model.Image;
 import it.uniroma3.siwfood.model.Ingredient;
 import it.uniroma3.siwfood.model.Quantity;
 import it.uniroma3.siwfood.model.Recipe;
+import it.uniroma3.siwfood.service.CredentialsService;
 import it.uniroma3.siwfood.service.ImageService;
 import it.uniroma3.siwfood.service.IngredientService;
 import it.uniroma3.siwfood.service.QuantityService;
 import it.uniroma3.siwfood.service.RecipeService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 @Controller 
 public class RecipeController {
 	@Autowired RecipeService recipeService;
 	@Autowired IngredientService ingredientService;
 	@Autowired QuantityService quantityService;
 	@Autowired ImageService imageService;
+	@Autowired CredentialsService credentialsService;
 	
 	@GetMapping("/")
     public String index(Model model) {
@@ -101,6 +104,14 @@ public class RecipeController {
 				//
 			}
 		}
+		
+		//Cuoco corrente
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Cook cook=credentialsService.getCredentials(user.getUsername()).getCook();
+		
+		recipe.setCook(cook);
+		
 		this.recipeService.save(recipe);
 		return "redirect:recipe/"+recipe.getId();
 	}
@@ -110,7 +121,16 @@ public class RecipeController {
 	    model.addAttribute("recipe", this.recipeService.findById(id));
 	    model.addAttribute("quantities", this.recipeService.findById(id).getQuantities());
 	    model.addAttribute("images", this.recipeService.findById(id).getImages());
-	    return "recipe.html";
+		//Cuoco corrente
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Cook cook=credentialsService.getCredentials(user.getUsername()).getCook();
+		if (cook.equals(this.recipeService.findById(id).getCook())) {
+			return "cook/recipe.html";
+	  	}
+		else {
+			return "recipe.html";
+		}
 	}
 	
 	@PostMapping(value="/addQuantity/{id}")
