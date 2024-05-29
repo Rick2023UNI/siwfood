@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>
+		SiwFood - Homepage
+	</title>
+</head>
+
+<body>
+	<div th:if="${ingredients==null || ingredients.isEmpty()}">Non ci sono ingredienti nel sistema</div>
+		<ul>
+			<li th:each="ingredient : ${ingredients}">
+				<a th:href="@{/admin/removeIngredient/}+${ingredient.id}" th:text="${ingredient.name}"></a>
+				<img th:src="@{${ingredient.image.getImagePath}}">
+			</li>
+		</ul>
+</body>
+
+</html>

@@ -10,7 +10,11 @@
 <body>
 	<span th:if="${userDetails!=null}">
 		<p th:text="${userDetails.getUsername()}"></p>
+		<p th:text="${cookDetails.name} + ', ' + ${cookDetails.surname}"></p>
 		<a href="/logout">Esci</a>
+	</span>
+	<span th:unless="${userDetails!=null}">
+		<a href="/login">Accedi</a>
 	</span>
 	
 	<p th:if="${cookDetails!=null}" th:text="${cookDetails.name} + ', ' + ${cookDetails.surname}"></p>
@@ -24,7 +28,9 @@
 	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema</div>
 	<ul>
 		<li th:each="recipe : ${recipes}">
-			<a th:href="@{'/recipe' + '/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+			<a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+			<a th:href="@{'/cook/' + ${recipe.cook.id}}" th:text="@{${recipe.cook.name} + ' ' + ${recipe.cook.surname}}"></a>
+			<img th:src="@{${recipe.cook.photo.getImagePath}}">
 		</li>
 	</ul>
 	<div th:if="${userDetails!=null}">

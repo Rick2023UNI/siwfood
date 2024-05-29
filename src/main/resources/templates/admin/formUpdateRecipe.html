@@ -1,33 +1,31 @@
 <!DOCTYPE html>
 <html>  <head>
-    <title>Nuovo cuoco</title>
+    <title>Nuova ricetta</title>
     <link rel="stylesheet" href="/stile.css?version=3" />
     <script src="js/3.7.1_jquery.min.js"></script>
   </head>
   <body>
-    <h1>Aggiorna cuoco</h1>
-    <form th:action="@{'/updateCook/'+${cook.id}}" method="POST" th:object="${cook}" enctype="multipart/form-data">
-      <div>
-        Nome: <span><input required type="text" th:field="${cook.name}"/></span>
+    <h1>Aggiungi una ricetta</h1>
+    <form th:action="@{'/admin/updateRecipe/'+${recipe.id}}" method="POST" th:object="${recipe}" enctype="multipart/form-data">
+<div>
+        Nome: <span><input required type="text" th:field="${recipe.name}"/></span>
       </div>
       <div>
-        Surname: <span><input required type="text" th:field="${cook.surname}"/></span>
+        Descrizione: <span><input required type="text" th:field="${recipe.description}"/></span>
       </div>
       <div>
-        Birthday: <span><input required type="date" th:field="${cook.birthday}"/></span>
+        Immagini ricetta: <span><input required type="file" name='fileImage' id="fileImage" accept="image/png, image/jpeg" /></span>
       </div>
-      <div>
-        Foto profilo: <span><input required type="file" name='fileImage' id="fileImage" accept="image/png, image/jpeg" /></span>
       <br>
-      </div>
       <div>
 		  <img id="thumbnail" alt="Image Preview"/>
 	  </div>
+      <div>
         <span><button type="submit">Conferma</button></span>
       </div>
     </form>
   </body>
-    <script type="text/javascript">
+  <script type="text/javascript">
 	$(document).ready(function() {
 		$('#fileImage').change(function () {
 			showImageThumbnail(this);

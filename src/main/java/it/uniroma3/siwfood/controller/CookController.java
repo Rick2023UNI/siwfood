@@ -29,122 +29,122 @@ import it.uniroma3.siwfood.service.ImageService;
 public class CookController {
 	@Autowired CookService cookService;
 	@Autowired ImageService imageService;
-	
-	@GetMapping("/newCook")
+
+	@GetMapping("/admin/newCook")
 	public String addCook(Model model) {
 		model.addAttribute("cook", new Cook());
-		return "formNewCook.html";
+		return "admin/formNewCook.html";
 	}
-	
+
 	@PostMapping("/cook")
 	public String newCook(@ModelAttribute("cook") Cook cook,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
-			//Primo salvataggio per far assegnare al cuoco un id
-			this.cookService.save(cook);
-			//Caricamento dell'immagine
-				String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-				Image image=new Image();
-				//Impostazione del nome del file all'id dell'ingrediente e dell'estensione originale del file
-				fileName=cook.getId()+fileName.substring(fileName.lastIndexOf('.'));
-				image.setFileName(fileName);
-				image.setFolder("cook");
-				cook.setPhoto(image);
-				this.imageService.save(image);
-				this.cookService.save(cook);
-				//Percorso del file
-				String uploadDir="./images/cook/";
-				Path uploadPath = Paths.get(uploadDir);
-				System.out.println();
-				
-				if (!Files.exists(uploadPath)) {
-					try {
-						Files.createDirectories(uploadPath);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				try {
-					InputStream inputStream = multipartFile.getInputStream();
-					Path filePath = uploadPath.resolve(fileName);
-					Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-				} catch (IOException e) {
-					throw new IOException("Could not save the upload file: " + fileName);
-				}
-				//
+		//Primo salvataggio per far assegnare al cuoco un id
+		this.cookService.save(cook);
+		//Caricamento dell'immagine
+		String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
+		Image image=new Image();
+		//Impostazione del nome del file all'id dell'ingrediente e dell'estensione originale del file
+		fileName=cook.getId()+fileName.substring(fileName.lastIndexOf('.'));
+		image.setFileName(fileName);
+		image.setFolder("cook");
+		cook.setPhoto(image);
+		this.imageService.save(image);
+		this.cookService.save(cook);
+		//Percorso del file
+		String uploadDir="./images/cook/";
+		Path uploadPath = Paths.get(uploadDir);
+		System.out.println();
+
+		if (!Files.exists(uploadPath)) {
+			try {
+				Files.createDirectories(uploadPath);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		try {
+			InputStream inputStream = multipartFile.getInputStream();
+			Path filePath = uploadPath.resolve(fileName);
+			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			throw new IOException("Could not save the upload file: " + fileName);
+		}
+		//
 		this.cookService.save(cook);
 		return "redirect:/cook/"+cook.getId();
 	}
-	
+
 	@GetMapping("/cook/{id}")
 	public String getCook(@PathVariable("id") Long id, Model model) {
-	    model.addAttribute("cook", this.cookService.findById(id));
-	    model.addAttribute("recipes", this.cookService.findById(id).getRecipes());
-	    return "cook.html";
-	  }
-	
-	@GetMapping("/formUpdateCook/{id}")
-	  public String formUpdateCook(@PathVariable("id") Long id, Model model) {
-		    model.addAttribute("cook", this.cookService.findById(id));
-		    //Da caricare un'immagine se presente
-		    return "formUpdateCook.html";
-		  }
+		model.addAttribute("cook", this.cookService.findById(id));
+		model.addAttribute("recipes", this.cookService.findById(id).getRecipes());
+		return "cook.html";
+	}
 
-	@PostMapping("/updateCook/{id}")
+	@GetMapping("/admin/formUpdateCook/{id}")
+	public String formUpdateCook(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("cook", this.cookService.findById(id));
+		//Da caricare un'immagine se presente
+		return "admin/formUpdateCook.html";
+	}
+
+	@PostMapping("/admin/updateCook/{id}")
 	public String updateCook(@PathVariable("id") Long id,
 			@ModelAttribute("cook") Cook cookUpdated,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
 		Cook cook=this.cookService.findById(id);
-				//Caricamento dell'immagine
-				String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-				Image image=new Image();
-				image.setFileName(fileName);
-				cook.setPhoto(image);
-				this.imageService.save(image);
-				//Percorso del file
-				String uploadDir="./images/cook/"+cook.getId();
-				Path uploadPath = Paths.get(uploadDir);
-				System.out.println();
-				
-				if (!Files.exists(uploadPath)) {
-					try {
-						Files.createDirectories(uploadPath);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				try {
-					InputStream inputStream = multipartFile.getInputStream();
-					Path filePath = uploadPath.resolve(fileName);
-					Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-				} catch (IOException e) {
-					throw new IOException("Could not save the upload file: " + fileName);
-				}
-				//
+		//Caricamento dell'immagine
+		String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
+		Image image=new Image();
+		image.setFileName(fileName);
+		cook.setPhoto(image);
+		this.imageService.save(image);
+		//Percorso del file
+		String uploadDir="./images/cook/"+cook.getId();
+		Path uploadPath = Paths.get(uploadDir);
+		System.out.println();
+
+		if (!Files.exists(uploadPath)) {
+			try {
+				Files.createDirectories(uploadPath);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		try {
+			InputStream inputStream = multipartFile.getInputStream();
+			Path filePath = uploadPath.resolve(fileName);
+			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			throw new IOException("Could not save the upload file: " + fileName);
+		}
+		//
 		cook.updateTo(cookUpdated);
 		this.cookService.save(cook);
 		return "redirect:/cook/"+cook.getId();
 	}
-	
+
 	@GetMapping("/cooks")
 	public String showCooks(Model model) {
 		model.addAttribute("cooks", this.cookService.findAll());
 		return "cooks.html";
 	}
-	
+
 	@GetMapping("admin/manageCooks")
-	  public String manageCooks(Model model) {
-			model.addAttribute("cooks", this.cookService.findAll());		    
-		    return "admin/manageCooks.html";
+	public String manageCooks(Model model) {
+		model.addAttribute("cooks", this.cookService.findAll());		    
+		return "admin/manageCooks.html";
 	}	
-	
+
 	@GetMapping("admin/removeCook/{id}")
-	  public String removeCook(@PathVariable("id") Long id,
-			  Model model) {
-		    Cook cook=this.cookService.findById(id);
-		    this.cookService.delete(cook);
-		    
-		    return manageCooks(model);
+	public String removeCook(@PathVariable("id") Long id,
+			Model model) {
+		Cook cook=this.cookService.findById(id);
+		this.cookService.delete(cook);
+
+		return manageCooks(model);
 	}	
 }

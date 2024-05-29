@@ -12,11 +12,11 @@ import it.uniroma3.siwfood.repository.RecipeRepository;
 public class ImageService {
 	@Autowired
 	private ImageRepository imageRepository;
-	
+
 	public void save(Image image) {
 		imageRepository.save(image);	
 	}
-	
+
 	public Image findById(Long id) {
 		return imageRepository.findById(id).get();
 	}

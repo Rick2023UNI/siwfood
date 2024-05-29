@@ -41,21 +41,21 @@ public class Image {
 	}
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
 	private String fileName;
-	
+
 	private String folder;
-	
+
 	private String name;
-	
+
 	private String alternativeText;
-	
+
 	@Transient
 	public String getImagePath() {
 		if (fileName == null || id == null) return null;
-		
+
 		return "/images/"+folder+"/"+fileName;
 	}
 
@@ -66,6 +66,6 @@ public class Image {
 	public void setFolder(String folder) {
 		this.folder = folder;
 	}
-	
-	
+
+
 }

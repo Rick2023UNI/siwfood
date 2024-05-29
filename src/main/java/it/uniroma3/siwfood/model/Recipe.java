@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -72,7 +70,7 @@ public class Recipe {
 	public void setCook(Cook cook) {
 		this.cook = cook;
 	}
-	
+
 	public void addQuantity(Quantity quantity) {
 		if (this.quantities==null) {
 			this.quantities= new ArrayList<Quantity>();
@@ -81,11 +79,11 @@ public class Recipe {
 			this.quantities.add(quantity);
 		}
 	}
-	
+
 	public void removeQuantity(Quantity byId) {
 		this.quantities.remove(this.quantities.indexOf(byId));
 	}
-	
+
 	public void addImage(Image image) {
 		if (this.images==null) {
 			this.images= new ArrayList<Image>();
@@ -93,34 +91,34 @@ public class Recipe {
 		if (!(this.images.contains(image))) {
 			this.images.add(image);
 		}
-		
+
 	}
-	
+
 	public void removeImage(Image image) {
 		this.images.remove(this.images.indexOf(image));
 	}
-	
+
 	//Method that updates the recipe
-		public void updateTo(Recipe recipeUpdated) {
-			this.setName(recipeUpdated.getName());
-			this.setDescription(recipeUpdated.getDescription());
-		}
-	
+	public void updateTo(Recipe recipeUpdated) {
+		this.setName(recipeUpdated.getName());
+		this.setDescription(recipeUpdated.getDescription());
+	}
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
 	private String name;
 	private String description;
-	
+
 	private Date publicationDate;
-	
+
 	@OneToMany
 	private List<Image> images;
-	
+
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<Quantity> quantities;
-	
+
 	@ManyToOne
 	private Cook cook;
 }

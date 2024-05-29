@@ -45,7 +45,7 @@ public class Cook {
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
-	
+
 	//Method that updates the cook
 	public void updateTo(Cook cookUpdated) {
 		this.setName(cookUpdated.getName());
@@ -54,20 +54,20 @@ public class Cook {
 	}
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
 	private String name;
-	
+
 	private String surname;
-	
+
 	@DateTimeFormat(pattern ="yyyy-MM-dd")
 	private Date birthday;
-    
+
 	@OneToOne
-    private Image photo;
-    
-    public Image getPhoto() {
+	private Image photo;
+
+	public Image getPhoto() {
 		return photo;
 	}
 
@@ -84,8 +84,8 @@ public class Cook {
 	}
 
 	@OneToMany(mappedBy = "cook")
-    private List<Recipe> recipes;
-    
+	private List<Recipe> recipes;
+
 	@Override
 	public boolean equals(Object o) {
 		Cook cook=(Cook) o;

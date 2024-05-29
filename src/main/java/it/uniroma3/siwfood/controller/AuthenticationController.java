@@ -34,77 +34,77 @@ public class AuthenticationController {
 	@Autowired CredentialsService credentialsService;
 	@Autowired PasswordEncoder passwordEncoder;
 	@Autowired RecipeService recipeService;
-	
+
 	@Autowired ImageService imageService;
-	
-	
+
+
 	@GetMapping("/login")
-	  public String formLoginCook(Model model) {
-		    return "login.html";
+	public String formLoginCook(Model model) {
+		return "authentication/login.html";
 	}
-	
+
 	@PostMapping("/login")
 	public String loginCook(@RequestParam("credentials") Credentials credentials) {
-		
-		    return "index.html";
+
+		return "index.html";
 	}
-	
+
 	@GetMapping("/register")
-	  public String formRegisterCook(Model model) {
+	public String formRegisterCook(Model model) {
 		model.addAttribute("credentials", new Credentials());
 		model.addAttribute("cook", new Cook());
-		return "register.html";
+		return "authentication/register.html";
 	}
-	
+
 	@PostMapping("/register")
 	public String registerCook(@ModelAttribute("credentials") Credentials credentials,
 			@ModelAttribute("cook") Cook cook,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
-						
-			//Primo salvataggio per far assegnare al cuoco un id
-			this.cookService.save(cook);
-			//Caricamento dell'immagine
-				String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-				Image image=new Image();
-				//Impostazione del nome del file all'id dell'ingrediente e dell'estensione originale del file
-				fileName=cook.getId()+fileName.substring(fileName.lastIndexOf('.'));
-				image.setFileName(fileName);
-				image.setFolder("cook");
-				cook.setPhoto(image);
-				this.imageService.save(image);
-				this.cookService.save(cook);
-				//Percorso del file
-				String uploadDir="./images/cook/";
-				Path uploadPath = Paths.get(uploadDir);
-				System.out.println();
-				
-				if (!Files.exists(uploadPath)) {
-					try {
-						Files.createDirectories(uploadPath);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				try {
-					InputStream inputStream = multipartFile.getInputStream();
-					Path filePath = uploadPath.resolve(fileName);
-					Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-				} catch (IOException e) {
-					throw new IOException("Could not save the upload file: " + fileName);
-				}
-				//
+
+		//Primo salvataggio per far assegnare al cuoco un id
 		this.cookService.save(cook);
-		
+		//Caricamento dell'immagine
+		String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
+		Image image=new Image();
+		//Impostazione del nome del file all'id dell'ingrediente e dell'estensione originale del file
+		fileName=cook.getId()+fileName.substring(fileName.lastIndexOf('.'));
+		image.setFileName(fileName);
+		image.setFolder("cook");
+		cook.setPhoto(image);
+		this.imageService.save(image);
+		this.cookService.save(cook);
+		//Percorso del file
+		String uploadDir="./images/cook/";
+		Path uploadPath = Paths.get(uploadDir);
+		System.out.println();
+
+		if (!Files.exists(uploadPath)) {
+			try {
+				Files.createDirectories(uploadPath);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		try {
+			InputStream inputStream = multipartFile.getInputStream();
+			Path filePath = uploadPath.resolve(fileName);
+			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			throw new IOException("Could not save the upload file: " + fileName);
+		}
+		//
+		this.cookService.save(cook);
+
 		credentials.setPassword(passwordEncoder.encode(credentials.getPassword()));
 		credentials.setCook(cook);
 		credentialsService.save(credentials);
-		
-		return "/login";
+
+		return "redirect:/login";
 	}
-	
+
 	@GetMapping("/success")
-	  public String success(Model model) {
+	public String success(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		model.addAttribute("recipes", this.recipeService.findAll());
 		if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
@@ -114,5 +114,5 @@ public class AuthenticationController {
 			return "index.html";
 		}
 	}
-	
+
 }

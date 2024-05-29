@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 
 @Entity
 public class Quantity {
@@ -35,12 +34,12 @@ public class Quantity {
 	}
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
 	private String quantity;
-	
-	@ManyToOne(cascade=CascadeType.ALL)
+
+	@ManyToOne
 	private Ingredient ingredient;
 
 }

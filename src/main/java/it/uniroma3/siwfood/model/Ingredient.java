@@ -1,11 +1,15 @@
 package it.uniroma3.siwfood.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -44,11 +48,11 @@ public class Ingredient {
 	}
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
 	private String name;
-	
+
 	@OneToOne
 	private Image image;
 
@@ -59,5 +63,5 @@ public class Ingredient {
 	public void setImage(Image image) {
 		this.image = image;
 	}
-	
+
 }

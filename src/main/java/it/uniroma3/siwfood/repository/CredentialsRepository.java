@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CredentialsRepository extends CrudRepository<Credentials, Long> {
-	
+
 	Optional<Credentials> findByUsername(String username);
-	
-	
+
+
 
 }

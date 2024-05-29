@@ -8,13 +8,16 @@
 </head>
 
 <body>
-	<p th:if="${userDetails!=null}" th:text="${userDetails.getUsername()}"></p>
-	<p th:if="${cookDetails!=null}" th:text="${cookDetails.name} + ', ' + ${cookDetails.surname}"></p>
+	<span th:if="${userDetails!=null}">
+		<p th:text="${userDetails.getUsername()}"></p>
+		<p th:text="${cookDetails.name} + ', ' + ${cookDetails.surname}"></p>
+		<a href="/logout">Esci</a>
+	</span>
 	<p>Menu temporaneo per test</p>
 	 <ul>
-  <li><a href="/newCook">Aggiungi cuoco</a></li>
-  <li><a href="/formUpdateCook/1">Aggiorna cuoco</a></li>
+  <li><a href="/admin/newCook">Aggiungi cuoco</a></li>
   <li><a href="/cooks">Lista cuochi</a></li>
+  <li><a href="/admin/manageIngredients">Gestisci ingredienti</a></li>
   <li><a href="/admin/manageRecipes">Gestisci ricette</a></li>
   <li><a href="/admin/manageCooks">Gestisci cuochi</a></li>
   <li><a href="/searchRecipes">Cerca ricette</a></li>

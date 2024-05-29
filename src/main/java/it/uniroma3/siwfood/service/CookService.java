@@ -10,21 +10,21 @@ import it.uniroma3.siwfood.model.Cook;
 public class CookService {
 	@Autowired
 	private CookRepository cookRepository;
-	
+
 	public Iterable<Cook> findAll() {
 		return cookRepository.findAll();
 	}
-	
+
 	public void save(Cook cook) {
 		cookRepository.save(cook);	
 	}
-	
+
 	public void delete(Cook cook) {
 		cookRepository.delete(cook);	
 	}
-	
+
 	public Cook findById(Long id) {
 		return cookRepository.findById(id).get();
 	}
-	
+
 }

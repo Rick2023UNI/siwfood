@@ -44,15 +44,15 @@ public class Credentials {
 
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
 	private String username;
-	
+
 	private String password;
-	
+
 	private String role;
-	
+
 	@OneToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
 	private Cook cook;
 
