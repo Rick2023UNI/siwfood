@@ -166,12 +166,10 @@ public class RecipeController {
 				Image image=new Image();
 				image.setFileName(fileName);
 				image.setFolder("ingredient");
-				recipe.addImage(image);
 				this.imageService.save(image);
 				//Percorso del file
 				String uploadDir="./images/ingredient/";
 				Path uploadPath = Paths.get(uploadDir);
-				System.out.println();
 
 				if (!Files.exists(uploadPath)) {
 					try {
@@ -192,7 +190,7 @@ public class RecipeController {
 				ingredient.setImage(image);
 				this.ingredientService.save(ingredient);
 			}
-
+			quantity.setRecipe_test(recipe);
 			this.quantityService.save(quantity);
 			this.recipeService.save(recipe);
 
@@ -224,9 +222,9 @@ public class RecipeController {
 	}	
 
 	@GetMapping("/admin/formUpdateRecipe/{id}")
-	public String formUpdateCook(@PathVariable("id") Long id, Model model) {
+	public String formUpdateRecipe(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("recipe", this.recipeService.findById(id));
-		//To load image if present
+		model.addAttribute("images", this.recipeService.findById(id).getImages());
 		return "admin/formUpdateRecipe.html";
 	}
 

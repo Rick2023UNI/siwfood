@@ -5,6 +5,7 @@
 	<title>
 		SiwFood - Homepage
 	</title>
+	<link rel="stylesheet" href="/css/index.css?version=3"/>
 </head>
 
 <body>
@@ -26,11 +27,16 @@
 <br>
 	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema</div>
 	<ul>
-		<li th:each="recipe : ${recipes}">
-			<a th:href="@{'/recipe' + '/' + ${recipe.id}}" th:text="${recipe.name}"></a>
-		</li>
-	</ul>
-	<div>
+			<li th:each="recipe : ${recipes}">
+				<img class="recipeimage" th:src="@{${recipe.images[0].getImagePath}}">
+				<a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+				<div class="circular_portrait">
+					<img class="cookimage" th:src="@{${recipe.cook.photo.getImagePath}}">
+				</div>
+				<a th:href="@{'/cook/' + ${recipe.cook.id}}" th:text="@{${recipe.cook.name} + ' ' + ${recipe.cook.surname}}"></a>
+			</li>
+		</ul>
+	<div th:if="${userDetails!=null}">
 		<a href="/newRecipe">Aggiungi ricetta</a>
 	</div>
 </body>

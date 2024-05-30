@@ -116,9 +116,10 @@ public class Recipe {
 	@OneToMany
 	private List<Image> images;
 
-	@OneToMany(cascade=CascadeType.ALL)
-	private List<Quantity> quantities;
-
 	@ManyToOne
 	private Cook cook;
+	
+	//Eliminazione ingrediente
+	@OneToMany(mappedBy="recipe_test", cascade=CascadeType.ALL)
+	private List<Quantity> quantities;
 }

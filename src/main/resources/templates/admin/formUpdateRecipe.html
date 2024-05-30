@@ -13,6 +13,12 @@
       <div>
         Descrizione: <span><input required type="text" th:field="${recipe.description}"/></span>
       </div>
+	  <div th:if="${images==null || images.isEmpty()}">Non ci sono immagini per la ricetta corrente</div>
+		<ul>
+			<li th:each="image : ${images}">
+				<img th:src="@{${image.getImagePath}}">
+			</li>
+		</ul>
       <div>
         Immagini ricetta: <span><input required type="file" name='fileImage' id="fileImage" accept="image/png, image/jpeg" /></span>
       </div>

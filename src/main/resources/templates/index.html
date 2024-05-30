@@ -5,6 +5,7 @@
 	<title>
 		SiwFood - Homepage
 	</title>
+	<link rel="stylesheet" href="/css/index.css?version=3"/>
 </head>
 
 <body>
@@ -15,9 +16,9 @@
 	</span>
 	<span th:unless="${userDetails!=null}">
 		<a href="/login">Accedi</a>
+		<a href="/register">Registrati</a>
 	</span>
-	
-	<p th:if="${cookDetails!=null}" th:text="${cookDetails.name} + ', ' + ${cookDetails.surname}"></p>
+
 	<p>Menu temporaneo per test</p>
 	 <ul>
   <li><a href="/cooks">Lista cuochi</a></li>
@@ -27,12 +28,15 @@
 <br>
 	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema</div>
 	<ul>
-		<li th:each="recipe : ${recipes}">
-			<a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}"></a>
-			<a th:href="@{'/cook/' + ${recipe.cook.id}}" th:text="@{${recipe.cook.name} + ' ' + ${recipe.cook.surname}}"></a>
-			<img th:src="@{${recipe.cook.photo.getImagePath}}">
-		</li>
-	</ul>
+			<li th:each="recipe : ${recipes}">
+				<img class="recipeimage" th:src="@{${recipe.images[0].getImagePath}}">
+				<a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+				<div class="circular_portrait">
+					<img class="cookimage" th:src="@{${recipe.cook.photo.getImagePath}}">
+				</div>
+				<a th:href="@{'/cook/' + ${recipe.cook.id}}" th:text="@{${recipe.cook.name} + ' ' + ${recipe.cook.surname}}"></a>
+			</li>
+		</ul>
 	<div th:if="${userDetails!=null}">
 		<a href="/newRecipe">Aggiungi ricetta</a>
 	</div>

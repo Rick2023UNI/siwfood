@@ -1,6 +1,5 @@
 package it.uniroma3.siwfood.model;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,6 +8,15 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Quantity {
+
+	public Recipe getRecipe_test() {
+		return recipe_test;
+	}
+
+	public void setRecipe_test(Recipe recipe_test) {
+		this.recipe_test = recipe_test;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -41,5 +49,9 @@ public class Quantity {
 
 	@ManyToOne
 	private Ingredient ingredient;
+	
+	//Eliminazione ingrediente
+	@ManyToOne
+	private Recipe recipe_test;
 
 }

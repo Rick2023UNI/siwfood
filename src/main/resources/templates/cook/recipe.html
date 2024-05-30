@@ -20,6 +20,7 @@
 			<ul>
 				<li th:each="image : ${images}">
 					<img th:src="@{${image.getImagePath}}">
+					<a th:href="@{/removeImage/}+${recipe.id}+'/'+${image.id}">Delete</a>
 				</li>
 			</ul>
 	<!--Da questa punto in poi si fa riferimento alla modifica disponibile solamente per il cuoco o l'amministratore che ha inizialmente pubblicato la ricetta-->
@@ -50,6 +51,8 @@
 		<li th:each="quantity : ${quantities}">
 			<a th:href="@{/removeQuantity/}+${recipe.id}+'/'+${quantity.id}" th:text="${quantity.quantity}+' '+${quantity.getIngredient().name} "></a>
 			<img th:src="@{${quantity.ingredient.image.getImagePath}}">
+			<!--<p th:text="@{Ricetta }+${quantity.recipe_test.name}"></p>-->
+			<!--test-->
 		</li>
 	</ul>
 </body>

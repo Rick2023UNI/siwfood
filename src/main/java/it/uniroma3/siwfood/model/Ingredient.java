@@ -14,6 +14,14 @@ import jakarta.persistence.OneToOne;
 
 @Entity
 public class Ingredient {
+	public List<Quantity> getQuantities() {
+		return quantities;
+	}
+
+	public void setQuantities(List<Quantity> quantities) {
+		this.quantities = quantities;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(name);
@@ -63,5 +71,9 @@ public class Ingredient {
 	public void setImage(Image image) {
 		this.image = image;
 	}
+	
+	//Eliminazione ingrediente
+	@OneToMany(mappedBy="ingredient", cascade=CascadeType.ALL)
+	private List<Quantity> quantities;
 
 }
