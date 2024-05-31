@@ -120,6 +120,6 @@ public class Recipe {
 	private Cook cook;
 	
 	//Eliminazione ingrediente
-	@OneToMany(mappedBy="recipe_test", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="recipe", cascade=CascadeType.ALL)
 	private List<Quantity> quantities;
 }

@@ -9,12 +9,12 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Quantity {
 
-	public Recipe getRecipe_test() {
-		return recipe_test;
+	public Recipe getRecipe() {
+		return recipe;
 	}
 
-	public void setRecipe_test(Recipe recipe_test) {
-		this.recipe_test = recipe_test;
+	public void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
 	}
 
 	public Long getId() {
@@ -52,6 +52,6 @@ public class Quantity {
 	
 	//Eliminazione ingrediente
 	@ManyToOne
-	private Recipe recipe_test;
+	private Recipe recipe;
 
 }

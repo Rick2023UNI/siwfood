@@ -3,6 +3,7 @@ package it.uniroma3.siwfood.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.uniroma3.siwfood.model.Cook;
 import it.uniroma3.siwfood.model.Ingredient;
 import it.uniroma3.siwfood.model.Quantity;
 import it.uniroma3.siwfood.repository.QuantityRepository;
@@ -19,5 +20,9 @@ public class QuantityService {
 
 	public Quantity findById(Long id) {
 		return quantityRepository.findById(id).get();
+	}
+	
+	public void delete(Quantity quantity) {
+		quantityRepository.delete(quantity);	
 	}
 }

@@ -190,7 +190,8 @@ public class RecipeController {
 				ingredient.setImage(image);
 				this.ingredientService.save(ingredient);
 			}
-			quantity.setRecipe_test(recipe);
+			//Soluzione bug mappedBy
+			quantity.setRecipe(recipe);
 			this.quantityService.save(quantity);
 			this.recipeService.save(recipe);
 
