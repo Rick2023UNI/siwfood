@@ -1,0 +1,79 @@
+html {
+  min-height: 100%;/* fill the screen height to allow vertical alignement */
+  display: grid; /* display:flex works too since body is the only grid cell */
+}
+
+body {
+  margin: auto;
+}
+
+input {
+		width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#submit {
+  max-width: 80%;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.625rem 1.25rem;
+  color: #f1e5e6;
+  background-color: #4CAF50;
+}
+
+#submit:hover {
+  background-color: #45a049;
+}
+
+.fileImage {
+	line-height: normal;
+	display: none;
+}
+
+.fileImage + label {
+  max-width: 80%;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.625rem 1.25rem;
+}
+
+.fileImage + label {
+  color: #f1e5e6;
+  background-color: #4CAF50;
+}
+
+label:hover {
+  background-color: #45a049;
+}
+
+img {
+  width: 10rem;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 50%;
+  vertical-align:middle;
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
+a {
+	text-decoration: none;
+	font-size: 1.2rem;
+}

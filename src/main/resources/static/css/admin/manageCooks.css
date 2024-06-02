@@ -1,0 +1,29 @@
+.cookImage {
+  width: 10rem;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 50%;
+  vertical-align:middle;
+}
+
+.cookLink {
+	padding: 70px 0;
+	text-decoration: none;
+	font-size: 1.5rem;
+}
+
+.cooks {
+	list-style: none;
+}
+
+.cook {
+	height: 12rem;
+	vertical-align:middle;
+}
+
+.cookLink {
+	padding-top: -3rem;
+	height: 2rem;
+	padding-left: 1rem;
+	vertical-align:middle;
+}

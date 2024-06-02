@@ -3,15 +3,12 @@
 
 <head>
 	<title>Cuoco</title>
-	<link rel="stylesheet" href="/css/stile.css" />
+	<link rel="stylesheet" href="/css/cook.css" />
 </head>
 
 <body>
-	<h1>Cuoco</h1>
 	<div th:if="${cook}">
-		<span th:text="${cook.name}"></span>
-		<br>
-		<span th:text="${cook.surname}"></span>
+		<h1 th:text="${cook.name} + ' ' + ${cook.surname}"></h1>
 		<br>
 		<span th:text='${#dates.format(cook.birthday, "yyyy-MM-dd")}'></span>
 		<br>

@@ -5,17 +5,18 @@
 	<title>
 		SiwFood - Homepage
 	</title>
+	<link rel="stylesheet" href="/css/admin/manageCooks.css" />
 </head>
-
 <body>
+	<h1>Cuochi</h1>
 	<div th:if="${cooks==null || cooks.isEmpty()}">Non ci sono cuochi nel sistema</div>
-	<ul>
-		<li th:each="cook : ${cooks}">
-			<a th:href="@{'/cook' + '/' + ${cook.id}}" th:text="${cook.name}"></a>
+	<ul class="cooks">
+		<li th:each="cook : ${cooks}" class="cook">
+			<img th:src="@{${cook.photo.getImagePath}}" class="cookImage">
+			<a th:href="@{'/cook' + '/' + ${cook.id}}" th:text="${cook.name} + ', ' + ${cook.surname}" class="cookLink"></a>
 			<a th:href="@{'/admin/formUpdateCook' + '/' + ${cook.id}}">&nbsp;Modifica</a> 
-			<a th:href="@{'/admin/removecook' + '/' + ${cook.id}}">&nbsp;Rimuovi</a>
+			<a th:href="@{'/admin/removecook' + '/' + ${cook.id}}">&nbsp;Rimuovi</a>			
 		</li>
 	</ul>
 </body>
-
 </html>

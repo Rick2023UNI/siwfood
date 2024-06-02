@@ -44,7 +44,7 @@ public class ImageController {
 			this.recipeService.save(recipe);
 			this.imageService.delete(image);
 
-			return "redirect:/recipe/"+recipe.getId();
+			return "redirect:/formUpdateRecipe/"+recipe.getId();
 		}
 		else {
 			return "redirect:/recipe/"+idRecipe;

@@ -9,8 +9,10 @@ import java.nio.file.StandardCopyOption;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -27,6 +29,8 @@ import it.uniroma3.siwfood.service.CookService;
 import it.uniroma3.siwfood.service.CredentialsService;
 import it.uniroma3.siwfood.service.ImageService;
 import it.uniroma3.siwfood.service.RecipeService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller 
 public class AuthenticationController {
@@ -114,5 +118,20 @@ public class AuthenticationController {
 			return "index.html";
 		}
 	}
+	
+	@GetMapping("/login-error")
+    public String loginError(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession(false);
+        String errorMessage = null;
+        if (session != null) {
+            AuthenticationException ex = (AuthenticationException) session
+                    .getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+            if (ex != null) {
+                errorMessage = ex.getMessage();
+            }
+        }
+        model.addAttribute("errorMessage", errorMessage);
+        return "authentication/login.html";
+    }
 
 }

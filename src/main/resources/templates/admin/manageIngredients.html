@@ -5,14 +5,16 @@
 	<title>
 		SiwFood - Homepage
 	</title>
+	<link rel="stylesheet" href="/css/admin/manageIngredients.css?version=3"/>
 </head>
 
 <body>
 	<div th:if="${ingredients==null || ingredients.isEmpty()}">Non ci sono ingredienti nel sistema</div>
-		<ul>
-			<li th:each="ingredient : ${ingredients}">
-				<a th:href="@{/admin/removeIngredient/}+${ingredient.id}" th:text="${ingredient.name}"></a>
-				<img th:src="@{${ingredient.image.getImagePath}}">
+		<ul class="ingredients">
+			<li th:each="ingredient : ${ingredients}" class="">
+				<img th:src="@{${ingredient.image.getImagePath}}" class="ingredientImage">
+				<a th:href="@{/admin/removeIngredient/}+${ingredient.id}" th:text="${ingredient.name}" class="ingredientLink"></a>
+				
 			</li>
 		</ul>
 </body>

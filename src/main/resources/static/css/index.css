@@ -1,9 +1,107 @@
-.recipeimage {
-  width: 20%;
-  height: 20%;
+.recipeImage {
+  width: 10rem;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 10%;
 }
 
-.cookimage {
-  width: 15%;
-  height: 15%;
+.cookImage {
+  width: 5rem;
+  height: 5rem;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.list {
+	list-style: none;
+}
+
+.listItem {
+	margin-bottom: 1rem;
+	display: flex;
+	justify-content: space-between;
+	background-color: beige;
+	border-radius: 25px;
+}
+
+.recipe {
+	display: flex;
+	padding-left: 1rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	height: 40%;
+}
+
+.linkRecipe {
+	margin: auto;
+	padding: 1rem;
+	font-size: 3rem;
+	text-align: center;
+	text-decoration: none;
+}
+
+p {
+	padding-left: 1.2rem;
+	height: 3rem;
+}
+
+.cook {
+	display: flex;
+	height: 5rem;
+	padding-top: 5rem;
+}
+
+.cookLink {
+	margin: auto;
+	padding: 1rem;
+	padding-right: 3rem;
+	font-size: 1.3rem;
+	text-decoration: none;
+	text-align: right;
+}
+
+.newRecipe a {
+	margin: auto;
+	padding: 5%;
+	font-size: 20px;
+	text-align: center;
+	text-decoration: none;
+}
+
+.menu {
+	display: flex;
+	gap: 3rem;
+	justify-content: space-between;
+}
+
+.menu li {
+	font-size: 1.5rem;
+	cursor: pointer;
+	list-style: none;
+	font-weight: bold;
+}
+
+.menu li a:hover {
+	color:oldlace;
+}
+
+.menu li a {
+	text-decoration: none;
+}
+
+.user {
+	display:inline;
+}
+
+.newRecipe {
+	height: 2rem;
+	width: 10rem;
+}
+
+.date {
+	vertical-align:bottom;
+	position:absolute;
+	margin-left:88.3%;
+	margin-top:0.5%;
+	font-size: 1.3rem;
 }

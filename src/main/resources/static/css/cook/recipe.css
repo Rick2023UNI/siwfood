@@ -1,0 +1,36 @@
+.image {
+	object-fit: contain;
+	max-width: 30rem;
+	max-height: 30rem;
+}
+
+.images {
+	list-style: none;
+}
+
+.imageIngredient {
+	object-fit: contain;
+	max-width: 5rem;
+	max-height: 5rem;
+}
+svg.icon {
+	max-width: 1.3rem;
+	max-height: 1.3rem;
+	margin-left: 0.5rem;
+}
+
+h1 {
+	display:inline-block;
+}
+
+#delete {
+	color:red;
+}
+
+#edit {
+	color: green;
+}
+
+a.icon {
+	text-decoration: none;
+}

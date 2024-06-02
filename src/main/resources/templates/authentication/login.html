@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html>  <head>
     <title>Nuovo cuoco</title>
-    <link rel="stylesheet" href="/stile.css?version=3" />
+    <link rel="stylesheet" href="/css/authentication/login.css?version=3" />
   </head>
   <body>
     <h1>Accedi</h1>
+	<div th:switch="${errorMessage}">
+	<div class="alert" th:case="'Bad credentials'">Username o password errati</div>
     <form th:action="@{/login}" method="POST" th:object="${credentials}">
       <div>
-        Username: <span><input required type="text" name='username'/></span>
+        <span><input required type="text" name='username' placeholder="Username"/></span>
       </div>
       <div>
-        Password: <span><input required type="text" name='password'/></span>
+        <span><input required type="text" name='password' placeholder="Password"/></span>
       </div>
-        <span><button type="submit">Accedi</button></span>
+        <span><button type="submit" id="submit">Accedi</button></span>
       </div>
     </form>
+	<br>
+	<a href="/register">Non sei ancora registrato? registrati ora!</a>
   </body>
 </html>

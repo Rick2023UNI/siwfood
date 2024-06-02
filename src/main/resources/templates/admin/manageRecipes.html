@@ -12,8 +12,8 @@
 	<ul>
 		<li th:each="recipe : ${recipes}">
 			<a th:href="@{'/recipe' + '/' + ${recipe.id}}" th:text="${recipe.name}"></a>
-			<a th:href="@{'/admin/formUpdateRecipe' + '/' + ${recipe.id}}">&nbsp;Modifica</a> 
-			<a th:href="@{'/admin/removeRecipe' + '/' + ${recipe.id}}">&nbsp;Rimuovi</a>
+			<a th:href="@{'/formUpdateRecipe' + '/' + ${recipe.id}}">&nbsp;Modifica</a> 
+			<a th:href="@{'/removeRecipe' + '/' + ${recipe.id}}">&nbsp;Rimuovi</a>
 		</li>
 	</ul>
 </body>

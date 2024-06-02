@@ -222,48 +222,69 @@ public class RecipeController {
 		}
 	}	
 
-	@GetMapping("/admin/formUpdateRecipe/{id}")
+	@GetMapping("/formUpdateRecipe/{id}")
 	public String formUpdateRecipe(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("recipe", this.recipeService.findById(id));
-		model.addAttribute("images", this.recipeService.findById(id).getImages());
-		return "admin/formUpdateRecipe.html";
+		//Cuoco corrente
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Cook cook=credentialsService.getCredentials(user.getUsername()).getCook();
+		if (cook.equals(this.recipeService.findById(id).getCook()) || (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin")))) {
+			model.addAttribute("recipe", this.recipeService.findById(id));
+			model.addAttribute("images", this.recipeService.findById(id).getImages());
+		}
+		return "cook/formUpdateRecipe.html";
 	}
 
-	@PostMapping("/admin/updateRecipe/{id}")
+	@PostMapping("/updateRecipe/{id}")
 	public String updateRecipe(@PathVariable("id") Long id,
 			@ModelAttribute("recipe") Recipe recipeUpdated, 
-			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
+			@RequestParam("fileImage") MultipartFile[] multipartFiles) throws IOException {
 		Recipe recipe=this.recipeService.findById(id);
-		//Caricamento dell'immagine
-		String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-		Image image=new Image();
-		image.setFileName(fileName);
-		recipe.addImage(image);
-		this.imageService.save(image);
-		//Percorso del file
-		String uploadDir="./images/recipe/"+recipe.getId();
-		Path uploadPath = Paths.get(uploadDir);
-		System.out.println();
+		//Cuoco corrente
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Cook cook=credentialsService.getCredentials(user.getUsername()).getCook();
+		if (cook.equals(recipe.getCook()) || (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin")))) {
+			for (MultipartFile multipartFile : multipartFiles) {
+				//Caricamento delle immagini
+				String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
+				/*Evita tentativo di caricare il file vuoto causato
+				 dall'ultimo input che viene aggiunto in automatico
+				 ed è sempre vuoto
+				 */
+				if (fileName!="") {
+					Image image=new Image();
+					image.setFileName(fileName);
+					image.setFolder("recipe/"+recipe.getId());
+					recipe.addImage(image);
+					this.imageService.save(image);
+					//File location
+					String uploadDir="./images/recipe/"+recipe.getId();
+					Path uploadPath = Paths.get(uploadDir);
+					System.out.println();
 
-		if (!Files.exists(uploadPath)) {
-			try {
-				Files.createDirectories(uploadPath);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+					if (!Files.exists(uploadPath)) {
+						try {
+							Files.createDirectories(uploadPath);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					try {
+						InputStream inputStream = multipartFile.getInputStream();
+						Path filePath = uploadPath.resolve(fileName);
+						Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+					} catch (IOException e) {
+						throw new IOException("Could not save the upload file: " + fileName);
+					}
+					//
+				}
 			}
 		}
-		try {
-			InputStream inputStream = multipartFile.getInputStream();
-			Path filePath = uploadPath.resolve(fileName);
-			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			throw new IOException("Could not save the upload file: " + fileName);
-		}
-		//
 		recipe.updateTo(recipeUpdated);
 		this.recipeService.save(recipe);
-		return "redirect:/recipe/"+recipe.getId();
+		return "redirect:/formUpdateRecipe/"+recipe.getId();
 	}
 
 	@GetMapping("admin/manageRecipes")
@@ -272,13 +293,22 @@ public class RecipeController {
 		return "admin/manageRecipes.html";
 	}	
 
-	@GetMapping("admin/removeRecipe/{id}")
+	@GetMapping("/removeRecipe/{id}")
 	public String removeRecipe(@PathVariable("id") Long id,
 			Model model) {
-		Recipe recipe=this.recipeService.findById(id);
-		this.recipeService.delete(recipe);
+		//Cuoco corrente
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Cook cook=credentialsService.getCredentials(user.getUsername()).getCook();
+		if (cook.equals(this.recipeService.findById(id).getCook()) || (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin")))) {
+			Recipe recipe=this.recipeService.findById(id);
+			this.recipeService.delete(recipe);
 
-		return manageRecipes(model);
+			return "index.html";
+		}
+		else {
+			return "redirect:/recipe/"+id;
+		}		
 	}	
 
 	@GetMapping("/searchRecipes")

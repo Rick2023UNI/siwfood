@@ -3,23 +3,22 @@
 
 <head>
 	<title>Ricetta</title>
-	<link rel="stylesheet" href="/css/stile.css" />
+	<link rel="stylesheet" href="/css/recipe.css?version=3" />
 	    <script src="/js/3.7.1_jquery.min.js"></script>
 	    <script src="/js/imagePreview.js"></script>
 </head>
 
 <body>
-	<h1>Ricetta</h1>
 	<div th:if="${recipe}">
-		<span th:text="${recipe.name}"></span>
+		<h1 th:text="${recipe.name}"></h1>
+		 <br>
+		<span th:text='${#dates.format(recipe.publicationDate, "yyyy-MM-dd HH:mm")}'></span>
 		<br>
 		<span th:text="${recipe.description}"></span>
-		<br>
-		<span th:text='${#dates.format(recipe.publicationDate, "yyyy-MM-dd HH:mm")}'></span>
 		<div th:if="${images==null || images.isEmpty()}">Non ci sono immagini per la ricetta corrente</div>
-			<ul>
-				<li th:each="image : ${images}">
-					<img th:src="@{${image.getImagePath}}">
+			<ul class="images">
+				<li th:each="image : ${images}" class="imageContainer">
+					<img th:src="@{${image.getImagePath}}" class="image">
 				</li>
 			</ul>
 	</div>
@@ -29,7 +28,7 @@
 	<ul>
 		<li th:each="quantity : ${quantities}">
 			<a th:href="@{/removeQuantity/}+${recipe.id}+'/'+${quantity.id}" th:text="${quantity.quantity}+' '+${quantity.getIngredient().name} "></a>
-			<img th:src="@{${quantity.ingredient.image.getImagePath}}">
+			<img th:src="@{${quantity.ingredient.image.getImagePath}}" class="imageIngredient">
 		</li>
 	</ul>
 </body>

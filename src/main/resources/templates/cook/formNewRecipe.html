@@ -2,30 +2,31 @@
 <html>  
 	<head>
     <title>Nuova ricetta</title>
-    <link rel="stylesheet" href="/stile.css?version=3" />
+    <link rel="stylesheet" href="/css/cook/formNewRecipe.css?version=3" />
     <script src="/js/3.7.1_jquery.min.js"></script>
     <script src="/js/formNewRecipe.js"></script>
   </head>
   <body>
     <h1>Aggiungi una ricetta</h1>
     <form th:action="@{/recipe}" method="POST" th:object="${recipe}" enctype="multipart/form-data">
-<div>
-        Nome: <span><input type="text" th:field="${recipe.name}"/></span>
+	<div>
+        Nome<span><input type="text" th:field="${recipe.name}" placeholder="Nome" class="name" /></span>
       </div>
       <div>
-        Descrizione: <span><input type="text" th:field="${recipe.description}"/></span>
+        Descrizione<span><textarea type="text" th:field="${recipe.description}" placeholder="Scrivi un testo che descriva il piatto..." class="description"/></span>
       </div>
       <div id="images">
 		Immagini ricetta: 
 		<div id="image0">
 			<input type="file" name='fileImage' id="fileImage0" accept="image/png, image/jpeg" class="fileImage"/>
+			<label for="fileImage0" class="label">Carica file</label>
 		</div>
       </div>
       <br>
       <div id="thumbnails">
 		  <img id="thumbnail" alt="Image Preview"/>
       </div>
-        <span><button type="submit">Conferma</button></span>
+        <span><button type="submit" class="submit">Conferma</button></span>
       </div>
    </form>
   </body>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>  
+	<head>
+    <title>Nuova ricetta</title>
+    <link rel="stylesheet" href="/css/cook/formUpdateRecipe.css?version=3" />
+    <script src="/js/3.7.1_jquery.min.js"></script>
+    <script src="/js/formUpdateRecipe.js"></script>
+  </head>
+  <body>
+    <h1>Aggiungi una ricetta</h1>
+    <form th:action="@{'/updateRecipe/'+${recipe.id}}" method="POST" th:object="${recipe}" enctype="multipart/form-data">
+	<div>
+        Nome<span><input type="text" th:field="${recipe.name}" placeholder="Nome" class="name" /></span>
+      </div>
+      <div>
+        Descrizione<span><textarea type="text" th:field="${recipe.description}" placeholder="Scrivi un testo che descriva il piatto..." class="description"/></span>
+      </div>
+      <div>
+		<div th:if="${images==null || images.isEmpty()}">Non ci sono immagini per la ricetta corrente</div>
+				<ul>
+					<li th:each="image : ${images}">
+						<img th:src="@{${image.getImagePath}}">
+						<a th:href="@{/removeImage/}+${recipe.id}+'/'+${image.id}" class="delete">Delete</a>
+					</li>
+				</ul>
+				</div>
+		Immagini ricetta:
+		<div id="images"> 
+			<div id="image0">
+				<input type="file" name='fileImage' id="fileImage0" accept="image/png, image/jpeg" class="fileImage"/>
+				<label for="fileImage0" class="label">Carica file</label>
+	      </div>
+	  </div>
+      <br>
+      <div id="thumbnails">
+		  <img id="thumbnail" alt="Image Preview"/>
+      </div>
+        <span><button type="submit" class="submit">Conferma</button></span>
+      </div>
+   </form>
+  </body>
+</html>

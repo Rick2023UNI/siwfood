@@ -9,37 +9,41 @@
 </head>
 
 <body>
-	<span th:if="${userDetails!=null}">
-		<p th:text="${userDetails.getUsername()}"></p>
-		<p th:text="${cookDetails.name} + ', ' + ${cookDetails.surname}"></p>
-		<a href="/logout">Esci</a>
-	</span>
-	<span th:unless="${userDetails!=null}">
+	<ul class="menu">
+	  <li><a href="/cooks">Lista cuochi</a></li>
+	  <li><a href="/searchRecipes">Cerca ricette</a></li>
+	  <li class="user">
+				<span th:if="${userDetails!=null}" th:text="${userDetails.getUsername()}"></span>
+				<a th:if="${userDetails!=null}" th:text="${cookDetails.name} + ', ' + ${cookDetails.surname}" th:href="@{'/cook/' + ${cookDetails.id}}"></a>
+				<a th:if="${userDetails!=null}" href="/logout">Esci</a>
+	  </li>
+	  <li th:unless="${userDetails!=null}">
 		<a href="/login">Accedi</a>
 		<a href="/register">Registrati</a>
-	</span>
-
-	<p>Menu temporaneo per test</p>
-	 <ul>
-  <li><a href="/cooks">Lista cuochi</a></li>
-  <li><a href="/searchRecipes">Cerca ricette</a></li>
-</ul> 
+	  </li>
+	</ul>
 <br>
 <br>
 	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema</div>
-	<ul>
-			<li th:each="recipe : ${recipes}">
-				<img class="recipeimage" th:src="@{${recipe.images[0].getImagePath}}">
-				<a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}"></a>
-				<div class="circular_portrait">
-					<img class="cookimage" th:src="@{${recipe.cook.photo.getImagePath}}">
+	<div th:if="${userDetails!=null}" class="newRecipe">
+			<a href="/newRecipe">Aggiungi ricetta</a>
+		</div>
+	<ul clss="list">
+			<li th:each="recipe : ${recipes}" class="listItem">
+				<div class="recipe">
+					<img th:src="@{${recipe.images[0].getImagePath}}" class="recipeImage">
+					<div>
+						<a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}" class="linkRecipe"></a>
+						<p th:text="${recipe.description}"></p>
+					</div>
 				</div>
-				<a th:href="@{'/cook/' + ${recipe.cook.id}}" th:text="@{${recipe.cook.name} + ' ' + ${recipe.cook.surname}}"></a>
+				<div class="cook">
+					<img th:src="@{${recipe.cook.photo.getImagePath}}" class="cookImage">
+					<a th:href="@{'/cook/' + ${recipe.cook.id}}" th:text="@{${recipe.cook.name} + ' ' + ${recipe.cook.surname}}" class="cookLink"></a>
+				</div>
+				<span th:text='${#dates.format(recipe.publicationDate, "yyyy-MM-dd HH:mm")}' class="date"></span>
 			</li>
 		</ul>
-	<div th:if="${userDetails!=null}">
-		<a href="/newRecipe">Aggiungi ricetta</a>
-	</div>
 </body>
 
 </html>

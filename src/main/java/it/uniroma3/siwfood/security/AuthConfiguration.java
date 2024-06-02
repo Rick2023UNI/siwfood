@@ -49,14 +49,14 @@ public class AuthConfiguration implements WebMvcConfigurer {
 		.requestMatchers(HttpMethod.POST,"/register", "/login").permitAll()
 		.requestMatchers(HttpMethod.GET,"/admin/**").hasAnyAuthority(ADMIN_ROLE)
 		.requestMatchers(HttpMethod.POST,"/admin/**").hasAnyAuthority(ADMIN_ROLE)
-		// tutti gli utenti autenticati possono accere alle pagine rimanenti 
+		// tutti gli utenti autenticati possono accedere alle pagine rimanenti 
 		.anyRequest().authenticated()
 		// LOGIN: qui definiamo il login
 		.and().formLogin()
-		.loginPage("/login")
-		.permitAll()
+		.loginPage("/login").permitAll()
 		.defaultSuccessUrl("/success", true)
-		.failureUrl("/login?error=true")
+		//.failureUrl("/login?error=true")
+		.failureUrl("/login-error")
 		// LOGOUT: qui definiamo il logout
 		.and()
 		.logout()
