@@ -121,17 +121,7 @@ public class RecipeController {
 		model.addAttribute("recipe", this.recipeService.findById(id));
 		model.addAttribute("quantities", this.recipeService.findById(id).getQuantities());
 		model.addAttribute("images", this.recipeService.findById(id).getImages());
-
-		//Cuoco corrente
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Cook cook=credentialsService.getCredentials(user.getUsername()).getCook();
-		if (cook.equals(this.recipeService.findById(id).getCook()) || (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin")))) {
-			return "cook/recipe.html";
-		}
-		else {
-			return "recipe.html";
-		}
+		return "recipe.html";
 	}
 
 	@PostMapping(value="/addQuantity/{id}")
@@ -195,7 +185,7 @@ public class RecipeController {
 			this.quantityService.save(quantity);
 			this.recipeService.save(recipe);
 
-			return "redirect:/recipe/"+recipe.getId();
+			return "redirect:/formUpdateRecipe/"+recipe.getId();
 		}
 		else {
 			return "redirect:/recipe/"+id;
@@ -211,11 +201,15 @@ public class RecipeController {
 		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Cook cook=credentialsService.getCredentials(user.getUsername()).getCook();
 		if (cook.equals(this.recipeService.findById(idRecipe).getCook()) || (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin")))) {
+			System.out.println("test");
 			Recipe recipe=this.recipeService.findById(idRecipe);
 			recipe.removeQuantity(this.quantityService.findById(idQuantity));
 			this.recipeService.save(recipe);
+			
+			Quantity quantity=this.quantityService.findById(idQuantity);
+			quantityService.delete(quantity);
 
-			return "redirect:/recipe/"+recipe.getId();
+			return "redirect:/formUpdateRecipe/"+recipe.getId();
 		}
 		else {
 			return "redirect:/recipe/"+idRecipe;
@@ -231,6 +225,7 @@ public class RecipeController {
 		if (cook.equals(this.recipeService.findById(id).getCook()) || (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin")))) {
 			model.addAttribute("recipe", this.recipeService.findById(id));
 			model.addAttribute("images", this.recipeService.findById(id).getImages());
+			model.addAttribute("quantities", this.recipeService.findById(id).getQuantities());
 		}
 		return "cook/formUpdateRecipe.html";
 	}
@@ -302,8 +297,11 @@ public class RecipeController {
 		Cook cook=credentialsService.getCredentials(user.getUsername()).getCook();
 		if (cook.equals(this.recipeService.findById(id).getCook()) || (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin")))) {
 			Recipe recipe=this.recipeService.findById(id);
+			for (Quantity quantity : recipe.getQuantities()) {
+				quantityService.delete(quantity);
+			}
 			this.recipeService.delete(recipe);
-
+			
 			return "index.html";
 		}
 		else {

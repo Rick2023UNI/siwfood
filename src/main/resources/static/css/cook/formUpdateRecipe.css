@@ -1,12 +1,5 @@
 .submit {
     width: 100%;
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 .submit:hover {
@@ -23,7 +16,7 @@
   width: 100%;
 }
 
-.name {
+.input {
 	width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -63,4 +56,75 @@ img {
 	object-fit: contain;
 	max-width: 30rem;
 	max-height: 30rem;
+}
+
+.button {
+	background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.images {
+	list-style: none;
+}
+
+.ingredientImage {
+	object-fit: contain;
+	max-width: 10rem;
+	max-height: 10rem;
+	vertical-align:middle;
+}
+
+.ingredientLink {
+	text-decoration: none;
+	margin-right: 1rem;
+}
+
+.quantity {
+	margin-bottom: 1%;
+}
+
+a.icon {
+	text-decoration: none;
+}
+
+svg.icon {
+	max-width: 2rem;
+	max-height: 2rem;
+	margin: 0.3rem 0.3rem 0.3rem 0.3rem;
+}
+
+#delete {
+	color:red;
+}
+
+.container {
+	position: relative;
+  min-width: 20px;
+    min-height: 20px;
+    padding: 13px;
+    display:inline-block;
+  position: absolute;
+  z-index: 2;
+  text-align: right;
+}
+
+.ingredient {
+	display: flex;
+}
+
+.icon-button {
+	display: inline-block;
+}
+
+.image {
+	max-width: 800px;
+}
+
+.middle {
+	vertical-align:middle;
 }
