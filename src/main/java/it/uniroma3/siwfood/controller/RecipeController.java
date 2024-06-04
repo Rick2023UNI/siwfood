@@ -121,6 +121,14 @@ public class RecipeController {
 		model.addAttribute("recipe", this.recipeService.findById(id));
 		model.addAttribute("quantities", this.recipeService.findById(id).getQuantities());
 		model.addAttribute("images", this.recipeService.findById(id).getImages());
+		
+		//Cuoco corrente
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Cook cook=credentialsService.getCredentials(user.getUsername()).getCook();
+		
+		//Aggiunto controllo per mostrare o meno la possibilità di modificare od eliminare la ricetta
+		model.addAttribute("authorOrAdmin", cook.equals(this.recipeService.findById(id).getCook()) || (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))));
 		return "recipe.html";
 	}
 

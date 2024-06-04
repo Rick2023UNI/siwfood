@@ -72,7 +72,7 @@ img {
 	list-style: none;
 }
 
-.ingredientImage {
+.ingredientImage, #thumbnail {
 	object-fit: contain;
 	max-width: 10rem;
 	max-height: 10rem;
@@ -127,4 +127,8 @@ svg.icon {
 
 .middle {
 	vertical-align:middle;
+}
+
+.hidden {
+	display: none;
 }

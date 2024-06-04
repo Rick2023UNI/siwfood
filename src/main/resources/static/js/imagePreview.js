@@ -1,5 +1,5 @@
 	$(document).ready(function() {
-		$('#fileImage').change(function () {
+		$('#fileImageIngredient').change(function () {
 			showImageThumbnail(this);
 		});
 	});
@@ -9,7 +9,7 @@
 		reader = new FileReader();
 		
 		reader.onload = function(e) {
-			$('#thumbnail').attr('src', e.target.result);
+			$('#thumbnailIngredient').attr('src', e.target.result);
 		};
 		
 		reader.readAsDataURL(file);

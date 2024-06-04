@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -66,6 +67,17 @@ public class Cook {
 
 	@OneToOne
 	private Image photo;
+	
+	@OneToOne(cascade=CascadeType.ALL, mappedBy="cook")
+	private Credentials credentials;
+
+	public Credentials getCredentials() {
+		return credentials;
+	}
+
+	public void setCredentials(Credentials credentials) {
+		this.credentials = credentials;
+	}
 
 	public Image getPhoto() {
 		return photo;

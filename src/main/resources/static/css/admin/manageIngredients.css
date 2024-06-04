@@ -15,3 +15,26 @@
 .ingredients {
 	list-style: none;
 }
+
+svg.icon {
+	max-width: 1.3rem;
+	max-height: 1.3rem;
+	margin-left: 0.5rem;
+	vertical-align:middle;
+}
+
+#delete {
+	color:red;
+}
+
+#edit {
+	color: green;
+}
+
+a.icon {
+	text-decoration: none;
+}
+
+.ingredient {
+	margin-bottom: 1rem;
+}
