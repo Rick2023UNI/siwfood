@@ -46,3 +46,83 @@ svg.icon {
 a.icon {
 	text-decoration: none;
 }
+
+#popup{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -150px; 
+    width:300px;
+    background-color:#CFC;
+    /*display:none;*/
+    margin: 0;
+}
+
+#popup h2
+{
+    font-size:1.2em;
+    color:#FFF;
+    background-color:#1e6001;
+    margin:0;
+    padding:10px;   
+    position:relative;
+}
+
+#popup h2>.close
+{
+    padding:2px;
+    position:relative;  
+    left:220px;
+    cursor:pointer;
+}
+
+#close {
+	max-width: 1.3rem;
+	max-height: 1.3rem;
+	vertical-align:middle;
+	color:red;
+}
+
+.popupButtons
+{
+    font-size:1.2em;
+    margin:0;
+    padding:10px; 
+    padding-top: 100px;
+}
+
+#confirm {
+    width: 45%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#confirm:hover {
+  background-color: #45a049;
+}
+
+#cancel {
+    width: 45%;
+  background-color: #D13400;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#cancel:hover {
+  background-color: #D70000;
+}
+
+#popup h2>.content>span
+{
+    margin:1% 1% 1% 1%; 
+}
