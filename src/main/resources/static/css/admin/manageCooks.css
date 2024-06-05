@@ -47,53 +47,8 @@ a.icon {
 	text-decoration: none;
 }
 
-#popup{
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  margin-top: -100px;
-  margin-left: -150px; 
-    width:300px;
-    background-color:#CFC;
-    /*display:none;*/
-    margin: 0;
-}
-
-#popup h2
-{
-    font-size:1.2em;
-    color:#FFF;
-    background-color:#1e6001;
-    margin:0;
-    padding:10px;   
-    position:relative;
-}
-
-#popup h2>.close
-{
-    padding:2px;
-    position:relative;  
-    left:220px;
-    cursor:pointer;
-}
-
-#close {
-	max-width: 1.3rem;
-	max-height: 1.3rem;
-	vertical-align:middle;
-	color:red;
-}
-
-.popupButtons
-{
-    font-size:1.2em;
-    margin:0;
-    padding:10px; 
-    padding-top: 100px;
-}
-
 #confirm {
-    width: 45%;
+    width: 49.7%;
   background-color: #4CAF50;
   color: white;
   padding: 14px 20px;
@@ -101,6 +56,7 @@ a.icon {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 #confirm:hover {
@@ -108,7 +64,7 @@ a.icon {
 }
 
 #cancel {
-    width: 45%;
+    width: 49.7%;
   background-color: #D13400;
   color: white;
   padding: 14px 20px;
@@ -116,13 +72,91 @@ a.icon {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 #cancel:hover {
-  background-color: #D70000;
+  background-color: #BD3500;
 }
 
-#popup h2>.content>span
-{
-    margin:1% 1% 1% 1%; 
+
+body {font-family: Arial, Helvetica, sans-serif;}
+
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  -webkit-animation-name: fadeIn; /* Fade in the background */
+  -webkit-animation-duration: 0.4s;
+  animation-name: fadeIn;
+  animation-duration: 0.4s
+}
+
+
+.modal-content {
+  position: fixed;
+  bottom: 0;
+  background-color: #fefefe;
+  width: 100%;
+  -webkit-animation-name: slideIn;
+  -webkit-animation-duration: 0.4s;
+  animation-name: slideIn;
+  animation-duration: 0.4s
+}
+
+
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+@-webkit-keyframes slideIn {
+  from {bottom: -300px; opacity: 0} 
+  to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+  from {bottom: -300px; opacity: 0}
+  to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+  from {opacity: 0} 
+  to {opacity: 1}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0} 
+  to {opacity: 1}
 }

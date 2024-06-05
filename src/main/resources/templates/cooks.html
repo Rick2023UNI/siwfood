@@ -12,8 +12,10 @@
 	<ul class="cooks">
 		<li th:each="cook : ${cooks}" class="cook">
 			<img th:src="@{${cook.photo.getImagePath}}" class="cookImage">
-			<a th:href="@{'/cook' + '/' + ${cook.id}}" th:text="${cook.name} + ', ' + ${cook.surname}" class="cookLink"></a>			
-		</li>
+			<a th:href="@{'/cook/' + ${cook.id}}" th:text="${cook.name} + ', ' + ${cook.surname}" class="cookLink"></a>			
+			<span th:if="${cook.getRecipes().size()}>0" th:text="@{'Ricette condivise: ' + ${cook.getRecipes().size()}}"></span>
+			<span th:unless="${cook.getRecipes().size()}>0">Non ha condiviso ricette</span>
+	
 	</ul>
 </body>
 
