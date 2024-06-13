@@ -1,12 +1,7 @@
 	  function newImageInputAndThumbnail() {
 			showImageThumbnail(this);
 		}
-		
-		function removeImageInput(event) {
-			//Rimuove il nodo genitore dell'elemento che ha lanciato l'evento
-			event.target.parentElement.remove();
-		}
-	//Inizializzazione evento per l'aggiunta di ulteriori input
+	
 	$(document).ready(function() {
 		$('#fileImage').change(newImageInputAndThumbnail);
 			$('#fileImage').on("change",function() {
@@ -20,6 +15,6 @@
 		reader.onload = function(e) {
 			$('#thumbnail').attr('src', e.target.result);
 		};
-		
+		document.getElementById("thumbnail").style.display = "block";
 		reader.readAsDataURL(file);
 	}
