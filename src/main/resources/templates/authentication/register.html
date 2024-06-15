@@ -7,9 +7,13 @@
   </head>
   <body>
     <h1>Registrati</h1>
-    <form th:action="@{/register}" method="POST" enctype="multipart/form-data">
-      <div>
+    <form th:action="@{/register}" method="POST" enctype="multipart/form-data" th:object="${credentials}">
+	      	<div th:if="${#fields.hasGlobalErrors()}">
+				<span class="error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</span>
+		  	</div>
+		<div>
         Username: <span><input required type="text" th:field="${credentials.username}"/></span>
+		<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
       </div>
       <div>
         Password: <span><input required type="text" th:field="${credentials.password}"/></span>

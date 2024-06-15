@@ -16,6 +16,7 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,7 @@ import it.uniroma3.siwfood.service.CookService;
 import it.uniroma3.siwfood.service.CredentialsService;
 import it.uniroma3.siwfood.service.ImageService;
 import it.uniroma3.siwfood.service.RecipeService;
+import it.uniroma3.siwfood.validator.CredentialsValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -40,6 +42,9 @@ public class AuthenticationController {
 	@Autowired RecipeService recipeService;
 
 	@Autowired ImageService imageService;
+	
+	//Validazione
+	@Autowired CredentialsValidator credentialsValidator;
 
 
 	@GetMapping("/login")
@@ -49,7 +54,6 @@ public class AuthenticationController {
 
 	@PostMapping("/login")
 	public String loginCook(@RequestParam("credentials") Credentials credentials) {
-
 		return "index.html";
 	}
 
@@ -61,50 +65,56 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/register")
-	public String registerCook(@ModelAttribute("credentials") Credentials credentials,
+	public String registerCook(@ModelAttribute("credentials") Credentials credentials, BindingResult bindingResult,
 			@ModelAttribute("cook") Cook cook,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
+		//Validazione
+		this.credentialsValidator.validate(credentials, bindingResult);
+		if (!bindingResult.hasErrors()) {
+			//Primo salvataggio per far assegnare al cuoco un id
+			this.cookService.save(cook);
+			//Caricamento dell'immagine
+			String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
+			Image image=new Image();
+			//Impostazione del nome del file all'id dell'ingrediente e dell'estensione originale del file
+			fileName=cook.getId()+fileName.substring(fileName.lastIndexOf('.'));
+			image.setFileName(fileName);
+			image.setFolder("cook");
+			cook.setPhoto(image);
+			this.imageService.save(image);
+			this.cookService.save(cook);
+			//Percorso del file
+			String uploadDir="./images/cook/";
+			Path uploadPath = Paths.get(uploadDir);
+			System.out.println();
 
-		//Primo salvataggio per far assegnare al cuoco un id
-		this.cookService.save(cook);
-		//Caricamento dell'immagine
-		String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-		Image image=new Image();
-		//Impostazione del nome del file all'id dell'ingrediente e dell'estensione originale del file
-		fileName=cook.getId()+fileName.substring(fileName.lastIndexOf('.'));
-		image.setFileName(fileName);
-		image.setFolder("cook");
-		cook.setPhoto(image);
-		this.imageService.save(image);
-		this.cookService.save(cook);
-		//Percorso del file
-		String uploadDir="./images/cook/";
-		Path uploadPath = Paths.get(uploadDir);
-		System.out.println();
-
-		if (!Files.exists(uploadPath)) {
-			try {
-				Files.createDirectories(uploadPath);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if (!Files.exists(uploadPath)) {
+				try {
+					Files.createDirectories(uploadPath);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		}
-		try {
-			InputStream inputStream = multipartFile.getInputStream();
-			Path filePath = uploadPath.resolve(fileName);
-			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			throw new IOException("Could not save the upload file: " + fileName);
-		}
-		//
-		this.cookService.save(cook);
+			try {
+				InputStream inputStream = multipartFile.getInputStream();
+				Path filePath = uploadPath.resolve(fileName);
+				Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+				throw new IOException("Could not save the upload file: " + fileName);
+			}
+			//
+			this.cookService.save(cook);
 
-		credentials.setPassword(passwordEncoder.encode(credentials.getPassword()));
-		credentials.setCook(cook);
-		credentialsService.save(credentials);
+			credentials.setPassword(passwordEncoder.encode(credentials.getPassword()));
+			credentials.setCook(cook);
+			credentialsService.save(credentials);
 
-		return "redirect:/login";
+			return "authentication/login.html";
+		} 
+		else {
+			return "authentication/register.html";
+		}
 	}
 
 	@GetMapping("/success")

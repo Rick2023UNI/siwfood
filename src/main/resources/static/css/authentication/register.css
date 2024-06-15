@@ -78,3 +78,12 @@ a {
 	text-decoration: none;
 	font-size: 1.2rem;
 }
+
+.error {
+  padding: 20px;
+  background-color: #f44336; /* Red */
+  color: white;
+  margin-bottom: 15px;
+  opacity: 0.7;
+  display: inline-block;
+}
