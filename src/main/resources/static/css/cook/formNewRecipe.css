@@ -58,3 +58,49 @@
 label:hover {
   background-color: #45a049;
 }
+
+a.icon {
+	text-decoration: none;
+}
+
+svg.icon {
+	max-width: 2rem;
+	max-height: 2rem;
+	margin: 0.3rem 0.3rem 0.3rem 0.3rem;
+}
+
+#delete {
+	color:red;
+}
+
+.container {
+	position: relative;
+  min-width: 20px;
+    min-height: 20px;
+    padding: 13px;
+    display:inline-block;
+  position: absolute;
+  z-index: 2;
+  text-align: right;
+}
+
+.ingredient, .imageUpload {
+	display: flex;
+	padding-bottom: 10px;
+}
+
+.icon-button {
+	display: inline-block;
+}
+
+.image {
+	max-width: 800px;
+}
+
+.middle {
+	vertical-align:middle;
+}
+
+.hidden {
+	display: none;
+}

@@ -7,6 +7,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Credentials {
@@ -46,9 +48,13 @@ public class Credentials {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
+	
+	@NotBlank(message = "Lo username è richiesto")
+	@NotNull
 	private String username;
-
+	
+	@NotBlank(message = "La password è richiesta")
+	@NotNull
 	private String password;
 
 	private String role;

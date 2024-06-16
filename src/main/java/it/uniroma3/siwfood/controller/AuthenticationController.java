@@ -33,6 +33,7 @@ import it.uniroma3.siwfood.service.RecipeService;
 import it.uniroma3.siwfood.validator.CredentialsValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller 
 public class AuthenticationController {
@@ -65,7 +66,7 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/register")
-	public String registerCook(@ModelAttribute("credentials") Credentials credentials, BindingResult bindingResult,
+	public String registerCook(@Valid @ModelAttribute("credentials") Credentials credentials, BindingResult bindingResult,
 			@ModelAttribute("cook") Cook cook,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
 		//Validazione

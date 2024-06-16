@@ -7,7 +7,7 @@
 }
 
 .description {
-	width: 100%;
+  width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -113,8 +113,9 @@ svg.icon {
   text-align: right;
 }
 
-.ingredient {
+.ingredient, .imageUpload {
 	display: flex;
+	padding-bottom: 10px;
 }
 
 .icon-button {

@@ -21,9 +21,11 @@
       <div>
 		  <div>
         Nome: <span><input required type="text" th:field="${cook.name}"/></span>
+		<span th:if="${#fields.hasErrors('cook.name')}" th:errors="*{cook.name}"></span>
       </div>
       <div>
         Cognome: <span><input required type="text" th:field="${cook.surname}"/></span>
+		<span th:if="${#fields.hasErrors('cook.surname')}" th:errors="*{cook.surname}"></span>
       </div>
       <div>
         Data di nascita: <span><input required type="date" th:field="${cook.birthday}"/></span>
@@ -36,6 +38,7 @@
       <br>
       </div>
 	  <img id="thumbnail"/>
+	  <span th:if="${#fields.hasErrors('cook.photo')}" th:errors="*{cook.photo}"></span>
 	  </div>
         <span><button type="submit" id="submit">Registrati</button></span>
       </div>

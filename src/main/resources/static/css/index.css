@@ -20,8 +20,9 @@
 	margin-bottom: 1rem;
 	display: flex;
 	justify-content: space-between;
-	background-color: beige;
+	background-color: #83f28f;
 	border-radius: 25px;
+	box-shadow: 10px 10px 5px grey;
 }
 
 .recipe {
@@ -38,6 +39,7 @@
 	font-size: 3rem;
 	text-align: center;
 	text-decoration: none;
+	color:black;
 }
 
 p {
@@ -58,6 +60,7 @@ p {
 	font-size: 1.3rem;
 	text-decoration: none;
 	text-align: right;
+	color:black;
 }
 
 .newRecipe a {

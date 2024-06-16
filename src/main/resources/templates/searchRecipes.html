@@ -5,13 +5,13 @@
 	<title>
 		SiwFood - Homepage
 	</title>
+	<link rel="stylesheet" href="/css/searchRecipes.css?version=3"/>
 </head>
 
 <body>
 	<form th:action="@{/searchRecipes}" method="post">
-	   <div>Nome: <input type="text" th:value="${name}" name="name" />
-	   </div>
-	   <button type="submit">Cerca</button>
+		<input id="search" type="text" th:value="${name}" name="name" />
+	   <button id="submit" type="submit">Cerca</button>
 	  </form>
 	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema con il nome inserito</div>
 	<ul>

@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Cook {
@@ -57,14 +58,16 @@ public class Cook {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
+	
+	@NotBlank(message = "Il nome è richiesto")
 	private String name;
-
+	
+	@NotBlank(message = "Il cognome è richiesto")
 	private String surname;
 
 	@DateTimeFormat(pattern ="yyyy-MM-dd")
 	private Date birthday;
-
+	
 	@OneToOne
 	private Image photo;
 	

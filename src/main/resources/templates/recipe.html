@@ -3,13 +3,14 @@
 
 <head>
 	<title>Ricetta</title>
-	<link rel="stylesheet" href="/css/recipe.css?version=3" />
-	    <script src="/js/3.7.1_jquery.min.js"></script>
+	
+	    <script src="/js/recipe.js"></script>
 	    <script src="/js/imagePreview.js"></script>
+		<link rel="stylesheet" href="/css/recipe.css?version=3"/>
 </head>
 
 <body>
-	<h1>Ricetta</h1>
+	<h1 th:text="${recipe.name}">Ricetta</h1>
 	<span th:if="${authorOrAdmin}">
 		<a th:href="@{'/formUpdateRecipe/' + ${recipe.id}}" class="icon-button">
 						<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon" id="edit">
@@ -21,19 +22,22 @@
 		</a>
 	</span>
 	<div th:if="${recipe}">
-		<span th:text="${recipe.name}"></span>
-		<br>
-		<span th:text="${recipe.description}"></span>
-		<br>
 		<span th:text='${#dates.format(recipe.publicationDate, "yyyy-MM-dd HH:mm")}'></span>
-		<div th:if="${images==null || images.isEmpty()}">Non ci sono immagini per la ricetta corrente</div>
-			<ul class="images">
-				<li th:each="image : ${images}">
-					<img th:src="@{${image.getImagePath}}" class="image">
-				</li>
-			</ul>
-	</div>
-	<div th:unless="${recipe}">Non esiste</div>
+		<br>		
+		
+		<section class="container">
+			<div  class="slider-wrapper">
+				<div class="slider">
+				<img th:each="image : ${images}" th:id="'slide-'+${image.id}" th:src="@{${image.getImagePath}}" style="width:100%">
+			</div>
+			<div class="slider-nav">
+				<a th:each="image : ${images}" th:href="'#slide-'+${image.id}"></a>
+			</div>
+			</div>
+		</section>
+
+		<span th:text="${recipe.description}"></span>
+		
 	<h3>Ingredienti: </h3>
 	<div th:if="${quantities==null || quantities.isEmpty()}">Non ci sono ingredienti per la ricetta corrente</div>
 	<ul class="quantities">
