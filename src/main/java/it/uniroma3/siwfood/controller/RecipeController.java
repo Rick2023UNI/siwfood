@@ -77,31 +77,12 @@ public class RecipeController {
 			 */
 			if (fileName!="") {
 				Image image=new Image();
-				image.setFileName(fileName);
 				image.setFolder("recipe/"+recipe.getId());
+				image.uploadImage(fileName, multipartFile);
+				this.imageService.save(image);
+				
 				recipe.addImage(image);
 				this.imageService.save(image);
-				//File location
-				String uploadDir="./images/recipe/"+recipe.getId();
-				Path uploadPath = Paths.get(uploadDir);
-				System.out.println();
-
-				if (!Files.exists(uploadPath)) {
-					try {
-						Files.createDirectories(uploadPath);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				try {
-					InputStream inputStream = multipartFile.getInputStream();
-					Path filePath = uploadPath.resolve(fileName);
-					Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-				} catch (IOException e) {
-					throw new IOException("Could not save the upload file: " + fileName);
-				}
-				//
 			}
 		}
 
@@ -162,30 +143,12 @@ public class RecipeController {
 				//Impostazione del nome del file all'id dell'ingrediente, mantenendo l'estensione del file originale
 				fileName=ingredient.getId()+fileName.substring(fileName.lastIndexOf('.'));
 				Image image=new Image();
-				image.setFileName(fileName);
 				image.setFolder("ingredient");
 				this.imageService.save(image);
-				//Percorso del file
-				String uploadDir="./images/ingredient/";
-				Path uploadPath = Paths.get(uploadDir);
-
-				if (!Files.exists(uploadPath)) {
-					try {
-						Files.createDirectories(uploadPath);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				try {
-					InputStream inputStream = multipartFile.getInputStream();
-					Path filePath = uploadPath.resolve(fileName);
-					Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-				} catch (IOException e) {
-					throw new IOException("Could not save the upload file: " + fileName);
-				}
-				//
+				
+				image.uploadImage(fileName, multipartFile);
 				ingredient.setImage(image);
+				this.imageService.save(image);
 				this.ingredientService.save(ingredient);
 			}
 			//Soluzione bug mappedBy
@@ -261,27 +224,7 @@ public class RecipeController {
 					image.setFolder("recipe/"+recipe.getId());
 					recipe.addImage(image);
 					this.imageService.save(image);
-					//File location
-					String uploadDir="./images/recipe/"+recipe.getId();
-					Path uploadPath = Paths.get(uploadDir);
-					System.out.println();
-
-					if (!Files.exists(uploadPath)) {
-						try {
-							Files.createDirectories(uploadPath);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-					try {
-						InputStream inputStream = multipartFile.getInputStream();
-						Path filePath = uploadPath.resolve(fileName);
-						Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-					} catch (IOException e) {
-						throw new IOException("Could not save the upload file: " + fileName);
-					}
-					//
+					image.uploadImage(fileName, multipartFile);
 				}
 			}
 		}

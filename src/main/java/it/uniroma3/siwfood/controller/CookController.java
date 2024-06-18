@@ -51,27 +51,7 @@ public class CookController {
 		cook.setPhoto(image);
 		this.imageService.save(image);
 		this.cookService.save(cook);
-		//Percorso del file
-		String uploadDir="./images/cook/";
-		Path uploadPath = Paths.get(uploadDir);
-		System.out.println();
-
-		if (!Files.exists(uploadPath)) {
-			try {
-				Files.createDirectories(uploadPath);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		try {
-			InputStream inputStream = multipartFile.getInputStream();
-			Path filePath = uploadPath.resolve(fileName);
-			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			throw new IOException("Could not save the upload file: " + fileName);
-		}
-		//
+		image.uploadImage(fileName, multipartFile);
 		this.cookService.save(cook);
 		return "redirect:/cook/"+cook.getId();
 	}
@@ -101,27 +81,7 @@ public class CookController {
 		image.setFileName(fileName);
 		cook.setPhoto(image);
 		this.imageService.save(image);
-		//Percorso del file
-		String uploadDir="./images/cook/"+cook.getId();
-		Path uploadPath = Paths.get(uploadDir);
-		System.out.println();
-
-		if (!Files.exists(uploadPath)) {
-			try {
-				Files.createDirectories(uploadPath);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		try {
-			InputStream inputStream = multipartFile.getInputStream();
-			Path filePath = uploadPath.resolve(fileName);
-			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			throw new IOException("Could not save the upload file: " + fileName);
-		}
-		//
+		image.uploadImage(fileName, multipartFile);
 		cook.updateTo(cookUpdated);
 		this.cookService.save(cook);
 		return "redirect:/cook/"+cook.getId();
