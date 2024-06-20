@@ -13,12 +13,6 @@ var i=0;
 	//Inizializzazione evento per l'aggiunta di ulteriori input
 	$(document).ready(function() {
 		$('#fileImage0').change(newImageInputAndThumbnail);
-			$('#fileImage0').on("change",function() {
-	    console.log("change fired");
-	    var file = $('#fileImage0')[0].files[0].name;
-	    console.log(file);
-	    document.getElementById("image0").getElementsByClassName("label")[0].innerHTML=file;
-	  });
 	});
 	
 	function showRecipeImageThumbnail(fileInput) {
@@ -66,8 +60,12 @@ var i=0;
 		
 		//Nasconde precedente input file
 		var imageUploads=images.getElementsByClassName("imageUpload");
-		imageUploads[imageUploads.length-2].getElementsByTagName("label")[0].style.display="none";
+		document.getElementById("image"+(i-1)).getElementsByClassName("label")[0].style.display="none";
 		
+		//Reset nuovo input
+		document.getElementById("image"+i).getElementsByClassName("label")[0].style.display="block";
+		
+		console.log(imageUploads[imageUploads.length-2].getElementsByTagName("label")[0]);
 		if ($('#image'+(i-1)).length > 0) {
 			//Aggiunta possibilità rimozione elemento precedente
 			var newA=document.getElementById('fileImageRemove'+(i-1));
@@ -88,14 +86,3 @@ var i=0;
 			showImageThumbnail(this);
 		});
 	});
-	
-	function showImageThumbnail(fileInput) {
-		file =fileInput.files[0];
-		reader = new FileReader();
-		
-		reader.onload = function(e) {
-			$('#thumbnailIngredient').attr('src', e.target.result);
-		};
-		
-		reader.readAsDataURL(file);
-	}
