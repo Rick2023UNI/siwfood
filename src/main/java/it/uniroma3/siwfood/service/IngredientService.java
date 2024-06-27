@@ -1,9 +1,13 @@
 package it.uniroma3.siwfood.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.uniroma3.siwfood.model.Ingredient;
+import it.uniroma3.siwfood.model.Recipe;
 import it.uniroma3.siwfood.repository.IngredientRepository;
 
 @Service
@@ -33,6 +37,10 @@ public class IngredientService {
 
 	public void delete(Ingredient ingredient) {
 		ingredientRepository.delete(ingredient);
+	}
+
+	public Iterable<Ingredient> findAllById(List<Long> ingredientsIds) {
+		return ingredientRepository.findAllById(ingredientsIds);
 	}
 
 }

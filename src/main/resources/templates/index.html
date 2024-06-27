@@ -6,6 +6,7 @@
 		SiwFood - Homepage
 	</title>
 	<link rel="stylesheet" href="/css/index.css?version=3"/>
+	<link rel="stylesheet" href="/css/searchRecipes.css?version=3"/>
 </head>
 
 <body>
@@ -23,6 +24,10 @@
 	  </li>
 	</ul>
 <br>
+<form th:action="@{/}" method="post">
+		<input id="search" type="text" th:value="${name}" name="name" />
+	   <button id="submit" type="submit">Cerca</button>
+	  </form>
 <br>
 	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema</div>
 	<div th:if="${userDetails!=null}" class="newRecipe">

@@ -23,3 +23,21 @@
 #submit:hover {
   background-color: #45a049;
 }
+
+a.icon {
+	text-decoration: none;
+}
+
+svg.icon {
+	max-width: 2rem;
+	max-height: 2rem;
+	margin: 0.3rem 0.3rem 0.3rem 0.3rem;
+}
+
+.delete {
+	color:red;
+}
+
+.add {
+	color: green;
+}

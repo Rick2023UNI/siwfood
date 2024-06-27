@@ -42,8 +42,8 @@
 	<div th:if="${quantities==null || quantities.isEmpty()}">Non ci sono ingredienti per la ricetta corrente</div>
 	<ul class="quantities">
 		<li th:each="quantity : ${quantities}" class="quantity">
-			<span th:text="${quantity.quantity}+' '+${quantity.getIngredient().name}" class="ingredientLink"></span>
 			<img th:src="@{${quantity.ingredient.image.getImagePath}}" class="ingredientImage">
+			<span th:text="${quantity.quantity}+' '+${quantity.getIngredient().name}" class="ingredientLink"></span>
 		</li>
 	</ul>
 </body>

@@ -3,7 +3,11 @@ package it.uniroma3.siwfood.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -262,13 +266,42 @@ public class RecipeController {
 
 	@GetMapping("/searchRecipes")
 	public String formSearchRecipes(Model model) {
+		model.addAttribute("ingredients", this.ingredientService.findAll());  
 		model.addAttribute("recipes", this.recipeService.findByNameStartingWith(""));   
 		return "searchRecipes.html";
 	}	
 
 	@PostMapping("/searchRecipes")
-	public String searchRecipes(@ModelAttribute("recipe") Recipe recipe, @RequestParam String name, Model model) {
-		model.addAttribute("recipes", this.recipeService.findByNameStartingWith(name));   
+	public String searchRecipes(@RequestParam("ingredient") ArrayList<String> ingredientsParam, Model model) {
+		System.out.println(ingredientsParam);
+		List<Long> ingredientsParamIds=(List<Long>) ingredientsParam.stream().map(Long::parseLong).collect(Collectors.toList());
+		ArrayList<Ingredient> ingredients=(ArrayList<Ingredient>) this.ingredientService.findAllById(ingredientsParamIds);
+		ArrayList<Recipe> recipes=(ArrayList<Recipe>) this.recipeService.findAll();
+		for (ListIterator<Ingredient> iter = ingredients.listIterator(); iter.hasNext();) {
+			Ingredient ingredient = iter.next();
+			ArrayList<Recipe> ingredientRecipes=new ArrayList<Recipe>();
+				for (ListIterator<Quantity> iterQuantity = ingredient.getQuantities().listIterator(); iterQuantity.hasNext();) {
+					Quantity quantity= iterQuantity.next();
+					ingredientRecipes.add(quantity.getRecipe());
+				}
+				System.out.println(ingredientRecipes);
+				recipes.retainAll(ingredientRecipes);
+			}
+		
+		model.addAttribute("ingredients", this.ingredientService.findAll());
+		model.addAttribute("recipes", recipes);   
 		return "searchRecipes.html";
-	}	
+	}
+	
+	@PostMapping("/")
+	public String searchRecipesHome(@RequestParam String name, Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("recipes", this.recipeService.findByNameStartingWith(name));
+		if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
+			return "admin/index.html";
+		}
+		else {
+			return "index.html";
+		}
+	}
 }
