@@ -20,15 +20,6 @@ function newIngredientSelect() {
 	$('#ingredientRemove'+i).click(function(event) { removeImageInput(event); });
 }
 function removeImageInput(event) {
-	//Rimuove il nodo genitore dell'elemento che ha lanciato l'evento
-	if (event.target.tagName=="svg") {
-		event.target.parentElement.parentElement.remove();
-	}else {
-		event.target.parentElement.remove();
-	}
-	console.log("---------------")
-	console.log(event.target);
-	console.log(event.target.parentElement);
-	console.log(event.target.parentElement.parentElement);
+	event.currentTarget.parentElement.remove();
 	
 }

@@ -8,7 +8,7 @@ var i=0;
 		
 		function removeImageInput(event) {
 			//Rimuove il nodo genitore dell'elemento che ha lanciato l'evento
-			event.target.parentElement.parentElement.parentElement.remove();
+			event.currentTarget.parentElement.parentElement.remove();
 		}
 	//Inizializzazione evento per l'aggiunta di ulteriori input
 	$(document).ready(function() {
