@@ -117,7 +117,7 @@ public class RecipeController {
 		return "recipe.html";
 	}
 
-	@PostMapping(value="/addQuantity/{id}")
+	@PostMapping("/addQuantity/{id}")
 	public String addQuantity(Model model, @PathVariable("id") Long id, @RequestParam("name") String nameParam, 
 			@RequestParam("quantity") String quantityParam, 
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
@@ -252,6 +252,10 @@ public class RecipeController {
 		Cook cook=credentialsService.getCredentials(user.getUsername()).getCook();
 		if (cook.equals(this.recipeService.findById(id).getCook()) || (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin")))) {
 			Recipe recipe=this.recipeService.findById(id);
+			for (Image image : recipe.getImages()) {
+				this.imageService.delete(image);
+			}
+			
 			for (Quantity quantity : recipe.getQuantities()) {
 				quantityService.delete(quantity);
 			}

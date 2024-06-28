@@ -27,8 +27,8 @@ public class ImageController {
 	@Autowired CredentialsService credentialsService;
 	@Autowired RecipeService recipeService;
 	
-	@GetMapping("/removeImage/{idRecipe}/{idImage}")
-	public String removeImage(@PathVariable("idRecipe") Long idRecipe, 
+	@GetMapping("/removeImageRecipe/{idRecipe}/{idImage}")
+	public String removeImageRecipe(@PathVariable("idRecipe") Long idRecipe, 
 			@PathVariable("idImage") Long idImage, Model model) {
 		//Cuoco corrente
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -38,8 +38,7 @@ public class ImageController {
 			Recipe recipe=this.recipeService.findById(idRecipe);
 			Image image=this.imageService.findById(idImage);
 			recipe.removeImage(image);
-			File file = new File("./images/recipe/"+recipe.getId()+"/"+image.getFileName());
-			file.delete();
+			image.delete();
 			
 			this.recipeService.save(recipe);
 			this.imageService.delete(image);

@@ -22,6 +22,7 @@ public class ImageService {
 	}
 
 	public void delete(Image image) {
+		image.delete();
 		imageRepository.delete(image);	
 	}
 }

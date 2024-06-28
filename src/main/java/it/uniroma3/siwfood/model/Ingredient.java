@@ -61,7 +61,7 @@ public class Ingredient {
 
 	private String name;
 
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private Image image;
 
 	public Image getImage() {
@@ -75,5 +75,10 @@ public class Ingredient {
 	//Eliminazione ingrediente
 	@OneToMany(mappedBy="ingredient", cascade=CascadeType.ALL)
 	private List<Quantity> quantities;
+
+	public void updateTo(Ingredient ingredientUpdated) {
+		this.setName(ingredientUpdated.getName());
+		
+	}
 
 }
