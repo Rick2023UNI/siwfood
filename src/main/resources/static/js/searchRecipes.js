@@ -9,14 +9,15 @@ var i=0;
 function newIngredientSelect() {
 	i++;
 	var newSelector=document.getElementById("selectors").getElementsByTagName("div")[0].cloneNode(true);
-	newSelector.style.display="block";
+	newSelector.style.display="";
 	newSelector.id = "ingredient"+i;
 	newSelector.getElementsByTagName("a")[0].id="ingredientRemove"+i;
 	newSelector.getElementsByTagName("select")[0].id="ingredientSelector"+i;
-	newSelector.getElementsByTagName("select")[0].style.display="block";
+	newSelector.getElementsByTagName("select")[0].style.display="";
+	newSelector.getElementsByTagName("select")[0].name="ingredient";
 	
 	var selectors=document.getElementById("selectors");
-	selectors.appendChild(newSelector);
+	selectors.insertBefore(newSelector, document.getElementById("newIngredient"));
 	$('#ingredientRemove'+i).click(function(event) { removeImageInput(event); });
 }
 function removeImageInput(event) {

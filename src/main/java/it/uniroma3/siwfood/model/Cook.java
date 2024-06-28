@@ -98,7 +98,7 @@ public class Cook {
 		this.recipes = recipes;
 	}
 
-	@OneToMany(mappedBy = "cook")
+	@OneToMany(mappedBy = "cook", cascade = CascadeType.ALL)
 	private List<Recipe> recipes;
 
 	@Override

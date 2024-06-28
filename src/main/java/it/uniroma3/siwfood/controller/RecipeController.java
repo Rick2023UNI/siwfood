@@ -287,7 +287,7 @@ public class RecipeController {
 				System.out.println(ingredientRecipes);
 				recipes.retainAll(ingredientRecipes);
 			}
-		
+		model.addAttribute("searchIngredients", ingredients);
 		model.addAttribute("ingredients", this.ingredientService.findAll());
 		model.addAttribute("recipes", recipes);   
 		return "searchRecipes.html";
