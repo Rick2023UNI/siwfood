@@ -14,6 +14,7 @@
 </head>
 
 <body>
+	<a href="/admin/newRecipe">Aggiungi ricetta</a>
 	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema</div>
 	<ul>
 		<li th:each="recipe : ${recipes}">

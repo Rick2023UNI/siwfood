@@ -25,6 +25,7 @@ import it.uniroma3.siwfood.model.Image;
 import it.uniroma3.siwfood.model.Ingredient;
 import it.uniroma3.siwfood.model.Quantity;
 import it.uniroma3.siwfood.model.Recipe;
+import it.uniroma3.siwfood.service.CookService;
 import it.uniroma3.siwfood.service.CredentialsService;
 import it.uniroma3.siwfood.service.ImageService;
 import it.uniroma3.siwfood.service.IngredientService;
@@ -40,6 +41,7 @@ public class RecipeController {
 	@Autowired QuantityService quantityService;
 	@Autowired ImageService imageService;
 	@Autowired CredentialsService credentialsService;
+	@Autowired CookService cookService;
 
 	@GetMapping("/")
 	public String index(Model model) {
@@ -64,8 +66,48 @@ public class RecipeController {
 		model.addAttribute("recipe", new Recipe());
 		return "cook/formNewRecipe.html";
 	}
+	
+	@GetMapping("/admin/newRecipe")
+	public String adminAddRecipe(Model model) {
+		model.addAttribute("recipe", new Recipe());
+		model.addAttribute("cooks", this.cookService.findAll());
+		return "admin/formNewRecipe.html";
+	}
+	
+	@PostMapping("/admin/recipe")
+	public String adminNewRecipe(@ModelAttribute("recipe") Recipe recipe, 
+			@ModelAttribute("cookId") Long cookId,
+			@RequestParam("fileImage") MultipartFile[] multipartFiles) throws IOException {
+		Cook cook=this.cookService.findById(cookId);
+		Date today=new Date();
+		recipe.setPublicationDate(today);
+		//Primo salvataggio per far assegnare alla ricetta un id
+		this.recipeService.save(recipe);
+		for (MultipartFile multipartFile : multipartFiles) {
+			//Caricamento delle immagini
+			String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
+			/*Evita tentativo di caricare il file vuoto causato
+			 dall'ultimo input che viene aggiunto in automatico
+			 ed è sempre vuoto
+			 */
+			if (fileName!="") {
+				Image image=new Image();
+				image.setFolder("recipe/"+recipe.getId());
+				image.uploadImage(fileName, multipartFile);
+				this.imageService.save(image);
+				
+				recipe.addImage(image);
+				this.imageService.save(image);
+			}
+		}
 
-	@PostMapping(value="/recipe")
+		recipe.setCook(cook);
+
+		this.recipeService.save(recipe);
+		return "redirect:recipe/"+recipe.getId();
+	}
+
+	@PostMapping("/recipe")
 	public String newRecipe(@ModelAttribute("recipe") Recipe recipe, 
 			@RequestParam("fileImage") MultipartFile[] multipartFiles) throws IOException {
 		Date today=new Date();
@@ -253,15 +295,17 @@ public class RecipeController {
 		if (cook.equals(this.recipeService.findById(id).getCook()) || (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin")))) {
 			Recipe recipe=this.recipeService.findById(id);
 			for (Image image : recipe.getImages()) {
+				recipe.removeImage(image);
 				this.imageService.delete(image);
 			}
 			
 			for (Quantity quantity : recipe.getQuantities()) {
+				recipe.removeQuantity(quantity);
 				quantityService.delete(quantity);
 			}
 			this.recipeService.delete(recipe);
 			
-			return "index.html";
+			return "redirect:/";
 		}
 		else {
 			return "redirect:/recipe/"+id;

@@ -13,6 +13,7 @@
 </head>
 <body>
 	<h1>Cuochi</h1>
+	<a href="/admin/newCook">Aggiungi cuoco</a>
 	<div th:if="${cooks==null || cooks.isEmpty()}">Non ci sono cuochi nel sistema</div>
 	<ul class="cooks">
 		<li th:each="cook : ${cooks}" class="cook">

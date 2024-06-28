@@ -1,48 +1,33 @@
 <!DOCTYPE html>
 <html>  <head>
     <title>Nuovo cuoco</title>
-    <link rel="stylesheet" href="/stile.css?version=3" />
-    <script src="js/3.7.1_jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/admin/formUpdateCook.css?version=3" />
+    <script src="/js/3.7.1_jquery.min.js"></script>
+	<script src="/js/admin/_previewFormUpdate.js"></script>
   </head>
   <body>
     <h1>Aggiorna cuoco</h1>
     <form th:action="@{'/admin/updateCook/'+${cook.id}}" method="POST" th:object="${cook}" enctype="multipart/form-data">
       <div>
-        Nome: <span><input required type="text" th:field="${cook.name}"/></span>
+        Nome: <span><input required type="text" th:field="${cook.name}" class="input"/></span>
       </div>
       <div>
-        Surname: <span><input required type="text" th:field="${cook.surname}"/></span>
+        Surname: <span><input required type="text" th:field="${cook.surname}"  class="input"/></span>
       </div>
       <div>
-        Birthday: <span><input required type="date" th:field="${cook.birthday}"/></span>
+        Birthday: <span><input required type="date" th:field="${cook.birthday}"  class="input"/></span>
       </div>
       <div>
-        Foto profilo: <span><input required type="file" name='fileImage' id="fileImage" accept="image/png, image/jpeg" /></span>
+        Foto profilo<br>
+		<img th:src="${cook.photo.getImagePath}" class="image" id="thumbnail">
+		  <br>
+		  <br>
+		  <input type="file" name='fileImage' id="fileImage" accept="image/png, image/jpeg" class="fileImage"/>
+		<label for="fileImage" class="label">Cambia immagine</label>
       <br>
       </div>
-      <div>
-		  <img id="thumbnail" alt="Image Preview"/>
-	  </div>
-        <span><button type="submit">Conferma</button></span>
+        <span><button type="submit" class="button">Conferma</button></span>
       </div>
     </form>
   </body>
-    <script type="text/javascript">
-	$(document).ready(function() {
-		$('#fileImage').change(function () {
-			showImageThumbnail(this);
-		});
-	});
-	
-	function showImageThumbnail(fileInput) {
-		file =fileInput.files[0];
-		reader = new FileReader();
-		
-		reader.onload = function(e) {
-			$('#thumbnail').attr('src', e.target.result);
-		};
-		
-		reader.readAsDataURL(file);
-	}
-</script>
 </html>

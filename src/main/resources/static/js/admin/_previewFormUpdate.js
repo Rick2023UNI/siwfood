@@ -9,7 +9,7 @@ $(document).ready(function() {
 		reader = new FileReader();
 		
 		reader.onload = function(e) {
-			$('#thumbnailIngredient').attr('src', e.target.result);
+			$('#thumbnail').attr('src', e.target.result);
 		};
 		
 		reader.readAsDataURL(file);

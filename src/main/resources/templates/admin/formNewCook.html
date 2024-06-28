@@ -1,48 +1,48 @@
 <!DOCTYPE html>
 <html>  <head>
     <title>Nuovo cuoco</title>
-    <link rel="stylesheet" href="/stile.css?version=3" />
-    <script src="js/3.7.1_jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/authentication/register.css?version=3" />
+	<script src="/js/3.7.1_jquery.min.js"></script>
+	<script src="/js/authentication/register.js"></script>
   </head>
   <body>
-    <h1>Aggiungi un cuoco</h1>
-    <form th:action="@{/cook}" method="POST" th:object="${cook}" enctype="multipart/form-data">
+    <h1>Registrati</h1>
+    <form th:action="@{/admin/cook}" method="POST" enctype="multipart/form-data" th:object="${credentials}">
+	      	<div th:if="${#fields.hasGlobalErrors()}">
+				<span class="error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</span>
+		  	</div>
+		<div>
+        Username: <span><input required type="text" th:field="${credentials.username}"/></span>
+		<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+      </div>
       <div>
+        Password: <span><input required type="text" th:field="${credentials.password}"/></span>
+      </div>
+      <div>
+		  <div>
         Nome: <span><input required type="text" th:field="${cook.name}"/></span>
+		<span th:if="${#fields.hasErrors('cook.name')}" th:errors="*{cook.name}"></span>
       </div>
       <div>
         Cognome: <span><input required type="text" th:field="${cook.surname}"/></span>
+		<span th:if="${#fields.hasErrors('cook.surname')}" th:errors="*{cook.surname}"></span>
       </div>
       <div>
-        Birthday: <span><input required type="date" th:field="${cook.birthday}"/></span>
+        Data di nascita: <span><input required type="date" th:field="${cook.birthday}"/></span>
       </div>
       <div>
-        Foto profilo: <span><input required type="file" name='fileImage' id="fileImage" accept="image/png, image/jpeg" /></span>
+        Foto profilo:
+		<br>
+		<input type="file" name='fileImage' id="fileImage" accept="image/png, image/jpeg" class="fileImage"/>
+		<label for="fileImage" class="label">Carica foto profilo</label>
       <br>
       </div>
-      <div>
-		  <img id="thumbnail" alt="Image Preview"/>
+	  <img id="thumbnail"/>
+	  <span th:if="${#fields.hasErrors('cook.photo')}" th:errors="*{cook.photo}"></span>
 	  </div>
-        <span><button type="submit">Conferma</button></span>
+        <span><button type="submit" id="submit">Registrati</button></span>
       </div>
     </form>
+	<a href="/login">Sei gi&agrave; registrato? Accedi!</a>
   </body>
-    <script type="text/javascript">
-	$(document).ready(function() {
-		$('#fileImage').change(function () {
-			showImageThumbnail(this);
-		});
-	});
-	
-	function showImageThumbnail(fileInput) {
-		file =fileInput.files[0];
-		reader = new FileReader();
-		
-		reader.onload = function(e) {
-			$('#thumbnail').attr('src', e.target.result);
-		};
-		
-		reader.readAsDataURL(file);
-	}
-</script>
 </html>

@@ -122,4 +122,10 @@ public class Recipe {
 	//Eliminazione ingrediente
 	@OneToMany(mappedBy="recipe", cascade=CascadeType.ALL)
 	private List<Quantity> quantities;
+
+	public void deleteAllImages() {
+		for (Image image:this.images) {
+			image.delete();
+		}
+	}
 }

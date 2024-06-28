@@ -8,9 +8,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,37 +25,59 @@ import it.uniroma3.siwfood.model.Credentials;
 import it.uniroma3.siwfood.model.Image;
 import it.uniroma3.siwfood.model.Recipe;
 import it.uniroma3.siwfood.service.CookService;
+import it.uniroma3.siwfood.service.CredentialsService;
 import it.uniroma3.siwfood.service.ImageService;
+import it.uniroma3.siwfood.validator.CredentialsValidator;
+import jakarta.validation.Valid;
 
 @Controller 
 public class CookController {
 	@Autowired CookService cookService;
 	@Autowired ImageService imageService;
+	@Autowired CredentialsService credentialsService;
+	
+	@Autowired PasswordEncoder passwordEncoder;
+	//Validazione
+	@Autowired CredentialsValidator credentialsValidator;
 
 	@GetMapping("/admin/newCook")
 	public String addCook(Model model) {
+		model.addAttribute("credentials", new Credentials());
 		model.addAttribute("cook", new Cook());
 		return "admin/formNewCook.html";
 	}
 
-	@PostMapping("/cook")
-	public String newCook(@ModelAttribute("cook") Cook cook,
+	@PostMapping("/admin/cook")
+	public String newCook(@Valid @ModelAttribute("credentials") Credentials credentials,
+			@ModelAttribute("cook") Cook cook,
+			BindingResult bindingResult,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
-		//Primo salvataggio per far assegnare al cuoco un id
-		this.cookService.save(cook);
-		//Caricamento dell'immagine
-		String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-		Image image=new Image();
-		//Impostazione del nome del file all'id dell'ingrediente e dell'estensione originale del file
-		fileName=cook.getId()+fileName.substring(fileName.lastIndexOf('.'));
-		image.setFileName(fileName);
-		image.setFolder("cook");
-		cook.setPhoto(image);
-		this.imageService.save(image);
-		this.cookService.save(cook);
-		image.uploadImage(fileName, multipartFile);
-		this.cookService.save(cook);
-		return "redirect:/cook/"+cook.getId();
+		//Validazione
+		this.credentialsValidator.validate(credentials, bindingResult);
+		if (!bindingResult.hasErrors()) {
+			//Primo salvataggio per far assegnare al cuoco un id
+			this.cookService.save(cook);
+			//Caricamento dell'immagine
+			String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
+			Image image=new Image();
+			//Impostazione del nome del file all'id dell'ingrediente e dell'estensione originale del file
+			fileName=cook.getId()+fileName.substring(fileName.lastIndexOf('.'));
+			image.setFileName(fileName);
+			image.setFolder("cook");
+			cook.setPhoto(image);
+			this.imageService.save(image);
+			this.cookService.save(cook);
+			image.uploadImage(fileName, multipartFile);
+			this.cookService.save(cook);
+			
+			credentials.setPassword(passwordEncoder.encode(credentials.getPassword()));
+			credentials.setCook(cook);
+			credentialsService.save(credentials);
+			return "redirect:/admin/manageCooks";
+		} 
+		else {
+			return "redirect:/admin/newCook";
+		}
 	}
 
 	@GetMapping("/cook/{id}")
@@ -77,9 +101,10 @@ public class CookController {
 		Cook cook=this.cookService.findById(id);
 		//Caricamento dell'immagine
 		String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-		Image image=new Image();
+		fileName=cook.getId()+fileName.substring(fileName.lastIndexOf('.'));
+		Image image=cook.getPhoto();
+		image.delete();
 		image.setFileName(fileName);
-		cook.setPhoto(image);
 		this.imageService.save(image);
 		image.uploadImage(fileName, multipartFile);
 		cook.updateTo(cookUpdated);
@@ -103,8 +128,13 @@ public class CookController {
 	public String removeCook(@PathVariable("id") Long id,
 			Model model) {
 		Cook cook=this.cookService.findById(id);
+		for (Recipe recipe : cook.getRecipes()) {
+			recipe.deleteAllImages();
+		}
+		cook.getPhoto().delete();
 		this.cookService.delete(cook);
 
-		return manageCooks(model);
-	}	
+		return "redirect:/admin/manageCooks";
+	}
+
 }

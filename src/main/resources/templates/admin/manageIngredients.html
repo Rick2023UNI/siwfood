@@ -13,6 +13,7 @@
 </head>
 
 <body>
+	<a href="/admin/newIngredient">Aggiungi ingrediente</a>
 	<div th:if="${ingredients==null || ingredients.isEmpty()}">Non ci sono ingredienti nel sistema</div>
 		<ul class="ingredients">
 			<li th:each="ingredient : ${ingredients}" class="ingredient">

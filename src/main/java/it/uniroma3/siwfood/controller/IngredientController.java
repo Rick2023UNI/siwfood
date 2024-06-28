@@ -39,12 +39,40 @@ public class IngredientController {
 	public String manageIngredients(Model model) {
 		model.addAttribute("ingredients", this.ingredientService.findAll());		    
 		return "admin/manageIngredients.html";
-	}	
+	}
+	
+	@PostMapping("/admin/ingredient")
+	public String newIngredient(@ModelAttribute("ingredient") Ingredient ingredient,
+			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
+		//Caricamento dell'immagine
+		String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
+		//Primo salvataggio per far assegnare all'ingrediente un id
+		this.ingredientService.save(ingredient);
+		//Impostazione del nome del file all'id dell'ingrediente, mantenendo l'estensione del file originale
+		fileName=ingredient.getId()+fileName.substring(fileName.lastIndexOf('.'));
+		Image image=new Image();
+		image.setFolder("ingredient");
+		this.imageService.save(image);
+		
+		image.uploadImage(fileName, multipartFile);
+		ingredient.setImage(image);
+		this.imageService.save(image);
+		this.ingredientService.save(ingredient);
+		return "redirect:/admin/manageIngredients";
+	}
+	
+	@GetMapping("/admin/newIngredient")
+	public String addRecipe(Model model) {
+		model.addAttribute("ingredient", new Ingredient());
+		return "admin/formNewIngredient.html";
+	}
+	
 
 	@GetMapping("admin/removeIngredient/{id}")
 	public String removeIngredient(@PathVariable("id") Long id,
 			Model model) {
 		Ingredient ingredient=this.ingredientService.findById(id);
+		ingredient.getImage().delete();
 		List<Quantity> quantities=ingredient.getQuantities();
 		for (Quantity quantity : quantities) {
 			Recipe recipe=quantity.getRecipe();
@@ -54,7 +82,7 @@ public class IngredientController {
 		}
 		this.imageService.delete(ingredient.getImage());
 		this.ingredientService.delete(ingredient);
-		return manageIngredients(model);
+		return "redirect:/admin/manageIngredients";
 	}
 	
 	@GetMapping("/admin/formUpdateIngredient/{id}")
