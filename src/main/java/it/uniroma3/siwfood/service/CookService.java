@@ -1,5 +1,7 @@
 package it.uniroma3.siwfood.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,14 @@ public class CookService {
 
 	public Cook findById(Long id) {
 		return cookRepository.findById(id).get();
+	}
+
+	public Iterable<Cook> findByNameContaining(String name) {
+		return cookRepository.findByNameContaining(name);
+	}
+
+	public Iterable<Cook> findBySurnameContaining(String surname) {
+		return cookRepository.findBySurnameContaining(surname);
 	}
 
 }

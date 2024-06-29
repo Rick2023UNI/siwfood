@@ -14,6 +14,10 @@
 </head>
 
 <body>
+	<form th:action="@{/admin/manageRecipes}" method="post">
+		<input id="search" type="text" th:value="${name}" name="name" placeholder="Nome ricetta"/>
+		<button id="submit" type="submit">Cerca</button>
+	 </form>
 	<a href="/admin/newRecipe">Aggiungi ricetta</a>
 	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema</div>
 	<ul>

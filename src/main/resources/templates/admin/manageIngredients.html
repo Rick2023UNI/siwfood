@@ -13,6 +13,10 @@
 </head>
 
 <body>
+	<form th:action="@{/admin/manageIngredients}" method="post">
+		<input id="search" type="text" th:value="${name}" name="name" placeholder="Nome ingrediente"/>
+		<button id="submit" type="submit">Cerca</button>
+	 </form>
 	<a href="/admin/newIngredient">Aggiungi ingrediente</a>
 	<div th:if="${ingredients==null || ingredients.isEmpty()}">Non ci sono ingredienti nel sistema</div>
 		<ul class="ingredients">

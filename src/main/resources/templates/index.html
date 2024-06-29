@@ -24,9 +24,9 @@
 	</ul>
 <br>
 <form th:action="@{/}" method="post">
-		<input id="search" type="text" th:value="${name}" name="name" />
-	   <button id="submit" type="submit">Cerca</button>
-	  </form>
+	<input id="search" type="text" th:value="${name}" name="name" placeholder="Nome ricetta"/>
+	<button id="submit" type="submit">Cerca</button>
+ </form>
 <br>
 	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema</div>
 	<div th:if="${userDetails!=null}" class="newRecipe">

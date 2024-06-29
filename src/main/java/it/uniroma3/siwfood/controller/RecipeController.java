@@ -315,7 +315,7 @@ public class RecipeController {
 	@GetMapping("/searchRecipes")
 	public String formSearchRecipes(Model model) {
 		model.addAttribute("ingredients", this.ingredientService.findAll());  
-		model.addAttribute("recipes", this.recipeService.findByNameStartingWith(""));   
+		model.addAttribute("recipes", this.recipeService.findAll());   
 		return "searchRecipes.html";
 	}	
 
@@ -344,7 +344,7 @@ public class RecipeController {
 	@PostMapping("/")
 	public String searchRecipesHome(@RequestParam String name, Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		model.addAttribute("recipes", this.recipeService.findByNameStartingWith(name));
+		model.addAttribute("recipes", this.recipeService.findByNameContaining(name));
 		if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
 			return "admin/index.html";
 		}
@@ -352,4 +352,10 @@ public class RecipeController {
 			return "index.html";
 		}
 	}
+	
+	@PostMapping("admin/manageRecipes")
+	public String searchManageRecipes(@RequestParam String name, Model model) {
+		model.addAttribute("recipes", this.recipeService.findByNameContaining(name));
+		return "admin/manageRecipes.html";
+	}	
 }

@@ -7,6 +7,11 @@
 </head>
 
 <body>
+	<form th:action="@{/cooks}" method="post">
+		<input class="search" type="text" th:value="${name}" name="name" placeholder="Nome"/>
+		<input class="search" type="text" th:value="${surname}" name="surname" placeholder="Cognome"/>
+	   <button id="submit" type="submit">Cerca</button>
+	</form>
 	<h1>Cuochi</h1>
 	<div th:if="${cooks==null || cooks.isEmpty()}">Non ci sono cuochi nel sistema</div>
 	<ul class="cooks">

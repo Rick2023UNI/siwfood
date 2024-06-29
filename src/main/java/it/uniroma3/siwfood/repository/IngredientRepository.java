@@ -14,4 +14,6 @@ public interface IngredientRepository extends CrudRepository<Ingredient, Long> {
 
 	public boolean existsByName(String name);
 
+	Iterable<Ingredient> findByNameContaining(String name);
+
 }

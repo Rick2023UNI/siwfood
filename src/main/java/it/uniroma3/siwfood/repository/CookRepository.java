@@ -7,4 +7,8 @@ import java.util.List;
 
 public interface CookRepository extends CrudRepository<Cook, Long> {
 
+	Iterable<Cook> findByNameContaining(String name);
+
+	Iterable<Cook> findBySurnameContaining(String surname);
+
 }

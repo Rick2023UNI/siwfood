@@ -9,6 +9,8 @@
   <body>
     <h1>Aggiungi una ricetta</h1>
     <form th:action="@{/admin/recipe}" method="POST" enctype="multipart/form-data">
+		<span>Autore</span>
+		<br>
 		<select name="cookId" id="cookSelector">
 	      <option th:each="cook : ${cooks}" th:text="${cook.name} + ', ' + ${cook.surname}" th:value="${cook.id}" th:id="${cook.id}"></option>
 	    </select>

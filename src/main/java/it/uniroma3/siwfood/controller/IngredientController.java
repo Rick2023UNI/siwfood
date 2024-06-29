@@ -116,4 +116,10 @@ public class IngredientController {
 		this.ingredientService.save(ingredient);
 		return "redirect:/admin/formUpdateIngredient/"+ingredient.getId();
 	}
+	
+	@PostMapping("admin/manageIngredients")
+	public String searchIngredients(@RequestParam String name, Model model) {
+		model.addAttribute("ingredients", this.ingredientService.findByNameContaining(name));
+		return "admin/manageIngredients.html";
+	}
 }

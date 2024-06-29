@@ -29,7 +29,7 @@ public class RecipeService {
 		recipeRepository.delete(recipe);	
 	}
 
-	public Iterable<Recipe> findByNameStartingWith(String name) {
-		return recipeRepository.findByNameStartingWith(name);
+	public Iterable<Recipe> findByNameContaining(String name) {
+		return recipeRepository.findByNameContaining(name);
 	}
 }

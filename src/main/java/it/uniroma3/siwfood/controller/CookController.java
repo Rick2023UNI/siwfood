@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -135,6 +136,24 @@ public class CookController {
 		this.cookService.delete(cook);
 
 		return "redirect:/admin/manageCooks";
+	}
+	
+	@PostMapping("/cooks")
+	public String searchCooks(@RequestParam String name, @RequestParam String surname, Model model) {
+		ArrayList<Cook> cooksByName=(ArrayList<Cook>) this.cookService.findByNameContaining(name);
+		ArrayList<Cook> cooksBySurname=(ArrayList<Cook>) this.cookService.findBySurnameContaining(surname);
+		cooksBySurname.retainAll(cooksByName);
+		model.addAttribute("cooks", cooksBySurname);
+		return "cooks.html";
+	}
+	
+	@PostMapping("admin/manageCooks")
+	public String searchManageCooks(@RequestParam String name, @RequestParam String surname, Model model) {
+		ArrayList<Cook> cooksByName=(ArrayList<Cook>) this.cookService.findByNameContaining(name);
+		ArrayList<Cook> cooksBySurname=(ArrayList<Cook>) this.cookService.findBySurnameContaining(surname);
+		cooksBySurname.retainAll(cooksByName);
+		model.addAttribute("cooks", cooksBySurname);
+		return "admin/manageCooks.html";
 	}
 
 }

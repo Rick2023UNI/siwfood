@@ -43,4 +43,8 @@ public class IngredientService {
 		return ingredientRepository.findAllById(ingredientsIds);
 	}
 
+	public Iterable<Ingredient> findByNameContaining(String name) {
+		return ingredientRepository.findByNameContaining(name);
+	}
+
 }
