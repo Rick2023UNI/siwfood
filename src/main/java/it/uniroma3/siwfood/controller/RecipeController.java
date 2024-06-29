@@ -104,7 +104,7 @@ public class RecipeController {
 		recipe.setCook(cook);
 
 		this.recipeService.save(recipe);
-		return "redirect:recipe/"+recipe.getId();
+		return "redirect:/formUpdateRecipe/"+recipe.getId();
 	}
 
 	@PostMapping("/recipe")
@@ -140,7 +140,7 @@ public class RecipeController {
 		recipe.setCook(cook);
 
 		this.recipeService.save(recipe);
-		return "redirect:recipe/"+recipe.getId();
+		return "redirect:/formUpdateRecipe/"+recipe.getId();
 	}
 
 	@GetMapping("/recipe/{id}")
@@ -160,8 +160,11 @@ public class RecipeController {
 	}
 
 	@PostMapping("/addQuantity/{id}")
-	public String addQuantity(Model model, @PathVariable("id") Long id, @RequestParam("name") String nameParam, 
+	public String addQuantity(Model model, 
+			@PathVariable("id") Long id, 
+			@RequestParam("name") String nameParam, 
 			@RequestParam("quantity") String quantityParam, 
+			@RequestParam("ingredientId") Long ingredientId,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
 		//Cuoco corrente
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -172,6 +175,10 @@ public class RecipeController {
 			Ingredient ingredient=null;
 			Quantity quantity=new Quantity();
 			quantity.setQuantity(quantityParam);
+			if (ingredientId!=-1) {
+				ingredient=this.ingredientService.findById(ingredientId);
+				quantity.setIngredient(ingredient);
+			} else {
 			if (this.ingredientService.existsByName(nameParam)) {
 				quantity.setIngredient(this.ingredientService.findByName(nameParam));
 				recipe.addQuantity(quantity);
@@ -196,6 +203,7 @@ public class RecipeController {
 				ingredient.setImage(image);
 				this.imageService.save(image);
 				this.ingredientService.save(ingredient);
+			}
 			}
 			//Soluzione bug mappedBy
 			quantity.setRecipe(recipe);
@@ -243,6 +251,7 @@ public class RecipeController {
 			model.addAttribute("recipe", this.recipeService.findById(id));
 			model.addAttribute("images", this.recipeService.findById(id).getImages());
 			model.addAttribute("quantities", this.recipeService.findById(id).getQuantities());
+			model.addAttribute("ingredients", this.ingredientService.findAll());
 		}
 		return "cook/formUpdateRecipe.html";
 	}

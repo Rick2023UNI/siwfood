@@ -53,10 +53,20 @@
    	        <div>
    	          Quantit&agrave;: <span><input type="text" name='quantity' class="input"/></span>
    	        </div>
-   	        <div>
+			<div>
+						<span>Seleziona un ingrediente gi&agrave; caricato nel sistema</span>
+						<br>
+						<select id="ingredientSelector" name="ingredientId">
+							<option value="-1">-</option>
+							<option th:each="ingredient : ${ingredients}" th:text="${ingredient.name}" th:value="${ingredient.id}"
+								th:id="${ingredient.id}" th:imagelink="@{${ingredient.image.getImagePath}}"></option>
+						</select>
+						<img id="thumbnailIngredientSelector"/>
+					</div>
+   	        <div id="new-ingredient">
    	          Ingrediente: <span><input type="text" name='name' class="input"/></span>
    	        </div>
-   	        <div>
+   	        <div id="new-image">
    	          Immagine ingrediente:
 			  <input type="file" name='fileImage' id="fileImageIngredient" accept="image/png, image/jpeg" class="fileImage"/>
 			  				<label for="fileImageIngredient" class="label">Carica file</label>

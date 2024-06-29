@@ -13,6 +13,7 @@ var i=0;
 	//Inizializzazione evento per l'aggiunta di ulteriori input
 	$(document).ready(function() {
 		$('#fileImage0').change(newImageInputAndThumbnail);
+		$('#ingredientSelector').change(checkIngredientShoHideForm);
 	});
 	
 	function showRecipeImageThumbnail(fileInput) {
@@ -54,7 +55,7 @@ var i=0;
 		image.setAttribute("src", "");
 		
 		var A=newDiv.getElementsByTagName("a")[0];
-		A.classList.add("hidden")
+		A.classList.add("hidden");
 		
 		images.appendChild(newDiv);
 		
@@ -96,4 +97,23 @@ var i=0;
 		};
 		
 		reader.readAsDataURL(file);
+	}
+	
+	function checkIngredientShoHideForm() {
+		var image=document.getElementById("new-image");
+		var ingredient=document.getElementById("new-ingredient");
+		var imageIngredient=document.getElementById("thumbnailIngredientSelector");
+		if (document.getElementById("ingredientSelector").value=="-1") {
+			image.style.display='';
+			ingredient.style.display='';
+			imageIngredient.style.display='none';
+		} 
+		else {
+			image.style.display='none';
+			ingredient.style.display='none';
+			imageIngredient.style.display='';
+			var selector=document.getElementById('ingredientSelector');
+			var selected=selector.options[selector.selectedIndex];
+			$('#thumbnailIngredientSelector').attr('src', selected.getAttribute("imagelink"));
+		}
 	}
