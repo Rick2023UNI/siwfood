@@ -7,6 +7,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 700;
 }
 
 .submit:hover {
@@ -31,32 +32,6 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-}
-
-.fileImage {
-	line-height: normal;
-	display: none;
-}
-
-.fileImage + label {
-  max-width: 80%;
-  font-size: 1.25rem;
-  font-weight: 700;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  cursor: pointer;
-  display: inline-block;
-  overflow: hidden;
-  padding: 0.625rem 1.25rem;
-}
-
-.fileImage + label {
-  color: #f1e5e6;
-  background-color: #4CAF50;
-}
-
-label:hover {
-  background-color: #45a049;
 }
 
 a.icon {

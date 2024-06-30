@@ -103,15 +103,18 @@ var i=0;
 		var image=document.getElementById("new-image");
 		var ingredient=document.getElementById("new-ingredient");
 		var imageIngredient=document.getElementById("thumbnailIngredientSelector");
+		var thumbnail=document.getElementById("thumbnailIngredient");
 		if (document.getElementById("ingredientSelector").value=="-1") {
 			image.style.display='';
 			ingredient.style.display='';
 			imageIngredient.style.display='none';
+			thumbnail.style.display='';
 		} 
 		else {
 			image.style.display='none';
 			ingredient.style.display='none';
 			imageIngredient.style.display='';
+			thumbnail.style.display='none';
 			var selector=document.getElementById('ingredientSelector');
 			var selected=selector.options[selector.selectedIndex];
 			$('#thumbnailIngredientSelector').attr('src', selected.getAttribute("imagelink"));

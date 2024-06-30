@@ -21,16 +21,15 @@ input {
 
 #submit {
   max-width: 80%;
-  font-size: 1.25rem;
-  font-weight: 700;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  cursor: pointer;
-  display: inline-block;
-  overflow: hidden;
-  padding: 0.625rem 1.25rem;
-  color: #f1e5e6;
   background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
 }
 
 #submit:hover {

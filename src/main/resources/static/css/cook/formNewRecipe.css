@@ -33,32 +33,6 @@
   box-sizing: border-box;
 }
 
-.fileImage {
-	line-height: normal;
-	display: none;
-}
-
-.fileImage + label {
-  max-width: 80%;
-  font-size: 1.25rem;
-  font-weight: 700;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  cursor: pointer;
-  display: inline-block;
-  overflow: hidden;
-  padding: 0.625rem 1.25rem;
-}
-
-.fileImage + label {
-  color: #f1e5e6;
-  background-color: #4CAF50;
-}
-
-label:hover {
-  background-color: #45a049;
-}
-
 a.icon {
 	text-decoration: none;
 }
