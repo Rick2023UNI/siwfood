@@ -10,23 +10,29 @@
 
 	<link rel="stylesheet" href="/css/admin/_modal.css"/>
 	<script src="/js/admin/_modal.js"></script>
+	
+	<link rel="stylesheet" href="/css/admin/_new.css"/>
 </head>
 <body>
 	<span th:if="${searchNameSurname}" id="previousSearch">
-				<span th:text="${searchNameSurname.name} + ', ' + ${searchNameSurname.surname}"></span>
-			</span>
-			<br>
-			<span th:if="${searchNameSurname}">
-				<span th:if="@{${cooks.size()}>1}" th:text="'Trovati '+${cooks.size()}+' cuochi'"></span>
-				<span th:unless="@{${cooks.size()}>1}" th:text="'Trovato un cuoco'"></span>
-			</span>
+		<span th:text="${searchNameSurname.name} + ', ' + ${searchNameSurname.surname}"></span>
+	</span>
+	<br>
+	<span th:if="${searchNameSurname}" class="search-results">
+			<span th:if="@{${cooks.size()}>1}" th:text="'Trovati '+${cooks.size()}+' cuochi'"></span>
+			<span th:if="@{${cooks.size()}==1}" text="Trovato un cuoco"></span>
+			<span th:if="@{${cooks.size()}==0}" text="Nessun cuoco trovato"></span>
+	</span>
 	<form th:action="@{/admin/manageCooks}" method="post">
 		<input class="search" type="text" th:value="${name}" name="name" placeholder="Nome"/>
 		<input class="search" type="text" th:value="${surname}" name="surname" placeholder="Cognome"/>
 	   <button id="submit" type="submit">Cerca</button>
 	</form>
 	<h1>Cuochi</h1>
-	<a href="/admin/newCook">Aggiungi cuoco</a>
+	<div class="new">
+		<a href="/admin/newCook"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon">
+		<path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Aggiungi cuoco</a>
+	</div>
 	<div th:if="${cooks==null || cooks.isEmpty()}">Non ci sono cuochi nel sistema</div>
 	<ul class="cooks">
 		<li th:each="cook : ${cooks}" class="cook">

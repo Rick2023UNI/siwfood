@@ -19,7 +19,7 @@
       <div>
 		<div th:if="${images==null || images.isEmpty()}">Non ci sono immagini per la ricetta corrente</div>
 				<ul class="images">
-					<li th:each="image : ${images}" class="ingredient">
+					<li th:each="image : ${images}" class="recipeImage">
 						<img th:src="@{${image.getImagePath}}" class="image">
 						<div class="container">
 							<a th:href="@{/removeImageRecipe/}+${recipe.id}+'/'+${image.id}" class="icon-button">
@@ -61,6 +61,7 @@
 							<option th:each="ingredient : ${ingredients}" th:text="${ingredient.name}" th:value="${ingredient.id}"
 								th:id="${ingredient.id}" th:imagelink="@{${ingredient.image.getImagePath}}"></option>
 						</select>
+						<br>
 						<img id="thumbnailIngredientSelector"/>
 					</div>
    	        <div id="new-ingredient">

@@ -59,6 +59,8 @@ a.icon {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
 }
 
 #submit:hover {

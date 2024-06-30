@@ -113,7 +113,7 @@ svg.icon {
   text-align: right;
 }
 
-.ingredient, .imageUpload {
+.ingredient, .recipeImage, .imageUpload {
 	display: flex;
 	padding-bottom: 10px;
 }
@@ -132,4 +132,19 @@ svg.icon {
 
 .hidden {
 	display: none;
+}
+
+select {
+	width: 120px;
+	height: 30px;
+	border: 1px solid #999;
+	font-size: 18px;
+	color: black;
+	background-color: #eee;
+	border-radius: 5px;
+	box-shadow: 4px 4px #ccc;
+}
+
+#thumbnailIngredientSelector {
+	padding: 1%;
 }

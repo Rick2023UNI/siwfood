@@ -39,12 +39,12 @@
 	font-size: 3rem;
 	text-align: center;
 	text-decoration: none;
-	color:black;
+	color:#4CAF50;
 	font-weight: 700;
 }
 
 .linkRecipe:hover {
-	color:#4CAF50;
+	color:#45a049;
 }
 
 .cook {
@@ -60,7 +60,12 @@
 	font-size: 1.3rem;
 	text-decoration: none;
 	text-align: right;
-	color:black;
+	color:#4CAF50;
+	font-weight: 700;
+}
+
+.cookLink:hover {
+	color:#45a049;
 }
 
 .newRecipe a {
@@ -70,11 +75,11 @@
 	text-align: center;
 	text-decoration: none;
 	font-weight: 700;
-	color:black;
+	color:#4CAF50;
 }
 
 .newRecipe a:hover {
-	color:#4CAF50;
+	color:#45a049;
 }
 
 .user {
@@ -114,6 +119,8 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
 }
 
 #submit:hover {

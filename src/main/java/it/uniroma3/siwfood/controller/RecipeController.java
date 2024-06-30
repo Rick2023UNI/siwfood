@@ -365,6 +365,7 @@ public class RecipeController {
 	@PostMapping("admin/manageRecipes")
 	public String searchManageRecipes(@RequestParam String name, Model model) {
 		model.addAttribute("recipes", this.recipeService.findByNameContaining(name));
+		model.addAttribute("search", name);
 		return "admin/manageRecipes.html";
 	}	
 }
