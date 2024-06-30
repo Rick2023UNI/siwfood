@@ -107,3 +107,11 @@ a.icon {
 .slider-nav a:hover {
 	opacity: 1;
 }
+
+pre {
+  display: block;/* or inline-block */
+  word-wrap: break-word;
+  overflow: hidden;
+  max-width: 97%;
+  white-space: pre-wrap;
+}

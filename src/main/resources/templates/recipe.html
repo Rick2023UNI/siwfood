@@ -37,7 +37,7 @@
 				</div>
 			</section>
 			<br>
-			<span th:text="${recipe.description}"></span>
+			<pre th:text="${recipe.description}"></pre>
 			
 		<h3>Ingredienti: </h3>
 		<div th:if="${quantities==null || quantities.isEmpty()}">Non ci sono ingredienti per la ricetta corrente</div>

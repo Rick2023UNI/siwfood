@@ -129,7 +129,7 @@
 
 section{
     width: 100%;
-    height: 30vh;
+    height: 10vh;
 }
 
 section nav{
@@ -139,7 +139,7 @@ section nav{
     position: fixed;
     right: 0;
     left: 0;
-    top: -1%;
+    top: -0.01vh;
     background: white;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
     z-index: 1000;
@@ -251,11 +251,39 @@ section p{
 }
 
 .recipe-information {
-	padding-left: 1.2rem;
-	height: 40%;
+  padding-left: 1.2rem;
+  position: relative;
 }
 
-.recipe-information span {
-	position: absolute;
-  	bottom: 0;
+#account {
+	text-decoration: none;
+	cursor: pointer;
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
+}
+
+#account svg{
+	width: 2.2rem;
+	height: 2.2rem;
+	vertical-align: middle;
+	color: #45a049;
+}
+
+#account svg:hover{
+color: #367d39;
+}
+
+.description {
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 3.6em;
+  /*line-height: 1.8em;*/
+  max-width: 97%;
+}
+
+.numberOfIngredients {
+  position: absolute;
+  bottom: 0;
+  font-weight: 700;
 }

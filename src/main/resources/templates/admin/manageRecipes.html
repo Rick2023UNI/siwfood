@@ -17,12 +17,11 @@
 
 <body>
 	<span th:if="${search}" id="previousSearch">
-		<span id="searchedIngredients" th:text="${search}"></span>
+		<span id="searchedIngredients" th:text="'Risultati per:' + ${search}"></span>
 	</span>
 	<span th:if="${search}" class="search-results">
 		<span th:if="@{${recipes.size()}>1}" th:text="'Trovate '+${recipes.size()}+' ricette'"></span>
 		<span th:if="@{${recipes.size()}==1}" text="Trovata una ricetta"></span>
-		<span th:if="@{${recipes.size()}==0}" text="Nessuna ricetta trovata"></span>
 	</span>
 	<form th:action="@{/admin/manageRecipes}" method="post">
 		<input id="search" type="text" th:value="${name}" name="name" placeholder="Nome ricetta"/>
@@ -32,7 +31,7 @@
 		<a href="/admin/newRecipe">		<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon">
 				<path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Aggiungi ricetta</a>
 	</div>
-	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema</div>
+	<div th:if="${recipes==null || recipes.isEmpty()}">Nessuna ricetta trovata, prova con un termine più generico o controlla eventuali errori ortografici</div>
 	<ul>
 		<li th:each="recipe : ${recipes}">
 			<a th:href="@{'/recipe' + '/' + ${recipe.id}}" th:text="${recipe.name}"></a>

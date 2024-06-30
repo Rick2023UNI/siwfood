@@ -16,13 +16,12 @@
 
 <body>
 	<span th:if="${searchName}" id="previousSearch">
-		<span th:text="${searchName}"></span>
+		<span th:text="'Risultati per:' + ${searchName}"></span>
 	</span>
 	<br>
 	<span th:if="${searchName}" class="search-results">
 			<span th:if="@{${ingredients.size()}>1}" th:text="'Trovati '+${ingredients.size()}+' ingredienti'"></span>
 			<span th:if="@{${ingredients.size()}==1}" text="Trovato un ingrediente"></span>
-			<span th:if="@{${ingredients.size()}==0}" text="Nessun ingrediente trovato"></span>
 	</span>
 	<form th:action="@{/admin/manageIngredients}" method="post">
 		<input id="search" type="text" th:value="${name}" name="name" placeholder="Nome ingrediente"/>
@@ -32,7 +31,7 @@
 		<a href="/admin/newIngredient"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon">
 				<path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Aggiungi ingrediente</a>
 	 </div>
-	<div th:if="${ingredients==null || ingredients.isEmpty()}">Non ci sono ingredienti nel sistema</div>
+	<div th:if="${ingredients==null || ingredients.isEmpty()}">Nessun ingrediente trovato, prova con un termine più generico o controlla eventuali errori ortografici</div>
 		<ul class="ingredients">
 			<li th:each="ingredient : ${ingredients}" class="ingredient">
 				<img th:src="@{${ingredient.image.getImagePath}}" class="ingredientImage">

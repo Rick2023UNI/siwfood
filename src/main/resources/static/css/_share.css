@@ -9,24 +9,48 @@
   background: #3b5998;
 }
 
+.share-button.facebook:hover {
+  background: #324b81;
+}
+
 .share-button.twitter {
   background: #000000;
+}
+
+.share-button.twitter:hover {
+  background: #1a1a1a;
 }
 
 .share-button.reddit {
   background: #ff4500;
 }
 
+.share-button.reddit:hover {
+  background: #cc3600;
+}
+
 .share-button.whatsapp {
   background: #47ca57;
+}
+
+.share-button.whatsapp:hover {
+  background: #34b242;
 }
 
 .share-button.linkedin {
   background: #007bb5;
 }
 
+.share-button.linkedin:hover {
+  background: #005780;
+}
+
 .share-button.email {
   background: #444444;
+}
+
+.share-button.email:hover {
+  background: #333333;
 }
 
 .share-button.copy {
@@ -35,6 +59,10 @@
   background: #364fc7;
   font-weight: 700;
   cursor: pointer;
+}
+
+.share-button.copy:hover {
+	background: #2c3fa0;
 }
 
 
