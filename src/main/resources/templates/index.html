@@ -9,19 +9,25 @@
 </head>
 
 <body>
-	<ul class="menu">
-	  <li><a href="/cooks">Lista cuochi</a></li>
-	  <li><a href="/searchRecipes">Cerca ricette</a></li>
-	  <li class="user">
-				<span th:if="${userDetails!=null}" th:text="${userDetails.getUsername()}"></span>
-				<a th:if="${userDetails!=null}" th:text="${cookDetails.name} + ', ' + ${cookDetails.surname}" th:href="@{'/cook/' + ${cookDetails.id}}"></a>
-				<a th:if="${userDetails!=null}" href="/logout">Esci</a>
-	  </li>
-	  <li th:unless="${userDetails!=null}">
-		<a href="/login">Accedi</a>
-		<a href="/register">Registrati</a>
-	  </li>
-	</ul>
+	<section id="Home">
+    <nav>
+        <div class="logo">
+            <img src="image/logo.png">
+        </div>
+        <ul>
+            <li><a href="/cooks">Lista cuochi</a></li>
+            <li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
+        </ul>
+
+        <div class="">
+			<a th:if="${userDetails!=null}" th:text="${cookDetails.name} + ', ' + ${cookDetails.surname}" th:href="@{'/cook/' + ${cookDetails.id}}"></a>
+			<a th:if="${userDetails!=null}" href="/logout" id="logout">Esci</a>
+			<a th:unless="${userDetails!=null}" href="/login" id="login">Accedi</a>
+			<a th:unless="${userDetails!=null}" href="/register" id="register">Registrati</a>
+		</div>
+
+    </nav>
+	</section>
 <br>
 <form th:action="@{/}" method="post">
 	<input id="search" type="text" th:value="${name}" name="name" placeholder="Nome ricetta"/>
@@ -36,9 +42,10 @@
 			<li th:each="recipe : ${recipes}" class="listItem">
 				<div class="recipe">
 					<img th:src="@{${recipe.images[0].getImagePath}}" class="recipeImage">
-					<div>
+					<div class="recipe-information">
 						<a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}" class="linkRecipe"></a>
 						<p th:text="${recipe.description}"></p>
+						<span th:text="'Ingredienti usati: ' + ${recipe.quantities.size()}">
 					</div>
 				</div>
 				<div class="cook">

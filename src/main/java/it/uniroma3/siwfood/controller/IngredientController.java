@@ -119,6 +119,7 @@ public class IngredientController {
 	
 	@PostMapping("admin/manageIngredients")
 	public String searchIngredients(@RequestParam String name, Model model) {
+		model.addAttribute("searchName", name);
 		model.addAttribute("ingredients", this.ingredientService.findByNameContaining(name));
 		return "admin/manageIngredients.html";
 	}

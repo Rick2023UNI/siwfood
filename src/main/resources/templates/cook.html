@@ -9,7 +9,6 @@
 <body>
 	<div th:if="${cook}">
 		<h1 th:text="${cook.name} + ' ' + ${cook.surname}"></h1>
-		<br>
 		<span th:text='${#dates.format(cook.birthday, "yyyy-MM-dd")}'></span>
 		<br>
 		<img th:src="@{${cook.photo.getImagePath}}">

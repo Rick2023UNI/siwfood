@@ -13,6 +13,14 @@
 </head>
 
 <body>
+	<span th:if="${searchName}" id="previousSearch">
+					<span th:text="${searchName}"></span>
+				</span>
+				<br>
+				<span th:if="${searchName}">
+					<span th:if="@{${ingredients.size()}>1}" th:text="'Trovati '+${ingredients.size()}+' ingredienti'"></span>
+					<span th:unless="@{${ingredients.size()}>1}" th:text="'Trovato un ingrediente'"></span>
+				</span>
 	<form th:action="@{/admin/manageIngredients}" method="post">
 		<input id="search" type="text" th:value="${name}" name="name" placeholder="Nome ingrediente"/>
 		<button id="submit" type="submit">Cerca</button>

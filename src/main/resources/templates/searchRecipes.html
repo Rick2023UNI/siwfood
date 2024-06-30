@@ -16,7 +16,10 @@
 		</span>
 	</span>
 	<br>
-	<span th:text="'Trovate '+${recipes.size()}+' ricette'"></span>
+	<span th:if="${searchIngredients}">
+		<span th:if="@{${recipes.size()}>1}" th:text="'Trovate '+${recipes.size()}+' ricette'"></span>
+		<span th:unless="@{${recipes.size()}>1}" th:text="'Trovata una ricetta'"></span>
+	</span>
 	<form th:action="@{/searchRecipes}" method="post">
 		<div id="selectors">
 			<div id="ingredient" style="display: none;"  class="ingredient">

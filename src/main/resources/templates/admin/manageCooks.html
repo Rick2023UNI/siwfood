@@ -12,6 +12,14 @@
 	<script src="/js/admin/_modal.js"></script>
 </head>
 <body>
+	<span th:if="${searchNameSurname}" id="previousSearch">
+				<span th:text="${searchNameSurname.name} + ', ' + ${searchNameSurname.surname}"></span>
+			</span>
+			<br>
+			<span th:if="${searchNameSurname}">
+				<span th:if="@{${cooks.size()}>1}" th:text="'Trovati '+${cooks.size()}+' cuochi'"></span>
+				<span th:unless="@{${cooks.size()}>1}" th:text="'Trovato un cuoco'"></span>
+			</span>
 	<form th:action="@{/admin/manageCooks}" method="post">
 		<input class="search" type="text" th:value="${name}" name="name" placeholder="Nome"/>
 		<input class="search" type="text" th:value="${surname}" name="surname" placeholder="Cognome"/>

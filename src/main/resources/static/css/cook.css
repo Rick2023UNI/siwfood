@@ -1,0 +1,10 @@
+h1 {
+	font-weight: 1400;
+	font-size: 7vh;
+}
+
+img {
+	object-fit: contain;
+	max-width: 200rem;
+	max-height: 200rem;
+}

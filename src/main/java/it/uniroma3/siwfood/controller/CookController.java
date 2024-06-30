@@ -143,6 +143,10 @@ public class CookController {
 		ArrayList<Cook> cooksByName=(ArrayList<Cook>) this.cookService.findByNameContaining(name);
 		ArrayList<Cook> cooksBySurname=(ArrayList<Cook>) this.cookService.findBySurnameContaining(surname);
 		cooksBySurname.retainAll(cooksByName);
+		Cook cook=new Cook();
+		cook.setName(name);
+		cook.setSurname(surname);
+		model.addAttribute("searchNameSurname", cook);
 		model.addAttribute("cooks", cooksBySurname);
 		return "cooks.html";
 	}
@@ -153,6 +157,10 @@ public class CookController {
 		ArrayList<Cook> cooksBySurname=(ArrayList<Cook>) this.cookService.findBySurnameContaining(surname);
 		cooksBySurname.retainAll(cooksByName);
 		model.addAttribute("cooks", cooksBySurname);
+		Cook cook=new Cook();
+		cook.setName(name);
+		cook.setSurname(surname);
+		model.addAttribute("searchNameSurname", cook);
 		return "admin/manageCooks.html";
 	}
 
