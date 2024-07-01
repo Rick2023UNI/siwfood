@@ -15,8 +15,6 @@ input {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 #submit {
@@ -59,4 +57,21 @@ a {
   margin-bottom: 15px;
   opacity: 0.7;
   display: inline-block;
+}
+
+#show, #hide{
+	width: 1.8rem;
+	height: 1.8rem;
+	vertical-align: middle;
+	color: #45a049;
+	margin-top: 1.5vh;
+  	margin-left: -2.2vw;
+}
+
+#hide {
+	display: none;
+}
+
+#span-password {
+	display: flex;
 }

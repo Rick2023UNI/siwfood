@@ -104,12 +104,19 @@ var i=0;
 		var ingredient=document.getElementById("new-ingredient");
 		var imageIngredient=document.getElementById("thumbnailIngredientSelector");
 		var thumbnail=document.getElementById("thumbnailIngredient");
+		//Se nessun ingrediente già caricato è selezionato, vengono mostrati 
+		//i campi relativi per creare un nuovo ingrediente
 		if (document.getElementById("ingredientSelector").value=="-1") {
 			image.style.display='';
 			ingredient.style.display='';
 			imageIngredient.style.display='none';
 			thumbnail.style.display='';
-		} 
+			
+			ingredient.getElementsByTagName("input")[0].addAttribute("required");
+			image.getElementsByTagName("input")[0].addAttribute("required");
+		}
+		//Altrimenti se è selezionato un ingrediente già nel sistema, vengono nascosti i capi
+		//relativi all'ingrediente
 		else {
 			image.style.display='none';
 			ingredient.style.display='none';
@@ -117,6 +124,11 @@ var i=0;
 			thumbnail.style.display='none';
 			var selector=document.getElementById('ingredientSelector');
 			var selected=selector.options[selector.selectedIndex];
+			
+			ingredient.getElementsByTagName("input")[0].removeAttribute("required");
+			image.getElementsByTagName("input")[0].removeAttribute("required");
+			
+			//Mostra l'immagine dell'ingrediente selezionato
 			$('#thumbnailIngredientSelector').attr('src', selected.getAttribute("imagelink"));
 		}
 	}

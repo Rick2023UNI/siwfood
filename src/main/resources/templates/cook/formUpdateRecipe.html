@@ -53,7 +53,7 @@
    <br>
    <form th:action="@{/addQuantity/}+${recipe.id}" method="POST" enctype="multipart/form-data">
    	        <div>
-   	          Quantit&agrave;: <span><input type="text" name='quantity' class="input"/></span>
+   	          Quantit&agrave;: <span><input type="text" name='quantity' class="input" required/></span>
    	        </div>
 			<div>
 						<span>Seleziona un ingrediente gi&agrave; caricato nel sistema</span>
@@ -67,12 +67,12 @@
 						<img id="thumbnailIngredientSelector"/>
 					</div>
    	        <div id="new-ingredient">
-   	          Ingrediente: <span><input type="text" name='name' class="input"/></span>
+   	          Ingrediente: <span><input type="text" name='name' class="input" required/></span>
    	        </div>
    	        <div id="new-image">
    	          Immagine ingrediente:
 			  <br>
-			  <input type="file" name='fileImage' id="fileImageIngredient" accept="image/png, image/jpeg" class="fileImage"/>
+			  <input type="file" name='fileImage' id="fileImageIngredient" accept="image/png, image/jpeg" class="fileImage" required/>
 			  				<label for="fileImageIngredient" class="label">Carica file</label>
    	        <br>
    	        </div>
