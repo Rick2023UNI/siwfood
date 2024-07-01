@@ -17,22 +17,6 @@
 
 #confirm {
     width: 49.7%;
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-#confirm:hover {
-  background-color: #45a049;
-}
-
-#cancel {
-    width: 49.7%;
   background-color: #D13400;
   color: white;
   padding: 14px 20px;
@@ -41,10 +25,29 @@
   border-radius: 4px;
   cursor: pointer;
   text-decoration: none;
+  font-weight: 700;
+}
+
+#confirm:hover {
+  background-color: #BD3500;
+}
+
+#cancel {
+    width: 49.7%;
+  
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 700;
 }
 
 #cancel:hover {
-  background-color: #BD3500;
+	background-color: #45a049;
 }
 
 .modal-content {
