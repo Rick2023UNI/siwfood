@@ -16,6 +16,11 @@ public class MvcConfigController implements WebMvcConfigurer{
 		Path imagesUploadDir = Paths.get("./images");
 		String imagesUploadPath = imagesUploadDir.toFile().getAbsolutePath();
 		registry.addResourceHandler("/images/**").addResourceLocations("file:/"+imagesUploadPath + "/");
+		
+		//Immagini del sito
+		imagesUploadDir = Paths.get("./src/main/resources/static/image");
+		imagesUploadPath = imagesUploadDir.toFile().getAbsolutePath();
+		registry.addResourceHandler("/image/**").addResourceLocations("file:/"+imagesUploadPath + "/");
 
 	}
 }

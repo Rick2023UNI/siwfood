@@ -9,36 +9,38 @@
     <script src="/js/cook/formUpdateRecipe.js"></script>
 	<script src="/js/imagePreview.js"></script>
 	<link rel="stylesheet" href="/css/_menu.css"/>
+	
+	<link rel="stylesheet" href="/css/admin/_modal.css"/>
+		<script src="/js/admin/_modal.js"></script>
   </head>
   <body>
-	<section id="Home">
-		    <nav>
-		        <div class="logo">
-		            <img src="image/logo.png">
-		        </div>
-		        <ul>
-		            <li><a href="/cooks">Lista cuochi</a></li>
-		            <li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
-					<li th:if="${admin==true}"><a href="/admin/manageIngredients">Gestisci ingredienti</a></li>
-				  <li th:if="${admin==true}"><a href="/admin/manageRecipes">Gestisci ricette</a></li>
-				  <li th:if="${admin==true}"><a href="/admin/manageCooks">Gestisci cuochi</a></li>
-		        </ul>
+		<section id="Home">
+	    <nav>
+			<div class="logo">
+						<a href="/">
+			            	<img src="/image/logo.png">
+						</a>
+			        </div>
+	        <ul>
+	            <li><a href="/cooks">Lista cuochi</a></li>
+	            <li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
+				<li th:if="${admin==true}"><a href="/admin/manageIngredients">Gestisci ingredienti</a></li>
+			  <li th:if="${admin==true}"><a href="/admin/manageRecipes">Gestisci ricette</a></li>
+			  <li th:if="${admin==true}"><a href="/admin/manageCooks">Gestisci cuochi</a></li>
+	        </ul>
 
-		        <div>
-					<a th:if="${userDetails!=null}" th:href="@{'/cook/' + ${cookDetails.id}}" id="account">
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-						  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-						  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-						</svg>
-					</a>
-					<a th:if="${userDetails!=null}" href="/logout" id="logout">Esci</a>
-					<a th:unless="${userDetails!=null}" href="/login" id="login">Accedi</a>
-					<a th:unless="${userDetails!=null}" href="/register" id="register">Registrati</a>
-				</div>
+	        <div>
+				<a th:if="${userDetails!=null}" th:href="@{'/cook/' + ${cookDetails.id}}" id="account">
+					<img th:src="@{${cookDetails.photo.getImagePath}}" id="current-cook-image">
+				</a>
+				<a th:if="${userDetails!=null}" href="/logout" id="logout">Esci</a>
+				<a th:unless="${userDetails!=null}" href="/login" id="login">Accedi</a>
+				<a th:unless="${userDetails!=null}" href="/register" id="register">Registrati</a>
+			</div>
 
-		    </nav>
-			</section>
-			<br>
+	    </nav>
+		</section>
+	<br>
     <h1>Aggiungi una ricetta</h1>
     <form th:action="${admin} ? @{'/admin/updateRecipe/'+${recipe.id}} : @{'/updateRecipe/'+${recipe.id}}" method="POST" th:object="${recipe}" enctype="multipart/form-data">
 		<div th:if="${admin==true}">
@@ -100,18 +102,15 @@
 							<option th:each="ingredient : ${ingredients}" th:text="${ingredient.name}" th:value="${ingredient.id}"
 								th:id="${ingredient.id}" th:imagelink="@{${ingredient.image.getImagePath}}"></option>
 						</select>
-						<br>
 						<img id="thumbnailIngredientSelector"/>
 					</div>
    	        <div id="new-ingredient">
    	          Ingrediente: <span><input type="text" name='name' class="input" required/></span>
    	        </div>
+			Immagine ingrediente:
    	        <div id="new-image">
-   	          Immagine ingrediente:
-			  <br>
 			  <input type="file" name='fileImage' id="fileImageIngredient" accept="image/png, image/jpeg" class="fileImage" required/>
 			  				<label for="fileImageIngredient" class="label">Carica immagine</label>
-   	        <br>
    	        </div>
    	        <div>
    	  		  <img id="thumbnailIngredient"/>
@@ -131,6 +130,22 @@
 					</a>
 				</li>
 			</ul>
-			<a class="end button" th:href="'/recipe/'+${recipe.id}">Fine</a>
+			<button class="end button" th:onclick="@{'modalCheck(&quot;/recipe/' + ${recipe.id}+'&quot;)'}">Fine</button>
+			
+			<div id="modal" class="modal">
+			  <div class="modal-content">
+			    <div class="modal-header">
+			      <span class="close">&times;</span>
+			      <h2>Conferma</h2>
+			    </div>
+			    <div class="modal-body">
+			      <span>Sei sicuro di voler uscire dalla pagina di modifica? Ogni cambiamento non salvato utilizzando gli opportuni bottoni verr&agrave; perso.</span>
+			      <p>Vuoi confermare che vuoi uscire dalla pagina?</p>
+			      <span class="modalButtons">
+						<button id="cancel">Annulla</button>
+						<button id="confirm">Conferma</button>
+					</span>
+			    </div>
+			  </div>
   </body>
 </html>

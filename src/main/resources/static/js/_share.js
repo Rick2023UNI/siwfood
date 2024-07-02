@@ -1,6 +1,15 @@
 function share(event) {
+	var url=document.URL;
 	var linkToShare=window.location.href;
-	var text="Ricette del cuoco "+document.getElementsByTagName("h1")[0].textContent+" ";
+	var text="";
+	//Scelta descrizione contenuto
+	if (url.includes("cook")) {
+		text="Ricette del cuoco ";
+	} else {
+		text="Ricetta ";
+	}
+	
+	text+=document.getElementsByTagName("h1")[0].textContent+" ";
 	var action=event.currentTarget.id; 
 	var link="";
 	if (action=="facebook") {

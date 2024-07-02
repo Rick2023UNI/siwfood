@@ -17,11 +17,13 @@
 </head>
 
 <body>
-	<section id="Home">
+		<section id="Home">
 	    <nav>
-	        <div class="logo">
-	            <img src="image/logo.png">
-	        </div>
+			<div class="logo">
+						<a href="/">
+			            	<img src="/image/logo.png">
+						</a>
+			        </div>
 	        <ul>
 	            <li><a href="/cooks">Lista cuochi</a></li>
 	            <li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
@@ -32,10 +34,7 @@
 
 	        <div>
 				<a th:if="${userDetails!=null}" th:href="@{'/cook/' + ${cookDetails.id}}" id="account">
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-					  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-					  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-					</svg>
+					<img th:src="@{${cookDetails.photo.getImagePath}}" id="current-cook-image">
 				</a>
 				<a th:if="${userDetails!=null}" href="/logout" id="logout">Esci</a>
 				<a th:unless="${userDetails!=null}" href="/login" id="login">Accedi</a>
@@ -44,7 +43,7 @@
 
 	    </nav>
 		</section>
-		<br>
+	<br>
 	<h1 th:text="${recipe.name}">Ricetta</h1>
 	<span th:if="${authorOrAdmin}">
 		<a th:href="@{'/formUpdateRecipe/' + ${recipe.id}}" class="icon-button">

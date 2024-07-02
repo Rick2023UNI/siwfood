@@ -121,20 +121,15 @@
   cursor: pointer;
 }
 
+#current-cook-image {
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right:1rem;
+}
+
 #account {
 	text-decoration: none;
-	cursor: pointer;
-	margin-left: 0.5rem;
-	margin-right: 0.5rem;
-}
-
-#account svg{
-	width: 2.2rem;
-	height: 2.2rem;
-	vertical-align: middle;
-	color: #45a049;
-}
-
-#account svg:hover{
-color: #367d39;
 }

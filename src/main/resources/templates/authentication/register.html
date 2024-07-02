@@ -14,7 +14,7 @@
 		  	</div>
 		<div>
         Username: <span><input required type="text" th:field="${credentials.username}"/></span>
-		<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+		<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error"></span>
       </div>
       <div>
         Password: <span><span id="span-password">
@@ -28,19 +28,23 @@
 					  <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829"/>
 					  <path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z"/>
 					</svg>
-		      </span></span>
+					<br>
+		      </span>
+			  <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></span>
+		  </span>
       </div>
       <div>
 		  <div>
         Nome: <span><input required type="text" th:field="${cook.name}"/></span>
-		<span th:if="${#fields.hasErrors('cook.name')}" th:errors="*{cook.name}"></span>
+		<span th:if="${#fields.hasErrors('cook.name')}" th:errors="*{cook.name}" class="error"></span>
       </div>
       <div>
         Cognome: <span><input required type="text" th:field="${cook.surname}"/></span>
-		<span th:if="${#fields.hasErrors('cook.surname')}" th:errors="*{cook.surname}"></span>
+		<span th:if="${#fields.hasErrors('cook.surname')}" th:errors="*{cook.surname}" class="error"></span>
       </div>
       <div>
         Data di nascita: <span><input required type="date" th:field="${cook.birthday}"/></span>
+		<span th:if="${#fields.hasErrors('cook.birthday')}" th:errors="*{cook.birthday}" class="error"></span>
       </div>
       <div>
         Foto profilo:
@@ -50,7 +54,7 @@
       <br>
       </div>
 	  <img id="thumbnail"/>
-	  <span th:if="${#fields.hasErrors('cook.photo')}" th:errors="*{cook.photo}"></span>
+	  <span th:if="${#fields.hasErrors('cook.photo')}" th:errors="*{cook.photo}" class="error"></span>
 	  </div>
         <span><button type="submit" id="submit">Registrati</button></span>
       </div>

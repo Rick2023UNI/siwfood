@@ -8,34 +8,33 @@
 	<link rel="stylesheet" href="/css/_menu.css"/>
   </head>
   <body>
-	<section id="Home">
-		    <nav>
-		        <div class="logo">
-		            <img src="image/logo.png">
-		        </div>
-		        <ul>
-		            <li><a href="/cooks">Lista cuochi</a></li>
-		            <li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
-					<li th:if="${admin==true}"><a href="/admin/manageIngredients">Gestisci ingredienti</a></li>
-				  <li th:if="${admin==true}"><a href="/admin/manageRecipes">Gestisci ricette</a></li>
-				  <li th:if="${admin==true}"><a href="/admin/manageCooks">Gestisci cuochi</a></li>
-		        </ul>
+		<section id="Home">
+	    <nav>
+			<div class="logo">
+						<a href="/">
+			            	<img src="/image/logo.png">
+						</a>
+			        </div>
+	        <ul>
+	            <li><a href="/cooks">Lista cuochi</a></li>
+	            <li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
+				<li th:if="${admin==true}"><a href="/admin/manageIngredients">Gestisci ingredienti</a></li>
+			  <li th:if="${admin==true}"><a href="/admin/manageRecipes">Gestisci ricette</a></li>
+			  <li th:if="${admin==true}"><a href="/admin/manageCooks">Gestisci cuochi</a></li>
+	        </ul>
 
-		        <div>
-					<a th:if="${userDetails!=null}" th:href="@{'/cook/' + ${cookDetails.id}}" id="account">
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-						  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-						  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-						</svg>
-					</a>
-					<a th:if="${userDetails!=null}" href="/logout" id="logout">Esci</a>
-					<a th:unless="${userDetails!=null}" href="/login" id="login">Accedi</a>
-					<a th:unless="${userDetails!=null}" href="/register" id="register">Registrati</a>
-				</div>
+	        <div>
+				<a th:if="${userDetails!=null}" th:href="@{'/cook/' + ${cookDetails.id}}" id="account">
+					<img th:src="@{${cookDetails.photo.getImagePath}}" id="current-cook-image">
+				</a>
+				<a th:if="${userDetails!=null}" href="/logout" id="logout">Esci</a>
+				<a th:unless="${userDetails!=null}" href="/login" id="login">Accedi</a>
+				<a th:unless="${userDetails!=null}" href="/register" id="register">Registrati</a>
+			</div>
 
-		    </nav>
-			</section>
-			<br>
+	    </nav>
+		</section>
+	<br>
 	<form th:action="@{/admin/ingredient}" method="POST" th:object="${ingredient}" enctype="multipart/form-data">
     <div>
       Nome

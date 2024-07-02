@@ -12,7 +12,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
 
 @Entity
 public class Cook {
@@ -64,7 +66,7 @@ public class Cook {
 	
 	@NotBlank(message = "Il cognome è richiesto")
 	private String surname;
-
+	
 	@DateTimeFormat(pattern ="yyyy-MM-dd")
 	private Date birthday;
 	
