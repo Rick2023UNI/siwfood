@@ -47,12 +47,7 @@ public class RecipeController {
 	public String index(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		model.addAttribute("recipes", this.recipeService.findAll());
-		if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
-			return "admin/index.html";
-		}
-		else {
-			return "index.html";
-		}
+		return "index.html";
 	}
 
 	@GetMapping("/admin/")
@@ -63,6 +58,10 @@ public class RecipeController {
 
 	@GetMapping("/newRecipe")
 	public String addRecipe(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
+			return "redirect:/admin/newRecipe";
+		}
 		model.addAttribute("recipe", new Recipe());
 		return "cook/formNewRecipe.html";
 	}
@@ -71,7 +70,8 @@ public class RecipeController {
 	public String adminAddRecipe(Model model) {
 		model.addAttribute("recipe", new Recipe());
 		model.addAttribute("cooks", this.cookService.findAll());
-		return "admin/formNewRecipe.html";
+		model.addAttribute("admin", true);
+		return "cook/formNewRecipe.html";
 	}
 	
 	@PostMapping("/admin/recipe")
@@ -247,13 +247,19 @@ public class RecipeController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Cook cook=credentialsService.getCredentials(user.getUsername()).getCook();
+		
+		if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
+			return "redirect:/admin/formUpdateRecipe/"+id;
+		}
+		
 		if (cook.equals(this.recipeService.findById(id).getCook()) || (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin")))) {
 			model.addAttribute("recipe", this.recipeService.findById(id));
 			model.addAttribute("images", this.recipeService.findById(id).getImages());
 			model.addAttribute("quantities", this.recipeService.findById(id).getQuantities());
 			model.addAttribute("ingredients", this.ingredientService.findAll());
+			return "cook/formUpdateRecipe.html";
 		}
-		return "cook/formUpdateRecipe.html";
+		return "redirect:/recipe/"+id;
 	}
 
 	@PostMapping("/updateRecipe/{id}")
@@ -296,17 +302,13 @@ public class RecipeController {
 
 	@GetMapping("/removeRecipe/{id}")
 	public String removeRecipe(@PathVariable("id") Long id,
-			Model model) {
+			Model model) throws IOException {
 		//Cuoco corrente
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Cook cook=credentialsService.getCredentials(user.getUsername()).getCook();
 		if (cook.equals(this.recipeService.findById(id).getCook()) || (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin")))) {
 			Recipe recipe=this.recipeService.findById(id);
-			for (Image image : recipe.getImages()) {
-				recipe.removeImage(image);
-				this.imageService.delete(image);
-			}
 			
 			for (Quantity quantity : recipe.getQuantities()) {
 				recipe.removeQuantity(quantity);
@@ -352,14 +354,11 @@ public class RecipeController {
 	
 	@PostMapping("/")
 	public String searchRecipesHome(@RequestParam String name, Model model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		model.addAttribute("recipes", this.recipeService.findByNameContaining(name));
-		if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
-			return "admin/index.html";
-		}
-		else {
-			return "index.html";
-		}
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("recipes", this.recipeService.findAll());
+		model.addAttribute("search", name);
+		return "index.html";
 	}
 	
 	@PostMapping("admin/manageRecipes")
@@ -368,4 +367,45 @@ public class RecipeController {
 		model.addAttribute("search", name);
 		return "admin/manageRecipes.html";
 	}	
+	
+	@GetMapping("admin/formUpdateRecipe/{id}")
+	public String adminFormUpdateRecipe(@PathVariable("id") Long id, Model model) {
+		
+		model.addAttribute("recipe", this.recipeService.findById(id));
+		model.addAttribute("images", this.recipeService.findById(id).getImages());
+		model.addAttribute("quantities", this.recipeService.findById(id).getQuantities());
+		model.addAttribute("ingredients", this.ingredientService.findAll());
+		model.addAttribute("admin", true);
+		model.addAttribute("cooks", this.cookService.findAll());
+		return "cook/formUpdateRecipe.html";
+	}
+	
+	@PostMapping("admin/updateRecipe/{id}")
+	public String adminUpdateRecipe(@PathVariable("id") Long id,
+			@ModelAttribute("recipe") Recipe recipeUpdated, 
+			@ModelAttribute("cookId") Long cookId,
+			@RequestParam("fileImage") MultipartFile[] multipartFiles) throws IOException {
+		Recipe recipe=this.recipeService.findById(id);
+		Cook cook=this.cookService.findById(cookId);
+		for (MultipartFile multipartFile : multipartFiles) {
+				//Caricamento delle immagini
+				String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
+				/*Evita tentativo di caricare il file vuoto causato
+				 dall'ultimo input che viene aggiunto in automatico
+				 ed è sempre vuoto
+				 */
+				if (fileName!="") {
+					Image image=new Image();
+					image.setFileName(fileName);
+					image.setFolder("recipe/"+recipe.getId());
+					recipe.addImage(image);
+					this.imageService.save(image);
+					image.uploadImage(fileName, multipartFile);
+				}
+			}
+		recipe.updateTo(recipeUpdated);
+		recipe.setCook(cook);
+		this.recipeService.save(recipe);
+		return "redirect:/admin/formUpdateRecipe/"+recipe.getId();
+	}
 }

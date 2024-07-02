@@ -1,6 +1,12 @@
 package it.uniroma3.siwfood.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
+import org.apache.commons.io.FileSystemUtils;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +31,12 @@ public class RecipeService {
 		return recipeRepository.findById(id).get();
 	}
 
-	public void delete(Recipe recipe) {
+	public void delete(Recipe recipe) throws IOException {
+		try {
+			FileUtils.deleteDirectory(new File("./images/recipe/"+recipe.getId()));
+		} catch (IOException e) {
+			throw new IOException("Could not delete the recipe's folder located at: " + "./images/recipe/"+recipe.getId());
+		}
 		recipeRepository.delete(recipe);	
 	}
 

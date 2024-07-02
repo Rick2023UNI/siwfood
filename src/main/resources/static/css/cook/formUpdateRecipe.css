@@ -1,7 +1,3 @@
-.submit {
-    width: 100%;
-}
-
 .submit:hover {
   background-color: #45a049;
 }
@@ -122,4 +118,28 @@ select {
 
 #thumbnailIngredientSelector {
 	padding: 1%;
+}
+
+select {
+        width: 120px;
+        height: 30px;
+        border: 1px solid #999;
+        font-size: 18px;
+        background-color: #eee;
+        border-radius: 5px;
+        box-shadow: 4px 4px #ccc;
+        margin-bottom: 2%;
+      }
+      
+.end {
+	width:100%;
+	text-decoration: none;
+}
+
+.ingredientImage {
+  max-width: 10rem;
+  max-height: 10rem;
+  border-radius: 10%;
+  vertical-align: middle;
+  object-fit: cover;
 }

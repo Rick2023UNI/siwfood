@@ -61,3 +61,7 @@
 #submit:hover {
   background-color: #45a049;
 }
+
+#previousSearch {
+	font-style: italic;
+}

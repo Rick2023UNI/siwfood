@@ -41,5 +41,12 @@ public class GlobalController {
 		}
 		return cook;
 	}
+	
+	@ModelAttribute("admin")
+	public boolean admin() {
+		UserDetails user = null;
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			return (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin")));
+	}
 }
 

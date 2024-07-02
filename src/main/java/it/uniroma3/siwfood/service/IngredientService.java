@@ -36,6 +36,7 @@ public class IngredientService {
 	}
 
 	public void delete(Ingredient ingredient) {
+		ingredient.getImage().delete();
 		ingredientRepository.delete(ingredient);
 	}
 

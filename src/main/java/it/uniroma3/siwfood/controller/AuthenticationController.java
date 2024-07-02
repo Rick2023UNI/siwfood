@@ -55,7 +55,7 @@ public class AuthenticationController {
 
 	@PostMapping("/login")
 	public String loginCook(@RequestParam("credentials") Credentials credentials) {
-		return "index.html";
+		return "redirect:/";
 	}
 
 	@GetMapping("/register")
@@ -120,14 +120,7 @@ public class AuthenticationController {
 
 	@GetMapping("/success")
 	public String success(Model model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		model.addAttribute("recipes", this.recipeService.findAll());
-		if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
-			return "admin/index.html";
-		}
-		else {
-			return "index.html";
-		}
+		return "redirect:/";
 	}
 	
 	@GetMapping("/login-error")

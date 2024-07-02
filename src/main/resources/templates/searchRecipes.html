@@ -8,13 +8,49 @@
 	<link rel="stylesheet" href="/css/searchRecipes.css?version=3"/>
 	<script src="js/3.7.1_jquery.min.js"></script>
 	<script src="js/searchRecipes.js"></script>
+	<link rel="stylesheet" href="/css/_menu.css"/>
+	
+	<link rel="stylesheet" href="/css/_recipes list.css"/>
 </head>
 
 <body>
-	<span th:if="${searchIngredients}" id="previousSearch">
-		<span id="searchedIngredients" th:each="ingredient, lastItem : ${searchIngredients}" th:text="!${lastItem.last} ? ${ingredient.name} + ', ' : ${ingredient.name}"></span>
+	<section id="Home">
+	    <nav>
+	        <div class="logo">
+	            <img src="image/logo.png">
+	        </div>
+	        <ul>
+	            <li><a href="/cooks">Lista cuochi</a></li>
+	            <li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
+				<li th:if="${admin==true}"><a href="/admin/manageIngredients">Gestisci ingredienti</a></li>
+			  <li th:if="${admin==true}"><a href="/admin/manageRecipes">Gestisci ricette</a></li>
+			  <li th:if="${admin==true}"><a href="/admin/manageCooks">Gestisci cuochi</a></li>
+	        </ul>
+
+	        <div>
+				<a th:if="${userDetails!=null}" th:href="@{'/cook/' + ${cookDetails.id}}" id="account">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+					  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+					  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+					</svg>
+				</a>
+				<a th:if="${userDetails!=null}" href="/logout" id="logout">Esci</a>
+				<a th:unless="${userDetails!=null}" href="/login" id="login">Accedi</a>
+				<a th:unless="${userDetails!=null}" href="/register" id="register">Registrati</a>
+			</div>
+
+	    </nav>
+		</section>
+	<br>
+	<span th:if="${searchIngredients}">
+		Risultati per: 
+		<span id="previousSearch" th:each="ingredient, lastItem : ${searchIngredients}" th:text="!${lastItem.last} ? ${ingredient.name} + ', ' : ${ingredient.name}"></span>
 	</span>
 	<br>
+		<span th:if="${searchIngredients}" class="search-results">
+			<span th:if="@{${recipes.size()}>1}" th:text="'Trovate '+${recipes.size()}+' ricette'"></span>
+			<span th:if="@{${recipes.size()}==1}">Trovata una ricetta</span>
+		</span>
 	<span th:if="${searchIngredients}" class="search-results">
 		<span th:if="@{${recipes.size()}>1}" th:text="'Trovate '+${recipes.size()}+' ricette'"></span>
 		<span th:if="@{${recipes.size()}==1}" text="Trovata una ricetta"></span>
@@ -48,15 +84,27 @@
 		
 	   <button id="submit" type="submit">Cerca</button>
 	  </form>
-	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema con il nome inserito</div>
-	<ul>
-		<li th:each="recipe : ${recipes}">
-			<span>
-				<a th:href="@{'/recipe' + '/' + ${recipe.id}}" th:text="${recipe.name}"></a>
-				<!-- <a th:href="@{'/cook' + '/' + ${recipe.cook.id}}" th:text="${recipe.cook.name} ${recipe.cook.surname}"></a> -->
-			</span>
-		</li>
-	</ul>
+	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema con gli ingredienti scelti</div>
+	<ul clss="list">
+				<li th:each="recipe : ${recipes}" class="listItem">
+					<div class="recipe">
+						<img th:src="@{${recipe.images[0].getImagePath}}" class="recipeImage">
+						<div class="recipe-information">
+							<a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}" class="linkRecipe"></a>
+							<p th:text="${recipe.description}" class="description"></p>
+							<span th:text="'Ingredienti usati: ' + ${recipe.quantities.size()}" class="numberOfIngredients"></span>
+						</div>
+					</div>
+					<div class="right">
+						<span th:text='${#dates.format(recipe.publicationDate, "yyyy-MM-dd HH:mm")}' class="date"></span>
+						<span class="cook">
+							<img th:src="@{${recipe.cook.photo.getImagePath}}" class="cookImage">
+							<a th:href="@{'/cook/' + ${recipe.cook.id}}" th:text="@{${recipe.cook.name} + ' ' + ${recipe.cook.surname}}" class="cookLink"></a>
+						</span>
+						
+					</div>
+					</li>
+			</ul>
 </body>
 
 </html>

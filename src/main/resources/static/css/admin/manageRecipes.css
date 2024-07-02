@@ -2,6 +2,13 @@ svg.icon {
 	max-width: 1.3rem;
 	max-height: 1.3rem;
 	margin-left: 0.5rem;
+	margin-bottom: 1.4rem;
+}
+
+.icon {
+	max-width: 2rem;
+	max-height: 2rem;
+	margin: 0.3rem 0.3rem 0.3rem 0.3rem;
 	vertical-align:middle;
 }
 
@@ -43,4 +50,8 @@ a.icon {
 
 #submit:hover {
   background-color: #45a049;
+}
+
+#previousSearch {
+	font-style: italic;
 }

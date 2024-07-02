@@ -79,3 +79,7 @@ select {
 form {
 	margin-top: 0.5%;
 }
+
+#previousSearch {
+	font-style: italic;
+}

@@ -1,0 +1,112 @@
+.description {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-height: 4.4em;
+  line-height: 1.1em;
+  max-width: 97%;
+  overflow-wrap: anywhere;
+  flex-wrap: wrap;
+  display: flex;
+  margin-top: 0vh;
+}
+
+.numberOfIngredients {
+  position: absolute;
+  bottom: 0;
+  font-weight: 700;
+  width: 40vw;
+}
+
+.right {
+  display: flex;
+  float: right;
+  margin-top: 0.5%;
+  flex-direction: column;
+  right: 0;
+  align-items: end;
+}
+
+.date {
+  font-size: 1.3rem;
+  position: relative;
+  margin-right: 1rem;
+  float: right;
+  white-space: nowrap;
+}
+
+.cook {
+  margin-top: 5vh;
+  display: flex;
+  margin-right: 0;
+}
+
+.cookLink {
+  margin: auto;
+  padding: 1rem;
+  padding-right: 3rem;
+  font-size: 1.3rem;
+  text-decoration: none;
+  color: #4CAF50;
+  font-weight: 700;
+  margin-right: 1vw;
+  white-space: nowrap;
+}
+
+.cookLink:hover {
+	color:#45a049;
+}
+
+.cookImage {
+  width: 5rem;
+  height: 5rem;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.recipeImage {
+  width: 10rem;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 10%;
+  flex-shrink: 0;
+}
+
+.list {
+	list-style: none;
+}
+
+.listItem {
+	margin-left: -1.8%;
+	margin-right: 1.0%;
+	margin-bottom: 1rem;
+	display: flex;
+	justify-content: space-between;
+	border-radius: 25px;
+	box-shadow: 2px 3px 20px -3px rgba(0,0,0,.15);
+}
+
+.recipe {
+	display: flex;
+	padding-left: 1rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	height: 40%;
+}
+
+.linkRecipe {
+	margin: auto;
+	font-size: 3rem;
+	text-align: center;
+	text-decoration: none;
+	color:#4CAF50;
+	font-weight: 700;
+}
+
+.linkRecipe:hover {
+	color:#45a049;
+}
+
+.recipe-information {
+  padding-left: 1.2rem;
+  position: relative;
+}

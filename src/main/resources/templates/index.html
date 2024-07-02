@@ -8,6 +8,8 @@
 	<link rel="stylesheet" href="/css/index.css?version=3"/>
 	
 	<link rel="stylesheet" href="/css/admin/_new.css"/>
+	<link rel="stylesheet" href="/css/_recipes list.css"/>
+	<link rel="stylesheet" href="/css/_menu.css"/>
 </head>
 
 <body>
@@ -19,6 +21,9 @@
         <ul>
             <li><a href="/cooks">Lista cuochi</a></li>
             <li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
+			<li th:if="${admin==true}"><a href="/admin/manageIngredients">Gestisci ingredienti</a></li>
+		  <li th:if="${admin==true}"><a href="/admin/manageRecipes">Gestisci ricette</a></li>
+		  <li th:if="${admin==true}"><a href="/admin/manageCooks">Gestisci cuochi</a></li>
         </ul>
 
         <div>
@@ -36,16 +41,24 @@
     </nav>
 	</section>
 <br>
+<span th:if="${search}" id="previousSearch">
+	<span id="searched" th:text="'Risultati per:' + ${search}"></span>
+</span>
+<br>
+<span th:if="${search}" class="search-results">
+		<span th:if="@{${recipes.size()}>1}" th:text="'Trovate '+${recipes.size()}+' ricette'"></span>
+		<span th:if="@{${recipes.size()}==1}">Trovata una ricetta</span>
+</span>
 <form th:action="@{/}" method="post">
 	<input id="search" type="text" th:value="${name}" name="name" placeholder="Nome ricetta"/>
 	<button id="submit" type="submit">Cerca</button>
  </form>
 <br>
-	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema</div>
 	<div th:if="${userDetails!=null}" class="new">
 		<a href="/newRecipe"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon">
 				<path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Aggiungi ricetta</a>
 	</div>
+	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema</div>
 	<ul clss="list">
 			<li th:each="recipe : ${recipes}" class="listItem">
 				<div class="recipe">

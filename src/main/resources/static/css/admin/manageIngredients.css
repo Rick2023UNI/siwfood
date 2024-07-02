@@ -3,6 +3,7 @@
 	max-height: 10rem;
   border-radius: 10%;
   vertical-align:middle;
+  object-fit: cover;
 }
 
 .ingredientLink {
@@ -65,4 +66,8 @@ a.icon {
 
 #submit:hover {
   background-color: #45a049;
+}
+
+#previousSearch {
+	font-style: italic;
 }

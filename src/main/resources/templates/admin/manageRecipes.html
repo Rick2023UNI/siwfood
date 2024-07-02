@@ -11,40 +11,90 @@
 	<link rel="stylesheet" href="/css/admin/_modal.css"/>
     <script src="/js/admin/_modal.js"></script>
 	
+	<link rel="stylesheet" href="/css/_recipes list.css"/>
+	
 	<link rel="stylesheet" href="/css/admin/_new.css"/>
+	<link rel="stylesheet" href="/css/_menu.css"/>
 
 </head>
 
 <body>
-	<span th:if="${search}" id="previousSearch">
-		<span id="searchedIngredients" th:text="'Risultati per:' + ${search}"></span>
+	<section id="Home">
+		    <nav>
+		        <div class="logo">
+		            <img src="image/logo.png">
+		        </div>
+		        <ul>
+		            <li><a href="/cooks">Lista cuochi</a></li>
+		            <li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
+					<li th:if="${admin==true}"><a href="/admin/manageIngredients">Gestisci ingredienti</a></li>
+				  <li th:if="${admin==true}"><a href="/admin/manageRecipes">Gestisci ricette</a></li>
+				  <li th:if="${admin==true}"><a href="/admin/manageCooks">Gestisci cuochi</a></li>
+		        </ul>
+
+		        <div>
+					<a th:if="${userDetails!=null}" th:href="@{'/cook/' + ${cookDetails.id}}" id="account">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+						  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+						  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+						</svg>
+					</a>
+					<a th:if="${userDetails!=null}" href="/logout" id="logout">Esci</a>
+					<a th:unless="${userDetails!=null}" href="/login" id="login">Accedi</a>
+					<a th:unless="${userDetails!=null}" href="/register" id="register">Registrati</a>
+				</div>
+
+		    </nav>
+			</section>
+			<br>
+	<span th:if="${search}">
+		Risultati per: 
+		<span id="previousSearch" th:text="${search}"></span>
 	</span>
+	<br>
 	<span th:if="${search}" class="search-results">
 		<span th:if="@{${recipes.size()}>1}" th:text="'Trovate '+${recipes.size()}+' ricette'"></span>
-		<span th:if="@{${recipes.size()}==1}" text="Trovata una ricetta"></span>
+		<span th:if="@{${recipes.size()}==1}">Trovata una ricetta</span>
 	</span>
 	<form th:action="@{/admin/manageRecipes}" method="post">
 		<input id="search" type="text" th:value="${name}" name="name" placeholder="Nome ricetta"/>
 		<button id="submit" type="submit">Cerca</button>
 	 </form>
 	<div class="new">
-		<a href="/admin/newRecipe">		<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon">
+		<a href="/admin/newRecipe">		<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon add">
 				<path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Aggiungi ricetta</a>
 	</div>
-	<div th:if="${recipes==null || recipes.isEmpty()}">Nessuna ricetta trovata, prova con un termine più generico o controlla eventuali errori ortografici</div>
-	<ul>
-		<li th:each="recipe : ${recipes}">
-			<a th:href="@{'/recipe' + '/' + ${recipe.id}}" th:text="${recipe.name}"></a>
-			<a th:href="@{'/formUpdateRecipe/' + ${recipe.id}}" class="icon-button">
-				<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon" id="edit">
-				<path d="M2.87601 18.1156C2.92195 17.7021 2.94493 17.4954 3.00748 17.3022C3.06298 17.1307 3.1414 16.9676 3.24061 16.8171C3.35242 16.6475 3.49952 16.5005 3.7937 16.2063L17 3C18.1046 1.89543 19.8954 1.89543 21 3C22.1046 4.10457 22.1046 5.89543 21 7L7.7937 20.2063C7.49951 20.5005 7.35242 20.6475 7.18286 20.7594C7.03242 20.8586 6.86926 20.937 6.69782 20.9925C6.50457 21.055 6.29783 21.078 5.88434 21.124L2.49997 21.5L2.87601 18.1156Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-			</a>
-			<a th:onclick="@{'modalCheck(&quot;/removeRecipe/' + ${recipe.id}+'&quot;)'}">
-				<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon" id="delete">
-				<path d="M16 6V5.2C16 4.0799 16 3.51984 15.782 3.09202C15.5903 2.71569 15.2843 2.40973 14.908 2.21799C14.4802 2 13.9201 2 12.8 2H11.2C10.0799 2 9.51984 2 9.09202 2.21799C8.71569 2.40973 8.40973 2.71569 8.21799 3.09202C8 3.51984 8 4.0799 8 5.2V6M10 11.5V16.5M14 11.5V16.5M3 6H21M19 6V17.2C19 18.8802 19 19.7202 18.673 20.362C18.3854 20.9265 17.9265 21.3854 17.362 21.673C16.7202 22 15.8802 22 14.2 22H9.8C8.11984 22 7.27976 22 6.63803 21.673C6.07354 21.3854 5.6146 20.9265 5.32698 20.362C5 19.7202 5 18.8802 5 17.2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-			</a>
+	<div th:if="${recipes==null || recipes.isEmpty()}">Nessuna ricetta trovata, prova con un termine pi&ugrave; generico o controlla eventuali errori ortografici</div>	
+	<ul clss="list">
+		<li th:each="recipe : ${recipes}" class="listItem">
+			<div class="recipe">
+				<img th:src="@{${recipe.images[0].getImagePath}}" class="recipeImage">
+				<div class="recipe-information">
+					<a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}" class="linkRecipe"></a>
+					<a th:href="@{'/formUpdateRecipe/' + ${recipe.id}}" class="icon-button">
+						<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon" id="edit">
+						<path d="M2.87601 18.1156C2.92195 17.7021 2.94493 17.4954 3.00748 17.3022C3.06298 17.1307 3.1414 16.9676 3.24061 16.8171C3.35242 16.6475 3.49952 16.5005 3.7937 16.2063L17 3C18.1046 1.89543 19.8954 1.89543 21 3C22.1046 4.10457 22.1046 5.89543 21 7L7.7937 20.2063C7.49951 20.5005 7.35242 20.6475 7.18286 20.7594C7.03242 20.8586 6.86926 20.937 6.69782 20.9925C6.50457 21.055 6.29783 21.078 5.88434 21.124L2.49997 21.5L2.87601 18.1156Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					</a>
+					<a th:onclick="@{'modalCheck(&quot;/removeRecipe/' + ${recipe.id}+'&quot;)'}">
+						<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon" id="delete">
+						<path d="M16 6V5.2C16 4.0799 16 3.51984 15.782 3.09202C15.5903 2.71569 15.2843 2.40973 14.908 2.21799C14.4802 2 13.9201 2 12.8 2H11.2C10.0799 2 9.51984 2 9.09202 2.21799C8.71569 2.40973 8.40973 2.71569 8.21799 3.09202C8 3.51984 8 4.0799 8 5.2V6M10 11.5V16.5M14 11.5V16.5M3 6H21M19 6V17.2C19 18.8802 19 19.7202 18.673 20.362C18.3854 20.9265 17.9265 21.3854 17.362 21.673C16.7202 22 15.8802 22 14.2 22H9.8C8.11984 22 7.27976 22 6.63803 21.673C6.07354 21.3854 5.6146 20.9265 5.32698 20.362C5 19.7202 5 18.8802 5 17.2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					</a>
+					<p th:text="${recipe.description}" class="description"></p>
+					<span th:text="'Ingredienti usati: ' + ${recipe.quantities.size()}" class="numberOfIngredients"></span>
+				</div>
+			</div>
+			<div class="right">
+				<span th:text='${#dates.format(recipe.publicationDate, "yyyy-MM-dd HH:mm")}' class="date"></span>
+				<span class="cook">
+					<img th:src="@{${recipe.cook.photo.getImagePath}}" class="cookImage">
+					<a th:href="@{'/cook/' + ${recipe.cook.id}}"
+						th:text="@{${recipe.cook.name} + ' ' + ${recipe.cook.surname}}" class="cookLink"></a>
+				</span>
+	
+			</div>
 		</li>
 	</ul>
+	
 
 	<div id="modal" class="modal">
 	  <div class="modal-content">

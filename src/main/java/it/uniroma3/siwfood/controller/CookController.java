@@ -129,10 +129,6 @@ public class CookController {
 	public String removeCook(@PathVariable("id") Long id,
 			Model model) {
 		Cook cook=this.cookService.findById(id);
-		for (Recipe recipe : cook.getRecipes()) {
-			recipe.deleteAllImages();
-		}
-		cook.getPhoto().delete();
 		this.cookService.delete(cook);
 
 		return "redirect:/admin/manageCooks";

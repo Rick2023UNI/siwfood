@@ -8,11 +8,48 @@
     <script src="/js/3.7.1_jquery.min.js"></script>
     <script src="/js/cook/formUpdateRecipe.js"></script>
 	<script src="/js/imagePreview.js"></script>
+	<link rel="stylesheet" href="/css/_menu.css"/>
   </head>
   <body>
+	<section id="Home">
+		    <nav>
+		        <div class="logo">
+		            <img src="image/logo.png">
+		        </div>
+		        <ul>
+		            <li><a href="/cooks">Lista cuochi</a></li>
+		            <li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
+					<li th:if="${admin==true}"><a href="/admin/manageIngredients">Gestisci ingredienti</a></li>
+				  <li th:if="${admin==true}"><a href="/admin/manageRecipes">Gestisci ricette</a></li>
+				  <li th:if="${admin==true}"><a href="/admin/manageCooks">Gestisci cuochi</a></li>
+		        </ul>
+
+		        <div>
+					<a th:if="${userDetails!=null}" th:href="@{'/cook/' + ${cookDetails.id}}" id="account">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+						  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+						  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+						</svg>
+					</a>
+					<a th:if="${userDetails!=null}" href="/logout" id="logout">Esci</a>
+					<a th:unless="${userDetails!=null}" href="/login" id="login">Accedi</a>
+					<a th:unless="${userDetails!=null}" href="/register" id="register">Registrati</a>
+				</div>
+
+		    </nav>
+			</section>
+			<br>
     <h1>Aggiungi una ricetta</h1>
-    <form th:action="@{'/updateRecipe/'+${recipe.id}}" method="POST" th:object="${recipe}" enctype="multipart/form-data">
-	<div>
+    <form th:action="${admin} ? @{'/admin/updateRecipe/'+${recipe.id}} : @{'/updateRecipe/'+${recipe.id}}" method="POST" th:object="${recipe}" enctype="multipart/form-data">
+		<div th:if="${admin==true}">
+			<span>Autore</span>
+			<br>
+			<select name="cookId" id="cookSelector" required>
+				<option th:if="${recipe.cook.id}==${cook.id}" selected th:each="cook : ${cooks}" th:text="${cook.name} + ', ' + ${cook.surname}" th:value="${cook.id}" th:id="${cook.id}"></option>
+			  <option th:unless="${recipe.cook.id}==${cook.id}" th:each="cook : ${cooks}" th:text="${cook.name} + ', ' + ${cook.surname}" th:value="${cook.id}" th:id="${cook.id}"></option>
+		    </select>
+		</div>
+		<div>
         Nome<span><input type="text" th:field="${recipe.name}" placeholder="Nome" class="input"/></span>
       </div>
       <div>
@@ -73,7 +110,7 @@
    	          Immagine ingrediente:
 			  <br>
 			  <input type="file" name='fileImage' id="fileImageIngredient" accept="image/png, image/jpeg" class="fileImage" required/>
-			  				<label for="fileImageIngredient" class="label">Carica file</label>
+			  				<label for="fileImageIngredient" class="label">Carica immagine</label>
    	        <br>
    	        </div>
    	        <div>
@@ -94,5 +131,6 @@
 					</a>
 				</li>
 			</ul>
+			<a class="end button" th:href="'/recipe/'+${recipe.id}">Fine</a>
   </body>
 </html>

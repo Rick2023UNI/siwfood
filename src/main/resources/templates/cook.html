@@ -5,12 +5,42 @@
 	<title>Cuoco</title>
 	<link rel="stylesheet" href="/css/cook.css" />
 	<link rel="stylesheet" href="/css/_share.css" />
+	<link rel="stylesheet" href="/css/_recipes list.css" />
 	
 	<script src="/js/3.7.1_jquery.min.js"></script>
 	<script src="/js/_share.js"></script>
+	<link rel="stylesheet" href="/css/_menu.css"/>
 </head>
 
 <body>
+	<section id="Home">
+		    <nav>
+		        <div class="logo">
+		            <img src="image/logo.png">
+		        </div>
+		        <ul>
+		            <li><a href="/cooks">Lista cuochi</a></li>
+		            <li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
+					<li th:if="${admin==true}"><a href="/admin/manageIngredients">Gestisci ingredienti</a></li>
+				  <li th:if="${admin==true}"><a href="/admin/manageRecipes">Gestisci ricette</a></li>
+				  <li th:if="${admin==true}"><a href="/admin/manageCooks">Gestisci cuochi</a></li>
+		        </ul>
+
+		        <div>
+					<a th:if="${userDetails!=null}" th:href="@{'/cook/' + ${cookDetails.id}}" id="account">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+						  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+						  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+						</svg>
+					</a>
+					<a th:if="${userDetails!=null}" href="/logout" id="logout">Esci</a>
+					<a th:unless="${userDetails!=null}" href="/login" id="login">Accedi</a>
+					<a th:unless="${userDetails!=null}" href="/register" id="register">Registrati</a>
+				</div>
+
+		    </nav>
+			</section>
+			<br>
 	<div th:if="${cook}">
 		<h1 th:text="${cook.name} + ' ' + ${cook.surname}"></h1>
 		<span th:text='${#dates.format(cook.birthday, "yyyy-MM-dd")}'></span>
@@ -90,11 +120,26 @@
 	<div th:unless="${cook}">Non esiste</div>
 	
 	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette per il cuoco corrente</div>
-	<ul>
-		<li th:each="recipe : ${recipes}">
-			<a th:href="@{'/recipe' + '/' + ${recipe.id}}" th:text="${recipe.name}"></a>
-		</li>
-	</ul>
+	<ul clss="list">
+				<li th:each="recipe : ${recipes}" class="listItem">
+					<div class="recipe">
+						<img th:src="@{${recipe.images[0].getImagePath}}" class="recipeImage">
+						<div class="recipe-information">
+							<a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}" class="linkRecipe"></a>
+							<p th:text="${recipe.description}" class="description"></p>
+							<span th:text="'Ingredienti usati: ' + ${recipe.quantities.size()}" class="numberOfIngredients"></span>
+						</div>
+					</div>
+					<div class="right">
+						<span th:text='${#dates.format(recipe.publicationDate, "yyyy-MM-dd HH:mm")}' class="date"></span>
+						<span class="cook">
+							<img th:src="@{${recipe.cook.photo.getImagePath}}" class="cookImage">
+							<a th:href="@{'/cook/' + ${recipe.cook.id}}" th:text="@{${recipe.cook.name} + ' ' + ${recipe.cook.surname}}" class="cookLink"></a>
+						</span>
+						
+					</div>
+					</li>
+			</ul>
 </body>
 
 </html>

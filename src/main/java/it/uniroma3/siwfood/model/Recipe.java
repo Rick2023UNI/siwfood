@@ -116,7 +116,7 @@ public class Recipe {
 
 	private Date publicationDate;
 
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<Image> images;
 
 	@ManyToOne
