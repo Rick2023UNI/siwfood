@@ -1,10 +1,10 @@
 .cookImage {
-  width: 10rem;
-  height: 10rem;
-  object-fit: cover;
-  border-radius: 50%;
-  vertical-align:middle;
-  margin-left: 1vw;
+	width: 10rem;
+	height: 10rem;
+	object-fit: cover;
+	border-radius: 50%;
+	vertical-align: middle;
+	margin-left: 1vw;
 }
 
 .cookLink {
@@ -12,34 +12,34 @@
 	text-decoration: none;
 	height: 2rem;
 	padding-left: 1rem;
-	vertical-align:middle;
+	vertical-align: middle;
 	font-size: 3rem;
 	font-weight: 700;
 	color: #4CAF50;
 	padding-top: -3rem;
 	height: 2rem;
 	padding-left: 1rem;
-	vertical-align:middle;
+	vertical-align: middle;
 }
 
 .cookLink:hover {
-	color:#45a049;
+	color: #45a049;
 }
 
 .cooks {
 	list-style: none;
 	padding: 0;
-  	width: 100%;
+	width: 100%;
 }
 
 .cook {
-	vertical-align:middle;
+	vertical-align: middle;
 	padding-top: .5em;
 	border-radius: 25px;
 }
 
 .cook span {
-	vertical-align:middle;
+	vertical-align: middle;
 	padding-top: 0.5rem;
 	padding-left: 1rem;
 }
@@ -48,11 +48,11 @@ svg.icon {
 	max-width: 1.3rem;
 	max-height: 1.3rem;
 	margin-left: 0.5rem;
-	vertical-align:middle;
+	vertical-align: middle;
 }
 
 #delete {
-	color:red;
+	color: red;
 }
 
 #edit {
@@ -66,44 +66,44 @@ a.icon {
 .search {
 	display: inline-block;
 	width: 45%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
 }
 
 #submit {
-    width: 8%;
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 1rem;
+	width: 8%;
+	background-color: #4CAF50;
+	color: white;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-weight: 700;
+	font-size: 1rem;
 }
 
 #submit:hover {
-  background-color: #45a049;
+	background-color: #45a049;
 }
 
 ul.cooks {
-  list-style: none;
-  padding: 0;
-  width: 100%;
+	list-style: none;
+	padding: 0;
+	width: 100%;
 }
 
 ul.cooks li {
-  padding: 4vh 0;
-  box-shadow: 0 4px 5px -2px rgba(0, 0, 0, 0.2); 
+	padding: 4vh 0;
+	box-shadow: 0 4px 5px -2px rgba(0, 0, 0, 0.2);
 }
 
 ul.cooks li:last-child {
-  border-bottom: 0;
+	border-bottom: 0;
 }
 
 #previousSearch {

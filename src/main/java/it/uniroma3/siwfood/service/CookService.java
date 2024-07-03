@@ -14,7 +14,7 @@ import it.uniroma3.siwfood.model.Recipe;
 public class CookService {
 	@Autowired
 	private CookRepository cookRepository;
-	
+
 	@Autowired
 	private RecipeRepository recipeRepository;
 
@@ -23,7 +23,7 @@ public class CookService {
 	}
 
 	public void save(Cook cook) {
-		cookRepository.save(cook);	
+		cookRepository.save(cook);
 	}
 
 	public void delete(Cook cook) {
@@ -31,7 +31,7 @@ public class CookService {
 			recipeRepository.delete(recipe);
 		}
 		cook.getPhoto().delete();
-		cookRepository.delete(cook);	
+		cookRepository.delete(cook);
 	}
 
 	public Cook findById(Long id) {

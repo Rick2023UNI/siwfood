@@ -18,6 +18,25 @@ import jakarta.validation.constraints.Past;
 
 @Entity
 public class Cook {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	@NotBlank(message = "Il nome è richiesto")
+	private String name;
+
+	@NotBlank(message = "Il cognome è richiesto")
+	private String surname;
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date birthday;
+
+	@OneToOne
+	private Image photo;
+
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "cook")
+	private Credentials credentials;
+	
 	public Long getId() {
 		return id;
 	}
@@ -50,31 +69,12 @@ public class Cook {
 		this.birthday = birthday;
 	}
 
-	//Method that updates the cook
+	// Method that updates the cook
 	public void updateTo(Cook cookUpdated) {
 		this.setName(cookUpdated.getName());
 		this.setSurname(cookUpdated.getSurname());
 		this.setBirthday(cookUpdated.getBirthday());
 	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	
-	@NotBlank(message = "Il nome è richiesto")
-	private String name;
-	
-	@NotBlank(message = "Il cognome è richiesto")
-	private String surname;
-	
-	@DateTimeFormat(pattern ="yyyy-MM-dd")
-	private Date birthday;
-	
-	@OneToOne
-	private Image photo;
-	
-	@OneToOne(cascade=CascadeType.ALL, mappedBy="cook")
-	private Credentials credentials;
 
 	public Credentials getCredentials() {
 		return credentials;
@@ -105,7 +105,7 @@ public class Cook {
 
 	@Override
 	public boolean equals(Object o) {
-		Cook cook=(Cook) o;
-		return cook.getId()==this.getId();
+		Cook cook = (Cook) o;
+		return cook.getId() == this.getId();
 	}
 }

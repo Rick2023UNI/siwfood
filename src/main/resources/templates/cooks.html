@@ -5,26 +5,26 @@
 	<title>Cuochi</title>
 	<link rel="icon" type="icon" href="image/favicon.ico">
 	<link rel="stylesheet" href="/css/cooks.css" />
-	<link rel="stylesheet" href="/css/_menu.css"/>
+	<link rel="stylesheet" href="/css/_menu.css" />
 </head>
 
 <body>
-		<section id="Home">
-	    <nav>
+	<section id="Home">
+		<nav>
 			<div class="logo">
-						<a href="/">
-			            	<img src="/image/logo.png">
-						</a>
-			        </div>
-	        <ul>
-	            <li><a href="/cooks">Lista cuochi</a></li>
-	            <li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
+				<a href="/">
+					<img src="/image/logo.png">
+				</a>
+			</div>
+			<ul>
+				<li><a href="/cooks">Lista cuochi</a></li>
+				<li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
 				<li th:if="${admin==true}"><a href="/admin/manageIngredients">Gestisci ingredienti</a></li>
-			  <li th:if="${admin==true}"><a href="/admin/manageRecipes">Gestisci ricette</a></li>
-			  <li th:if="${admin==true}"><a href="/admin/manageCooks">Gestisci cuochi</a></li>
-	        </ul>
+				<li th:if="${admin==true}"><a href="/admin/manageRecipes">Gestisci ricette</a></li>
+				<li th:if="${admin==true}"><a href="/admin/manageCooks">Gestisci cuochi</a></li>
+			</ul>
 
-	        <div>
+			<div>
 				<a th:if="${userDetails!=null}" th:href="@{'/cook/' + ${cookDetails.id}}" id="account">
 					<img th:src="@{${cookDetails.photo.getImagePath}}" id="current-cook-image">
 				</a>
@@ -33,32 +33,33 @@
 				<a th:unless="${userDetails!=null}" href="/register" id="register">Registrati</a>
 			</div>
 
-	    </nav>
-		</section>
+		</nav>
+	</section>
 	<br>
 	<span th:if="${searchNameSurname}">
-		Risultati per: 
-			<span id="previousSearch" th:text="${searchNameSurname.name} + ', ' + ${searchNameSurname.surname}"></span>
-		</span>
-		<br>
-		<span th:if="${searchNameSurname}">
-			<span th:if="@{${cooks.size()}>1}" th:text="'Trovati '+${cooks.size()}+' cuochi'"></span>
-			<span th:unless="@{${cooks.size()}>1}" th:text="'Trovato un cuoco'"></span>
-		</span>
+		Risultati per:
+		<span id="previousSearch" th:text="${searchNameSurname.name} + ', ' + ${searchNameSurname.surname}"></span>
+	</span>
+	<br>
+	<span th:if="${searchNameSurname}">
+		<span th:if="@{${cooks.size()}>1}" th:text="'Trovati '+${cooks.size()}+' cuochi'"></span>
+		<span th:unless="@{${cooks.size()}>1}" th:text="'Trovato un cuoco'"></span>
+	</span>
 	<form th:action="@{/cooks}" method="post">
-		<input class="search" type="text" th:value="${name}" name="name" placeholder="Nome"/>
-		<input class="search" type="text" th:value="${surname}" name="surname" placeholder="Cognome"/>
-	   <button id="submit" type="submit">Cerca</button>
+		<input class="search" type="text" th:value="${name}" name="name" placeholder="Nome" />
+		<input class="search" type="text" th:value="${surname}" name="surname" placeholder="Cognome" />
+		<button id="submit" type="submit">Cerca</button>
 	</form>
 	<h1>Cuochi</h1>
 	<div th:if="${cooks==null || cooks.isEmpty()}">Non ci sono cuochi nel sistema</div>
 	<ul class="cooks">
 		<li th:each="cook : ${cooks}" class="cook">
 			<img th:src="@{${cook.photo.getImagePath}}" class="cookImage">
-			<a th:href="@{'/cook/' + ${cook.id}}" th:text="${cook.name} + ', ' + ${cook.surname}" class="cookLink"></a>			
-			<span th:if="${cook.getRecipes().size()}>0" th:text="@{'Ricette condivise: ' + ${cook.getRecipes().size()}}"></span>
+			<a th:href="@{'/cook/' + ${cook.id}}" th:text="${cook.name} + ', ' + ${cook.surname}" class="cookLink"></a>
+			<span th:if="${cook.getRecipes().size()}>0"
+				th:text="@{'Ricette condivise: ' + ${cook.getRecipes().size()}}"></span>
 			<span th:unless="${cook.getRecipes().size()}>0">Non ha condiviso ricette</span>
-	
+
 	</ul>
 </body>
 

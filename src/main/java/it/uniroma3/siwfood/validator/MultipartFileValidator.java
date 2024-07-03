@@ -16,10 +16,10 @@ public class MultipartFileValidator implements Validator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		MultipartFile multipartFile = (MultipartFile)target;
+		MultipartFile multipartFile = (MultipartFile) target;
 		if (multipartFile.isEmpty()) {
 			errors.reject("multipartFile.empty");
 		}
 	}
-	
+
 }

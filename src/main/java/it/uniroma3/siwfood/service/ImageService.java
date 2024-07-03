@@ -14,7 +14,7 @@ public class ImageService {
 	private ImageRepository imageRepository;
 
 	public void save(Image image) {
-		imageRepository.save(image);	
+		imageRepository.save(image);
 	}
 
 	public Image findById(Long id) {
@@ -23,7 +23,6 @@ public class ImageService {
 
 	public void delete(Image image) {
 		image.delete();
-		imageRepository.delete(image);	
+		imageRepository.delete(image);
 	}
 }
-

@@ -6,31 +6,31 @@
 		Cerca ricette
 	</title>
 	<link rel="icon" type="icon" href="image/favicon.ico">
-	<link rel="stylesheet" href="/css/searchRecipes.css?version=3"/>
+	<link rel="stylesheet" href="/css/searchRecipes.css?version=3" />
 	<script src="js/3.7.1_jquery.min.js"></script>
 	<script src="js/searchRecipes.js"></script>
-	<link rel="stylesheet" href="/css/_menu.css"/>
-	
-	<link rel="stylesheet" href="/css/_recipes list.css"/>
+	<link rel="stylesheet" href="/css/_menu.css" />
+
+	<link rel="stylesheet" href="/css/_recipes list.css" />
 </head>
 
 <body>
-		<section id="Home">
-	    <nav>
+	<section id="Home">
+		<nav>
 			<div class="logo">
-						<a href="/">
-			            	<img src="/image/logo.png">
-						</a>
-			        </div>
-	        <ul>
-	            <li><a href="/cooks">Lista cuochi</a></li>
-	            <li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
+				<a href="/">
+					<img src="/image/logo.png">
+				</a>
+			</div>
+			<ul>
+				<li><a href="/cooks">Lista cuochi</a></li>
+				<li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
 				<li th:if="${admin==true}"><a href="/admin/manageIngredients">Gestisci ingredienti</a></li>
-			  <li th:if="${admin==true}"><a href="/admin/manageRecipes">Gestisci ricette</a></li>
-			  <li th:if="${admin==true}"><a href="/admin/manageCooks">Gestisci cuochi</a></li>
-	        </ul>
+				<li th:if="${admin==true}"><a href="/admin/manageRecipes">Gestisci ricette</a></li>
+				<li th:if="${admin==true}"><a href="/admin/manageCooks">Gestisci cuochi</a></li>
+			</ul>
 
-	        <div>
+			<div>
 				<a th:if="${userDetails!=null}" th:href="@{'/cook/' + ${cookDetails.id}}" id="account">
 					<img th:src="@{${cookDetails.photo.getImagePath}}" id="current-cook-image">
 				</a>
@@ -39,18 +39,19 @@
 				<a th:unless="${userDetails!=null}" href="/register" id="register">Registrati</a>
 			</div>
 
-	    </nav>
-		</section>
+		</nav>
+	</section>
 	<br>
 	<span th:if="${searchIngredients}">
-		Risultati per: 
-		<span id="previousSearch" th:each="ingredient, lastItem : ${searchIngredients}" th:text="!${lastItem.last} ? ${ingredient.name} + ', ' : ${ingredient.name}"></span>
+		Risultati per:
+		<span id="previousSearch" th:each="ingredient, lastItem : ${searchIngredients}"
+			th:text="!${lastItem.last} ? ${ingredient.name} + ', ' : ${ingredient.name}"></span>
 	</span>
 	<br>
-		<span th:if="${searchIngredients}" class="search-results">
-			<span th:if="@{${recipes.size()}>1}" th:text="'Trovate '+${recipes.size()}+' ricette'"></span>
-			<span th:if="@{${recipes.size()}==1}">Trovata una ricetta</span>
-		</span>
+	<span th:if="${searchIngredients}" class="search-results">
+		<span th:if="@{${recipes.size()}>1}" th:text="'Trovate '+${recipes.size()}+' ricette'"></span>
+		<span th:if="@{${recipes.size()}==1}">Trovata una ricetta</span>
+	</span>
 	<span th:if="${searchIngredients}" class="search-results">
 		<span th:if="@{${recipes.size()}>1}" th:text="'Trovate '+${recipes.size()}+' ricette'"></span>
 		<span th:if="@{${recipes.size()}==1}" text="Trovata una ricetta"></span>
@@ -58,58 +59,68 @@
 	</span>
 	<form th:action="@{/searchRecipes}" method="post">
 		<div id="selectors">
-			<div id="ingredient" style="display: none;"  class="ingredient">
+			<div id="ingredient" style="display: none;" class="ingredient">
 				<select id="ingredientSelector" style="display: none;">
-			      <option th:each="ingredient : ${ingredients}" th:text="${ingredient.name}" th:value="${ingredient.id}" th:id="${ingredient.id}"></option>
-			    </select>
+					<option th:each="ingredient : ${ingredients}" th:text="${ingredient.name}"
+						th:value="${ingredient.id}" th:id="${ingredient.id}"></option>
+				</select>
 				<a class="icon-button delete" id="ingredientRemove">
-					<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon">
-					 <path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+						class="icon">
+						<path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+							stroke-linejoin="round" />
 				</a>
 			</div>
 			<div id="ingredient0" class="ingredient">
 				<select name="ingredient" id="ingredientSelector0">
-			      <option th:each="ingredient : ${ingredients}" th:text="${ingredient.name}" th:value="${ingredient.id}" th:id="${ingredient.id}"></option>
-			    </select>
+					<option th:each="ingredient : ${ingredients}" th:text="${ingredient.name}"
+						th:value="${ingredient.id}" th:id="${ingredient.id}"></option>
+				</select>
 				<a class="icon-button delete" id="ingredientRemove0">
-					<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon">
-					 <path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-				 </a>
+					<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+						class="icon">
+						<path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+							stroke-linejoin="round" />
+				</a>
 			</div>
 			<a class="icon-button add" id="newIngredient">
-					<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon">
-				 <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-			 </a>
+				<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+					class="icon">
+					<path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+						stroke-linejoin="round" />
+			</a>
 		</div>
-		
-	   <button id="submit" type="submit">Cerca</button>
-	  </form>
+
+		<button id="submit" type="submit">Cerca</button>
+	</form>
 	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema con gli ingredienti scelti
 		<a href="https://youtu.be/K78yd8zj64Y?t=27">
 			<img src="image/olive.png" class="olive"></img>
 		</a>
-		
+
 	</div>
 	<ul clss="list">
-				<li th:each="recipe : ${recipes}" class="listItem">
-					<div class="recipe">
-						<img th:src="@{${recipe.images[0].getImagePath}}" class="recipeImage">
-						<div class="recipe-information">
-							<a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}" class="linkRecipe"></a>
-							<p th:text="${recipe.description}" class="description"></p>
-							<span th:text="'Ingredienti usati: ' + ${recipe.quantities.size()}" class="numberOfIngredients"></span>
-						</div>
-					</div>
-					<div class="right">
-						<span th:text='${#dates.format(recipe.publicationDate, "yyyy-MM-dd HH:mm")}' class="date"></span>
-						<span class="cook">
-							<img th:src="@{${recipe.cook.photo.getImagePath}}" class="cookImage">
-							<a th:href="@{'/cook/' + ${recipe.cook.id}}" th:text="@{${recipe.cook.name} + ' ' + ${recipe.cook.surname}}" class="cookLink"></a>
-						</span>
-						
-					</div>
-					</li>
-			</ul>
+		<li th:each="recipe : ${recipes}" class="listItem">
+			<div class="recipe">
+				<img th:src="@{${recipe.images[0].getImagePath}}" class="recipeImage">
+				<div class="recipe-information">
+					<a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}" class="linkRecipe"></a>
+					<p th:text="${recipe.description}" class="description"></p>
+					<span th:text="'Ingredienti usati: ' + ${recipe.quantities.size()}"
+						class="numberOfIngredients"></span>
+				</div>
+			</div>
+			<div class="right">
+				<span th:text='${#dates.format(recipe.publicationDate, "yyyy-MM-dd HH:mm")}' class="date"></span>
+				<span class="cook">
+					<img th:src="@{${recipe.cook.photo.getImagePath}}" class="cookImage">
+					<a th:href="@{'/cook/' + ${recipe.cook.id}}"
+						th:text="@{${recipe.cook.name} + ' ' + ${recipe.cook.surname}}" class="cookLink"></a>
+				</span>
+
+			</div>
+		</li>
+	</ul>
 </body>
 
 </html>

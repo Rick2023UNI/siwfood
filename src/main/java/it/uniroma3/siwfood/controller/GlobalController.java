@@ -15,8 +15,10 @@ import it.uniroma3.siwfood.service.CredentialsService;
 @ControllerAdvice
 public class GlobalController {
 
-	@Autowired CookService cookService;
-	@Autowired CredentialsService credentialsService;
+	@Autowired
+	CookService cookService;
+	@Autowired
+	CredentialsService credentialsService;
 
 	@ModelAttribute("userDetails")
 	public UserDetails getUser() {
@@ -35,18 +37,17 @@ public class GlobalController {
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 			user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		}
-		Cook cook=null;
-		if (user!=null) {
-			cook=credentialsService.getCredentials(user.getUsername()).getCook();
+		Cook cook = null;
+		if (user != null) {
+			cook = credentialsService.getCredentials(user.getUsername()).getCook();
 		}
 		return cook;
 	}
-	
+
 	@ModelAttribute("admin")
 	public boolean admin() {
 		UserDetails user = null;
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			return (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin")));
+		return (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin")));
 	}
 }
-

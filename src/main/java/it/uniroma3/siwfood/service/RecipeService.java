@@ -24,7 +24,7 @@ public class RecipeService {
 	}
 
 	public void save(Recipe recipe) {
-		recipeRepository.save(recipe);	
+		recipeRepository.save(recipe);
 	}
 
 	public Recipe findById(Long id) {
@@ -33,11 +33,12 @@ public class RecipeService {
 
 	public void delete(Recipe recipe) throws IOException {
 		try {
-			FileUtils.deleteDirectory(new File("./images/recipe/"+recipe.getId()));
+			FileUtils.deleteDirectory(new File("./images/recipe/" + recipe.getId()));
 		} catch (IOException e) {
-			throw new IOException("Could not delete the recipe's folder located at: " + "./images/recipe/"+recipe.getId());
+			throw new IOException(
+					"Could not delete the recipe's folder located at: " + "./images/recipe/" + recipe.getId());
 		}
-		recipeRepository.delete(recipe);	
+		recipeRepository.delete(recipe);
 	}
 
 	public Iterable<Recipe> findByNameContaining(String name) {

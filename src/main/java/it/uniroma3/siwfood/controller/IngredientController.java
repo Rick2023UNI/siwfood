@@ -1,6 +1,5 @@
 package it.uniroma3.siwfood.controller;
 
-
 import java.io.IOException;
 import java.util.List;
 
@@ -30,37 +29,42 @@ import it.uniroma3.siwfood.service.QuantityService;
 import it.uniroma3.siwfood.service.RecipeService;
 import it.uniroma3.siwfood.validator.MultipartFileValidator;
 
-@Controller 
+@Controller
 public class IngredientController {
-	@Autowired IngredientService ingredientService;
-	@Autowired ImageService imageService;
-	@Autowired QuantityService quantityService;
-	@Autowired RecipeService recipeService;
-	
-	@Autowired MultipartFileValidator multipartFileValidator;
+	@Autowired
+	IngredientService ingredientService;
+	@Autowired
+	ImageService imageService;
+	@Autowired
+	QuantityService quantityService;
+	@Autowired
+	RecipeService recipeService;
+
+	@Autowired
+	MultipartFileValidator multipartFileValidator;
 
 	@GetMapping("admin/manageIngredients")
 	public String manageIngredients(Model model) {
-		model.addAttribute("ingredients", this.ingredientService.findAll());		    
+		model.addAttribute("ingredients", this.ingredientService.findAll());
 		return "admin/manageIngredients.html";
 	}
-	
+
 	@PostMapping("/admin/ingredient")
-	public String newIngredient(@ModelAttribute("ingredient") Ingredient ingredient,
-			BindingResult bindingResult,
+	public String newIngredient(@ModelAttribute("ingredient") Ingredient ingredient, BindingResult bindingResult,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
 		this.multipartFileValidator.validate(multipartFile, bindingResult);
 		if (!bindingResult.hasErrors()) {
-			//Caricamento dell'immagine
-			String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-			//Primo salvataggio per far assegnare all'ingrediente un id
+			// Caricamento dell'immagine
+			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+			// Primo salvataggio per far assegnare all'ingrediente un id
 			this.ingredientService.save(ingredient);
-			//Impostazione del nome del file all'id dell'ingrediente, mantenendo l'estensione del file originale
-			fileName=ingredient.getId()+fileName.substring(fileName.lastIndexOf('.'));
-			Image image=new Image();
+			// Impostazione del nome del file all'id dell'ingrediente, mantenendo
+			// l'estensione del file originale
+			fileName = ingredient.getId() + fileName.substring(fileName.lastIndexOf('.'));
+			Image image = new Image();
 			image.setFolder("ingredient");
 			this.imageService.save(image);
-			
+
 			image.uploadImage(fileName, multipartFile);
 			ingredient.setImage(image);
 			this.imageService.save(image);
@@ -69,22 +73,20 @@ public class IngredientController {
 		}
 		return "/admin/formNewIngredient.html";
 	}
-	
+
 	@GetMapping("/admin/newIngredient")
 	public String addRecipe(Model model) {
 		model.addAttribute("ingredient", new Ingredient());
 		return "admin/formNewIngredient.html";
 	}
-	
 
 	@GetMapping("admin/removeIngredient/{id}")
-	public String removeIngredient(@PathVariable("id") Long id,
-			Model model) {
-		Ingredient ingredient=this.ingredientService.findById(id);
+	public String removeIngredient(@PathVariable("id") Long id, Model model) {
+		Ingredient ingredient = this.ingredientService.findById(id);
 		ingredient.getImage().delete();
-		List<Quantity> quantities=ingredient.getQuantities();
+		List<Quantity> quantities = ingredient.getQuantities();
 		for (Quantity quantity : quantities) {
-			Recipe recipe=quantity.getRecipe();
+			Recipe recipe = quantity.getRecipe();
 			recipe.removeQuantity(quantity);
 			this.recipeService.save(recipe);
 			this.quantityService.delete(quantity);
@@ -93,29 +95,29 @@ public class IngredientController {
 		this.ingredientService.delete(ingredient);
 		return "redirect:/admin/manageIngredients";
 	}
-	
+
 	@GetMapping("/admin/formUpdateIngredient/{id}")
 	public String formUpdateIngredient(@PathVariable("id") Long id, Model model) {
-			model.addAttribute("ingredient", this.ingredientService.findById(id));
+		model.addAttribute("ingredient", this.ingredientService.findById(id));
 		return "admin/formUpdateIngredient.html";
 	}
 
 	@PostMapping("/admin/updateIngredient/{id}")
 	public String updateIngredient(@PathVariable("id") Long id,
-			@ModelAttribute("ingredient") Ingredient ingredientUpdated, 
+			@ModelAttribute("ingredient") Ingredient ingredientUpdated,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
-		Ingredient ingredient=this.ingredientService.findById(id);
-		//Caricamento delle immagini
-		String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-		if (fileName!="") {
-			//Eliminazione vecchia immagine
-			Image image=ingredient.getImage();
+		Ingredient ingredient = this.ingredientService.findById(id);
+		// Caricamento delle immagini
+		String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+		if (fileName != "") {
+			// Eliminazione vecchia immagine
+			Image image = ingredient.getImage();
 			image.delete();
-			
-			fileName=ingredient.getId()+fileName.substring(fileName.lastIndexOf('.'));
+
+			fileName = ingredient.getId() + fileName.substring(fileName.lastIndexOf('.'));
 			image.setFolder("ingredient");
 			this.imageService.save(image);
-			
+
 			image.uploadImage(fileName, multipartFile);
 			ingredient.setImage(image);
 			this.imageService.save(image);
@@ -123,9 +125,9 @@ public class IngredientController {
 		}
 		ingredient.updateTo(ingredientUpdated);
 		this.ingredientService.save(ingredient);
-		return "redirect:/admin/formUpdateIngredient/"+ingredient.getId();
+		return "redirect:/admin/formUpdateIngredient/" + ingredient.getId();
 	}
-	
+
 	@PostMapping("admin/manageIngredients")
 	public String searchIngredients(@RequestParam String name, Model model) {
 		model.addAttribute("searchName", name);

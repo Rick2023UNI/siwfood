@@ -32,17 +32,23 @@ import it.uniroma3.siwfood.validator.CredentialsValidator;
 import it.uniroma3.siwfood.validator.MultipartFileValidator;
 import jakarta.validation.Valid;
 
-@Controller 
+@Controller
 public class CookController {
-	@Autowired CookService cookService;
-	@Autowired ImageService imageService;
-	@Autowired CredentialsService credentialsService;
-	
-	@Autowired PasswordEncoder passwordEncoder;
-	
-	//Validazione
-	@Autowired CredentialsValidator credentialsValidator;
-	@Autowired MultipartFileValidator multipartFileValidator;
+	@Autowired
+	CookService cookService;
+	@Autowired
+	ImageService imageService;
+	@Autowired
+	CredentialsService credentialsService;
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
+
+	// Validazione
+	@Autowired
+	CredentialsValidator credentialsValidator;
+	@Autowired
+	MultipartFileValidator multipartFileValidator;
 
 	@GetMapping("/admin/newCook")
 	public String addCook(Model model) {
@@ -52,22 +58,22 @@ public class CookController {
 	}
 
 	@PostMapping("/admin/cook")
-	public String newCook(@Valid @ModelAttribute("credentials") Credentials credentials,
-			BindingResult bindingResult,
-			@ModelAttribute("cook") Cook cook,
-			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
-		//Validazione
+	public String newCook(@Valid @ModelAttribute("credentials") Credentials credentials, BindingResult bindingResult,
+			@ModelAttribute("cook") Cook cook, @RequestParam("fileImage") MultipartFile multipartFile)
+			throws IOException {
+		// Validazione
 		this.credentialsValidator.validate(credentials, bindingResult);
 		this.multipartFileValidator.validate(multipartFile, bindingResult);
-		
+
 		if (!bindingResult.hasErrors()) {
-			//Primo salvataggio per far assegnare al cuoco un id
+			// Primo salvataggio per far assegnare al cuoco un id
 			this.cookService.save(cook);
-			//Caricamento dell'immagine
-			String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-			Image image=new Image();
-			//Impostazione del nome del file all'id dell'ingrediente e dell'estensione originale del file
-			fileName=cook.getId()+fileName.substring(fileName.lastIndexOf('.'));
+			// Caricamento dell'immagine
+			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+			Image image = new Image();
+			// Impostazione del nome del file all'id dell'ingrediente e dell'estensione
+			// originale del file
+			fileName = cook.getId() + fileName.substring(fileName.lastIndexOf('.'));
 			image.setFileName(fileName);
 			image.setFolder("cook");
 			cook.setPhoto(image);
@@ -75,13 +81,12 @@ public class CookController {
 			this.cookService.save(cook);
 			image.uploadImage(fileName, multipartFile);
 			this.cookService.save(cook);
-			
+
 			credentials.setPassword(passwordEncoder.encode(credentials.getPassword()));
 			credentials.setCook(cook);
 			credentialsService.save(credentials);
 			return "redirect:/admin/manageCooks";
-		} 
-		else {
+		} else {
 			return "/admin/formNewCook.html";
 		}
 	}
@@ -96,26 +101,25 @@ public class CookController {
 	@GetMapping("/admin/formUpdateCook/{id}")
 	public String formUpdateCook(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("cook", this.cookService.findById(id));
-		//Da caricare un'immagine se presente
+		// Da caricare un'immagine se presente
 		return "admin/formUpdateCook.html";
 	}
 
 	@PostMapping("/admin/updateCook/{id}")
-	public String updateCook(@PathVariable("id") Long id,
-			@ModelAttribute("cook") Cook cookUpdated,
+	public String updateCook(@PathVariable("id") Long id, @ModelAttribute("cook") Cook cookUpdated,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
-		Cook cook=this.cookService.findById(id);
-		//Caricamento dell'immagine
-		String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-		fileName=cook.getId()+fileName.substring(fileName.lastIndexOf('.'));
-		Image image=cook.getPhoto();
+		Cook cook = this.cookService.findById(id);
+		// Caricamento dell'immagine
+		String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+		fileName = cook.getId() + fileName.substring(fileName.lastIndexOf('.'));
+		Image image = cook.getPhoto();
 		image.delete();
 		image.setFileName(fileName);
 		this.imageService.save(image);
 		image.uploadImage(fileName, multipartFile);
 		cook.updateTo(cookUpdated);
 		this.cookService.save(cook);
-		return "redirect:/cook/"+cook.getId();
+		return "redirect:/cook/" + cook.getId();
 	}
 
 	@GetMapping("/cooks")
@@ -126,39 +130,38 @@ public class CookController {
 
 	@GetMapping("admin/manageCooks")
 	public String manageCooks(Model model) {
-		model.addAttribute("cooks", this.cookService.findAll());		    
+		model.addAttribute("cooks", this.cookService.findAll());
 		return "admin/manageCooks.html";
-	}	
+	}
 
 	@GetMapping("admin/removeCook/{id}")
-	public String removeCook(@PathVariable("id") Long id,
-			Model model) {
-		Cook cook=this.cookService.findById(id);
+	public String removeCook(@PathVariable("id") Long id, Model model) {
+		Cook cook = this.cookService.findById(id);
 		this.cookService.delete(cook);
 
 		return "redirect:/admin/manageCooks";
 	}
-	
+
 	@PostMapping("/cooks")
 	public String searchCooks(@RequestParam String name, @RequestParam String surname, Model model) {
-		ArrayList<Cook> cooksByName=(ArrayList<Cook>) this.cookService.findByNameContaining(name);
-		ArrayList<Cook> cooksBySurname=(ArrayList<Cook>) this.cookService.findBySurnameContaining(surname);
+		ArrayList<Cook> cooksByName = (ArrayList<Cook>) this.cookService.findByNameContaining(name);
+		ArrayList<Cook> cooksBySurname = (ArrayList<Cook>) this.cookService.findBySurnameContaining(surname);
 		cooksBySurname.retainAll(cooksByName);
-		Cook cook=new Cook();
+		Cook cook = new Cook();
 		cook.setName(name);
 		cook.setSurname(surname);
 		model.addAttribute("searchNameSurname", cook);
 		model.addAttribute("cooks", cooksBySurname);
 		return "cooks.html";
 	}
-	
+
 	@PostMapping("admin/manageCooks")
 	public String searchManageCooks(@RequestParam String name, @RequestParam String surname, Model model) {
-		ArrayList<Cook> cooksByName=(ArrayList<Cook>) this.cookService.findByNameContaining(name);
-		ArrayList<Cook> cooksBySurname=(ArrayList<Cook>) this.cookService.findBySurnameContaining(surname);
+		ArrayList<Cook> cooksByName = (ArrayList<Cook>) this.cookService.findByNameContaining(name);
+		ArrayList<Cook> cooksBySurname = (ArrayList<Cook>) this.cookService.findBySurnameContaining(surname);
 		cooksBySurname.retainAll(cooksByName);
 		model.addAttribute("cooks", cooksBySurname);
-		Cook cook=new Cook();
+		Cook cook = new Cook();
 		cook.setName(name);
 		cook.setSurname(surname);
 		model.addAttribute("searchNameSurname", cook);

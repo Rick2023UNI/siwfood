@@ -20,7 +20,7 @@ public class IngredientService {
 	}
 
 	public void save(Ingredient ingredient) {
-		ingredientRepository.save(ingredient);	
+		ingredientRepository.save(ingredient);
 	}
 
 	public Ingredient findById(Long id) {

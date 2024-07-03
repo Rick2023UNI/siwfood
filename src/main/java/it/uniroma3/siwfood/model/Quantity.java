@@ -8,7 +8,19 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Quantity {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
+	private String quantity;
+
+	@ManyToOne
+	private Ingredient ingredient;
+
+	// Necessario per eliminazione ingrediente
+	@ManyToOne
+	private Recipe recipe;
+	
 	public Recipe getRecipe() {
 		return recipe;
 	}
@@ -40,18 +52,4 @@ public class Quantity {
 	public void setIngredient(Ingredient ingredient) {
 		this.ingredient = ingredient;
 	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-
-	private String quantity;
-
-	@ManyToOne
-	private Ingredient ingredient;
-	
-	//Eliminazione ingrediente
-	@ManyToOne
-	private Recipe recipe;
-
 }

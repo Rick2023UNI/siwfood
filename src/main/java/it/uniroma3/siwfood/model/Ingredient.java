@@ -14,6 +14,19 @@ import jakarta.persistence.OneToOne;
 
 @Entity
 public class Ingredient {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	private String name;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	private Image image;
+	
+	// Necessario per eliminazione ingrediente
+	@OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
+	private List<Quantity> quantities;
+	
 	public List<Quantity> getQuantities() {
 		return quantities;
 	}
@@ -55,15 +68,6 @@ public class Ingredient {
 		this.name = name;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-
-	private String name;
-
-	@OneToOne(cascade=CascadeType.ALL)
-	private Image image;
-
 	public Image getImage() {
 		return image;
 	}
@@ -71,14 +75,10 @@ public class Ingredient {
 	public void setImage(Image image) {
 		this.image = image;
 	}
-	
-	//Eliminazione ingrediente
-	@OneToMany(mappedBy="ingredient", cascade=CascadeType.ALL)
-	private List<Quantity> quantities;
 
 	public void updateTo(Ingredient ingredientUpdated) {
 		this.setName(ingredientUpdated.getName());
-		
+
 	}
 
 }

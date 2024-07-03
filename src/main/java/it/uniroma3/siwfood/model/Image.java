@@ -18,6 +18,18 @@ import jakarta.persistence.Transient;
 
 @Entity
 public class Image {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	private String fileName;
+
+	private String folder;
+
+	private String name;
+
+	private String alternativeText;
+	
 	public Long getId() {
 		return id;
 	}
@@ -50,23 +62,12 @@ public class Image {
 		this.alternativeText = alternativeText;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-
-	private String fileName;
-
-	private String folder;
-
-	private String name;
-
-	private String alternativeText;
-
 	@Transient
 	public String getImagePath() {
-		if (fileName == null || id == null) return null;
+		if (fileName == null || id == null)
+			return null;
 
-		return "/images/"+folder+"/"+fileName;
+		return "/images/" + folder + "/" + fileName;
 	}
 
 	public String getFolder() {
@@ -76,13 +77,12 @@ public class Image {
 	public void setFolder(String folder) {
 		this.folder = folder;
 	}
-	
-	
-	//Metodo per il salvataggio dell'immagine
+
+	// Metodo per il salvataggio dell'immagine
 	public void uploadImage(String fileName, MultipartFile multipartFile) throws IOException {
-		//Percorso del file
-		String uploadDir="./images/"+this.getFolder();
-		
+		// Percorso del file
+		String uploadDir = "./images/" + this.getFolder();
+
 		this.setFileName(fileName);
 		Path uploadPath = Paths.get(uploadDir);
 		if (!Files.exists(uploadPath)) {
@@ -100,9 +100,9 @@ public class Image {
 			throw new IOException("Could not save the upload file: " + fileName);
 		}
 	}
-	
+
 	public void delete() {
-		File file = new File("./images/"+this.getFolder()+"/"+this.getFileName());
+		File file = new File("./images/" + this.getFolder() + "/" + this.getFileName());
 		file.delete();
 	}
 }

@@ -12,7 +12,7 @@ public class CredentialsService {
 	private CredentialsRepository credentialsRepository;
 
 	public void save(Credentials credentials) {
-		credentialsRepository.save(credentials);	
+		credentialsRepository.save(credentials);
 	}
 
 	public Credentials getCredentials(Long id) {
@@ -27,4 +27,3 @@ public class CredentialsService {
 		return credentialsRepository.existsByUsername(username);
 	}
 }
-

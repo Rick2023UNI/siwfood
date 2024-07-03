@@ -1,30 +1,33 @@
 <!DOCTYPE html>
-<html>  <head>
-    <title>Modifica ingrediente</title>
-	<link rel="icon" type="icon" href="image/favicon.ico">
-    <link rel="stylesheet" href="/css/admin/formUpdateIngredient.css?version=3" />
-	<link rel="stylesheet" href="/css/_fileUpload.css?version=3"/>
-    <script src="/js/3.7.1_jquery.min.js"></script>
-	<script src="/js/admin/_previewFormUpdate.js"></script>
-	<link rel="stylesheet" href="/css/_menu.css"/>
-  </head>
-  <body>
-		<section id="Home">
-	    <nav>
-			<div class="logo">
-						<a href="/">
-			            	<img src="/image/logo.png">
-						</a>
-			        </div>
-	        <ul>
-	            <li><a href="/cooks">Lista cuochi</a></li>
-	            <li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
-				<li th:if="${admin==true}"><a href="/admin/manageIngredients">Gestisci ingredienti</a></li>
-			  <li th:if="${admin==true}"><a href="/admin/manageRecipes">Gestisci ricette</a></li>
-			  <li th:if="${admin==true}"><a href="/admin/manageCooks">Gestisci cuochi</a></li>
-	        </ul>
+<html>
 
-	        <div>
+<head>
+	<title>Modifica ingrediente</title>
+	<link rel="icon" type="icon" href="image/favicon.ico">
+	<link rel="stylesheet" href="/css/admin/formUpdateIngredient.css?version=3" />
+	<link rel="stylesheet" href="/css/_fileUpload.css?version=3" />
+	<script src="/js/3.7.1_jquery.min.js"></script>
+	<script src="/js/admin/_previewFormUpdate.js"></script>
+	<link rel="stylesheet" href="/css/_menu.css" />
+</head>
+
+<body>
+	<section id="Home">
+		<nav>
+			<div class="logo">
+				<a href="/">
+					<img src="/image/logo.png">
+				</a>
+			</div>
+			<ul>
+				<li><a href="/cooks">Lista cuochi</a></li>
+				<li><a href="/searchRecipes">Cerca ricette per ingredienti</a></li>
+				<li th:if="${admin==true}"><a href="/admin/manageIngredients">Gestisci ingredienti</a></li>
+				<li th:if="${admin==true}"><a href="/admin/manageRecipes">Gestisci ricette</a></li>
+				<li th:if="${admin==true}"><a href="/admin/manageCooks">Gestisci cuochi</a></li>
+			</ul>
+
+			<div>
 				<a th:if="${userDetails!=null}" th:href="@{'/cook/' + ${cookDetails.id}}" id="account">
 					<img th:src="@{${cookDetails.photo.getImagePath}}" id="current-cook-image">
 				</a>
@@ -33,26 +36,28 @@
 				<a th:unless="${userDetails!=null}" href="/register" id="register">Registrati</a>
 			</div>
 
-	    </nav>
-		</section>
+		</nav>
+	</section>
 	<br>
-	<form th:action="@{/admin/updateIngredient/}+${ingredient.id}" method="POST" th:object="${ingredient}" enctype="multipart/form-data">
-    <div>
-      Nome
-	  <br><span><input type="text" name='name' th:field="${ingredient.name}" class="input"/></span>
-    </div>
-    <div>
-      Immagine
-	  <br>
-	  <img th:src="${ingredient.image.getImagePath}" class="image" id="thumbnail">
-	  <br>
-	  <input type="file" name='fileImage' id="fileImage" accept="image/png, image/jpeg" class="fileImage"/>
-	<label for="fileImage" class="label">Cambia immagine</label>
-    <br>
-    </div>
-    <div>
-      <span><button type="submit" class="button">Aggiorna</button></span>
-    </div>
+	<form th:action="@{/admin/updateIngredient/}+${ingredient.id}" method="POST" th:object="${ingredient}"
+		enctype="multipart/form-data">
+		<div>
+			Nome
+			<br><span><input type="text" name='name' th:field="${ingredient.name}" class="input" /></span>
+		</div>
+		<div>
+			Immagine
+			<br>
+			<img th:src="${ingredient.image.getImagePath}" class="image" id="thumbnail">
+			<br>
+			<input type="file" name='fileImage' id="fileImage" accept="image/png, image/jpeg" class="fileImage" />
+			<label for="fileImage" class="label">Cambia immagine</label>
+			<br>
+		</div>
+		<div>
+			<span><button type="submit" class="button">Aggiorna</button></span>
+		</div>
 	</form>
-  </body>
+</body>
+
 </html>

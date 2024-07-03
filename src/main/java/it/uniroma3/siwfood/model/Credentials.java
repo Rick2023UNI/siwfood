@@ -45,23 +45,22 @@ public class Credentials {
 		this.id = id;
 	}
 
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@NotBlank(message = "Lo username e' richiesto")
 	@NotNull
 	private String username;
-	
+
 	@NotBlank(message = "La password e' richiesta")
-	@Size(min = 8, message="La password deve essere lunga almeno 8 caratteri")
+	@Size(min = 8, message = "La password deve essere lunga almeno 8 caratteri")
 	@NotNull
 	private String password;
 
 	private String role;
 
-	@OneToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Cook cook;
 
 	public Cook getCook() {

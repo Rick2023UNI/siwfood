@@ -10,7 +10,8 @@ import it.uniroma3.siwfood.service.CredentialsService;
 
 @Component
 public class CredentialsValidator implements Validator {
-	@Autowired CredentialsService credentialsService;
+	@Autowired
+	CredentialsService credentialsService;
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -19,10 +20,10 @@ public class CredentialsValidator implements Validator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		Credentials credentials = (Credentials)target;
+		Credentials credentials = (Credentials) target;
 		if (credentialsService.existsByUsername(credentials.getUsername())) {
 			errors.reject("credentials.duplicate");
 		}
 	}
-	
+
 }

@@ -16,7 +16,28 @@ import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Recipe {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
+	@NotBlank(message = "è necessario dare un nome alla ricetta")
+	private String name;
+
+	@Column(columnDefinition = "text")
+	private String description;
+
+	private Date publicationDate;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Image> images;
+
+	@ManyToOne
+	private Cook cook;
+
+	// Eliminazione ingrediente
+	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+	private List<Quantity> quantities;
+	
 	public Long getId() {
 		return id;
 	}
@@ -74,8 +95,8 @@ public class Recipe {
 	}
 
 	public void addQuantity(Quantity quantity) {
-		if (this.quantities==null) {
-			this.quantities= new ArrayList<Quantity>();
+		if (this.quantities == null) {
+			this.quantities = new ArrayList<Quantity>();
 		}
 		if (!(this.quantities.contains(quantity))) {
 			this.quantities.add(quantity);
@@ -87,8 +108,8 @@ public class Recipe {
 	}
 
 	public void addImage(Image image) {
-		if (this.images==null) {
-			this.images= new ArrayList<Image>();
+		if (this.images == null) {
+			this.images = new ArrayList<Image>();
 		}
 		if (!(this.images.contains(image))) {
 			this.images.add(image);
@@ -100,36 +121,14 @@ public class Recipe {
 		this.images.remove(this.images.indexOf(image));
 	}
 
-	//Method that updates the recipe
+	// Method that updates the recipe
 	public void updateTo(Recipe recipeUpdated) {
 		this.setName(recipeUpdated.getName());
 		this.setDescription(recipeUpdated.getDescription());
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	
-	@NotBlank(message = "è necessario dare un nome alla ricetta")
-	private String name;
-	
-	@Column(columnDefinition = "text")
-	private String description;
-
-	private Date publicationDate;
-
-	@OneToMany(cascade=CascadeType.ALL)
-	private List<Image> images;
-
-	@ManyToOne
-	private Cook cook;
-	
-	//Eliminazione ingrediente
-	@OneToMany(mappedBy="recipe", cascade=CascadeType.ALL)
-	private List<Quantity> quantities;
-
 	public void deleteAllImages() {
-		for (Image image:this.images) {
+		for (Image image : this.images) {
 			image.delete();
 		}
 	}

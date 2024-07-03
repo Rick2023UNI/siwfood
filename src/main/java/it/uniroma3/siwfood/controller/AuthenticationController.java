@@ -36,18 +36,25 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
-@Controller 
+@Controller
 public class AuthenticationController {
-	@Autowired CookService cookService;
-	@Autowired CredentialsService credentialsService;
-	@Autowired PasswordEncoder passwordEncoder;
-	@Autowired RecipeService recipeService;
+	@Autowired
+	CookService cookService;
+	@Autowired
+	CredentialsService credentialsService;
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	@Autowired
+	RecipeService recipeService;
 
-	@Autowired ImageService imageService;
-	
-	//Validazione
-	@Autowired CredentialsValidator credentialsValidator;
-	@Autowired MultipartFileValidator multipartFileValidator;
+	@Autowired
+	ImageService imageService;
+
+	// Validazione
+	@Autowired
+	CredentialsValidator credentialsValidator;
+	@Autowired
+	MultipartFileValidator multipartFileValidator;
 
 	@GetMapping("/login")
 	public String formLoginCook(Model model) {
@@ -67,27 +74,27 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/register")
-	public String registerCook(@Valid @ModelAttribute("credentials") Credentials credentials, 
-			BindingResult bindingResult,
-			@ModelAttribute("cook") Cook cook,
+	public String registerCook(@Valid @ModelAttribute("credentials") Credentials credentials,
+			BindingResult bindingResult, @ModelAttribute("cook") Cook cook,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
-		//Validazione
+		// Validazione
 		this.credentialsValidator.validate(credentials, bindingResult);
 		this.multipartFileValidator.validate(multipartFile, bindingResult);
 		if (!bindingResult.hasErrors()) {
-			//Primo salvataggio per far assegnare al cuoco un id
+			// Primo salvataggio per far assegnare al cuoco un id
 			this.cookService.save(cook);
-			//Caricamento dell'immagine
-			String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-			//Impostazione del nome del file all'id dell'ingrediente e dell'estensione originale del file
-			fileName=cook.getId()+fileName.substring(fileName.lastIndexOf('.'));
-			Image image=new Image();
+			// Caricamento dell'immagine
+			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+			// Impostazione del nome del file all'id dell'ingrediente e dell'estensione
+			// originale del file
+			fileName = cook.getId() + fileName.substring(fileName.lastIndexOf('.'));
+			Image image = new Image();
 			image.setFolder("cook");
 			image.setFileName(fileName);
 			this.imageService.save(image);
 			image.uploadImage(fileName, multipartFile);
 
-			cook.setPhoto(image);		
+			cook.setPhoto(image);
 			this.cookService.save(cook);
 
 			credentials.setPassword(passwordEncoder.encode(credentials.getPassword()));
@@ -95,8 +102,7 @@ public class AuthenticationController {
 			credentialsService.save(credentials);
 
 			return "authentication/login.html";
-		} 
-		else {
+		} else {
 			return "authentication/register.html";
 		}
 	}
@@ -105,20 +111,20 @@ public class AuthenticationController {
 	public String success(Model model) {
 		return "redirect:/";
 	}
-	
+
 	@GetMapping("/login-error")
-    public String loginError(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession(false);
-        String errorMessage = null;
-        if (session != null) {
-            AuthenticationException ex = (AuthenticationException) session
-                    .getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-            if (ex != null) {
-                errorMessage = ex.getMessage();
-            }
-        }
-        model.addAttribute("errorMessage", errorMessage);
-        return "authentication/login.html";
-    }
+	public String loginError(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession(false);
+		String errorMessage = null;
+		if (session != null) {
+			AuthenticationException ex = (AuthenticationException) session
+					.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+			if (ex != null) {
+				errorMessage = ex.getMessage();
+			}
+		}
+		model.addAttribute("errorMessage", errorMessage);
+		return "authentication/login.html";
+	}
 
 }

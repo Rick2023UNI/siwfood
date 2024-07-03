@@ -1,6 +1,5 @@
 package it.uniroma3.siwfood.controller;
 
-
 import java.io.File;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,32 +20,35 @@ import it.uniroma3.siwfood.service.IngredientService;
 import it.uniroma3.siwfood.service.QuantityService;
 import it.uniroma3.siwfood.service.RecipeService;
 
-@Controller 
+@Controller
 public class ImageController {
-	@Autowired ImageService imageService;
-	@Autowired CredentialsService credentialsService;
-	@Autowired RecipeService recipeService;
-	
+	@Autowired
+	ImageService imageService;
+	@Autowired
+	CredentialsService credentialsService;
+	@Autowired
+	RecipeService recipeService;
+
 	@GetMapping("/removeImageRecipe/{idRecipe}/{idImage}")
-	public String removeImageRecipe(@PathVariable("idRecipe") Long idRecipe, 
-			@PathVariable("idImage") Long idImage, Model model) {
-		//Cuoco corrente
+	public String removeImageRecipe(@PathVariable("idRecipe") Long idRecipe, @PathVariable("idImage") Long idImage,
+			Model model) {
+		// Cuoco corrente
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Cook cook=credentialsService.getCredentials(user.getUsername()).getCook();
-		if (cook.equals(this.recipeService.findById(idRecipe).getCook()) || (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin")))) {
-			Recipe recipe=this.recipeService.findById(idRecipe);
-			Image image=this.imageService.findById(idImage);
+		Cook cook = credentialsService.getCredentials(user.getUsername()).getCook();
+		if (cook.equals(this.recipeService.findById(idRecipe).getCook())
+				|| (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin")))) {
+			Recipe recipe = this.recipeService.findById(idRecipe);
+			Image image = this.imageService.findById(idImage);
 			recipe.removeImage(image);
 			image.delete();
-			
+
 			this.recipeService.save(recipe);
 			this.imageService.delete(image);
 
-			return "redirect:/formUpdateRecipe/"+recipe.getId();
-		}
-		else {
-			return "redirect:/recipe/"+idRecipe;
+			return "redirect:/formUpdateRecipe/" + recipe.getId();
+		} else {
+			return "redirect:/recipe/" + idRecipe;
 		}
 	}
 }

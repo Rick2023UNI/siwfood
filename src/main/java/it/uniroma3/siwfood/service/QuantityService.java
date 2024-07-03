@@ -15,14 +15,14 @@ public class QuantityService {
 	private QuantityRepository quantityRepository;
 
 	public void save(Quantity quantity) {
-		quantityRepository.save(quantity);	
+		quantityRepository.save(quantity);
 	}
 
 	public Quantity findById(Long id) {
 		return quantityRepository.findById(id).get();
 	}
-	
+
 	public void delete(Quantity quantity) {
-		quantityRepository.delete(quantity);	
+		quantityRepository.delete(quantity);
 	}
 }

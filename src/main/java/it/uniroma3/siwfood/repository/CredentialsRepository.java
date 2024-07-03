@@ -13,6 +13,4 @@ public interface CredentialsRepository extends CrudRepository<Credentials, Long>
 
 	boolean existsByUsername(String username);
 
-
-
 }

@@ -1,64 +1,64 @@
 .share-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  line-height: 1.6;
-  font-weight: 700;
+	display: flex;
+	flex-wrap: wrap;
+	line-height: 1.6;
+	font-weight: 700;
 }
 
 .share-button.facebook {
-  background: #3b5998;
+	background: #3b5998;
 }
 
 .share-button.facebook:hover {
-  background: #324b81;
+	background: #324b81;
 }
 
 .share-button.twitter {
-  background: #000000;
+	background: #000000;
 }
 
 .share-button.twitter:hover {
-  background: #1a1a1a;
+	background: #1a1a1a;
 }
 
 .share-button.reddit {
-  background: #ff4500;
+	background: #ff4500;
 }
 
 .share-button.reddit:hover {
-  background: #cc3600;
+	background: #cc3600;
 }
 
 .share-button.whatsapp {
-  background: #47ca57;
+	background: #47ca57;
 }
 
 .share-button.whatsapp:hover {
-  background: #34b242;
+	background: #34b242;
 }
 
 .share-button.linkedin {
-  background: #007bb5;
+	background: #007bb5;
 }
 
 .share-button.linkedin:hover {
-  background: #005780;
+	background: #005780;
 }
 
 .share-button.email {
-  background: #444444;
+	background: #444444;
 }
 
 .share-button.email:hover {
-  background: #333333;
+	background: #333333;
 }
 
 .share-button.copy {
-  appearance: none;
-  border: none;
-  background: #364fc7;
-  font-weight: 700;
-  cursor: pointer;
+	appearance: none;
+	border: none;
+	background: #364fc7;
+	font-weight: 700;
+	cursor: pointer;
 }
 
 .share-button.copy:hover {
@@ -67,29 +67,29 @@
 
 
 .share-button {
-  display: inline-flex;
-  align-items: center;
-  margin: 0 10px 10px 0;
-  padding: 5px 10px 5px 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  color: #fff;
+	display: inline-flex;
+	align-items: center;
+	margin: 0 10px 10px 0;
+	padding: 5px 10px 5px 10px;
+	font-size: 16px;
+	border-radius: 5px;
+	color: #fff;
 }
 
 a {
-  color: #364fc7;
-  text-decoration: none;
-  cursor: pointer;
+	color: #364fc7;
+	text-decoration: none;
+	cursor: pointer;
 }
 
 .share-button svg {
-  width: 21px;
-  height: 21px;
-  fill: #fff;
-  margin: 4px;
+	width: 21px;
+	height: 21px;
+	fill: #fff;
+	margin: 4px;
 }
 
 .share-button {
-  font-size: 16px;
-  color: #fff;
+	font-size: 16px;
+	color: #fff;
 }
