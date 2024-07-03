@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,10 @@ import it.uniroma3.siwfood.service.ImageService;
 import it.uniroma3.siwfood.service.IngredientService;
 import it.uniroma3.siwfood.service.QuantityService;
 import it.uniroma3.siwfood.service.RecipeService;
+import it.uniroma3.siwfood.validator.CredentialsValidator;
+import it.uniroma3.siwfood.validator.MultipartFileValidator;
+import jakarta.validation.Valid;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,6 +47,9 @@ public class RecipeController {
 	@Autowired ImageService imageService;
 	@Autowired CredentialsService credentialsService;
 	@Autowired CookService cookService;
+	
+	//Validazione
+	@Autowired MultipartFileValidator multipartFileValidator;
 
 	@GetMapping("/")
 	public String index(Model model) {
@@ -75,72 +83,107 @@ public class RecipeController {
 	}
 	
 	@PostMapping("/admin/recipe")
-	public String adminNewRecipe(@ModelAttribute("recipe") Recipe recipe, 
+	public String adminNewRecipe(@Valid @ModelAttribute("recipe") Recipe recipe, 
+			BindingResult bindingResult,
 			@ModelAttribute("cookId") Long cookId,
-			@RequestParam("fileImage") MultipartFile[] multipartFiles) throws IOException {
-		Cook cook=this.cookService.findById(cookId);
-		Date today=new Date();
-		recipe.setPublicationDate(today);
-		//Primo salvataggio per far assegnare alla ricetta un id
-		this.recipeService.save(recipe);
-		for (MultipartFile multipartFile : multipartFiles) {
-			//Caricamento delle immagini
-			String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-			/*Evita tentativo di caricare il file vuoto causato
-			 dall'ultimo input che viene aggiunto in automatico
-			 ed è sempre vuoto
-			 */
-			if (fileName!="") {
-				Image image=new Image();
-				image.setFolder("recipe/"+recipe.getId());
-				image.uploadImage(fileName, multipartFile);
-				this.imageService.save(image);
-				
-				recipe.addImage(image);
-				this.imageService.save(image);
+			@RequestParam("fileImage") MultipartFile[] multipartFiles,
+			Model model) throws IOException {
+		
+		//Verifica che se ce' un solo file esso sia vuoto
+		if (multipartFiles.length==1) {
+			this.multipartFileValidator.validate(multipartFiles[0], bindingResult);
+		}
+		//Negli altri casi verifica ogni file tranne l'ultimo che sarà sempre vuoto
+		else {
+			for (int i = 0; i < multipartFiles.length-1; i++) {
+				MultipartFile multipartFile=multipartFiles[i];
+				this.multipartFileValidator.validate(multipartFile, bindingResult);
 			}
 		}
-
-		recipe.setCook(cook);
-
-		this.recipeService.save(recipe);
-		return "redirect:/formUpdateRecipe/"+recipe.getId();
+		
+		if (!bindingResult.hasErrors()) {
+			Cook cook=this.cookService.findById(cookId);
+			Date today=new Date();
+			recipe.setPublicationDate(today);
+			//Primo salvataggio per far assegnare alla ricetta un id
+			this.recipeService.save(recipe);
+			for (MultipartFile multipartFile : multipartFiles) {
+				//Caricamento delle immagini
+				String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
+				/*Evita tentativo di caricare il file vuoto causato
+				 dall'ultimo input che viene aggiunto in automatico
+				 ed è sempre vuoto
+				 */
+				if (fileName!="") {
+					Image image=new Image();
+					image.setFolder("recipe/"+recipe.getId());
+					image.uploadImage(fileName, multipartFile);
+					this.imageService.save(image);
+					
+					recipe.addImage(image);
+					this.imageService.save(image);
+				}
+			}
+		
+			recipe.setCook(cook);
+		
+			this.recipeService.save(recipe);
+			return "redirect:/formUpdateRecipe/"+recipe.getId();
+		}
+		model.addAttribute("cooks", this.cookService.findAll());
+		return "cook/formNewRecipe.html";
 	}
 
 	@PostMapping("/recipe")
-	public String newRecipe(@ModelAttribute("recipe") Recipe recipe, 
+	public String newRecipe(@Valid @ModelAttribute("recipe") Recipe recipe, 
+			BindingResult bindingResult,
 			@RequestParam("fileImage") MultipartFile[] multipartFiles) throws IOException {
-		Date today=new Date();
-		recipe.setPublicationDate(today);
-		//Primo salvataggio per far assegnare alla ricetta un id
-		this.recipeService.save(recipe);
-		for (MultipartFile multipartFile : multipartFiles) {
-			//Caricamento delle immagini
-			String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-			/*Evita tentativo di caricare il file vuoto causato
-			 dall'ultimo input che viene aggiunto in automatico
-			 ed è sempre vuoto
-			 */
-			if (fileName!="") {
-				Image image=new Image();
-				image.setFolder("recipe/"+recipe.getId());
-				image.uploadImage(fileName, multipartFile);
-				this.imageService.save(image);
-				
-				recipe.addImage(image);
-				this.imageService.save(image);
+		
+		//Verifica che se ce' un solo file esso sia vuoto
+		if (multipartFiles.length==1) {
+			this.multipartFileValidator.validate(multipartFiles[0], bindingResult);
+		}
+		//Negli altri casi verifica ogni file tranne l'ultimo che sarà sempre vuoto
+		else {
+			for (int i = 0; i < multipartFiles.length-1; i++) {
+				MultipartFile multipartFile=multipartFiles[i];
+				this.multipartFileValidator.validate(multipartFile, bindingResult);
 			}
 		}
-
-		//Cuoco corrente
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Cook cook=credentialsService.getCredentials(user.getUsername()).getCook();
-
-		recipe.setCook(cook);
-
-		this.recipeService.save(recipe);
-		return "redirect:/formUpdateRecipe/"+recipe.getId();
+		if (!bindingResult.hasErrors()) {
+			Date today=new Date();
+			recipe.setPublicationDate(today);
+			//Primo salvataggio per far assegnare alla ricetta un id
+			this.recipeService.save(recipe);
+			for (MultipartFile multipartFile : multipartFiles) {
+				//Caricamento delle immagini
+				String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
+				/*Evita tentativo di caricare il file vuoto causato
+				 dall'ultimo input che viene aggiunto in automatico
+				 ed è sempre vuoto
+				 */
+				if (fileName!="") {
+					Image image=new Image();
+					image.setFolder("recipe/"+recipe.getId());
+					image.uploadImage(fileName, multipartFile);
+					this.imageService.save(image);
+					
+					recipe.addImage(image);
+					this.imageService.save(image);
+				}
+			}
+	
+			//Cuoco corrente
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			Cook cook=credentialsService.getCredentials(user.getUsername()).getCook();
+	
+			recipe.setCook(cook);
+	
+			this.recipeService.save(recipe);
+			return "redirect:/formUpdateRecipe/"+recipe.getId();
+		}
+		return "cook/formNewRecipe.html";
 	}
 
 	@GetMapping("/recipe/{id}")

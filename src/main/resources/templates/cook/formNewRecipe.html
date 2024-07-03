@@ -8,6 +8,7 @@
     <script src="/js/3.7.1_jquery.min.js"></script>
     <script src="/js/cook/formNewRecipe.js"></script>
 	<link rel="stylesheet" href="/css/_menu.css"/>
+	<link rel="stylesheet" href="/css/_error.css"/>
   </head>
   <body>
 		<section id="Home">
@@ -39,6 +40,9 @@
 	<br>
     <h1>Aggiungi una ricetta</h1>
     <form th:action="${admin} ? '/admin/recipe' : '/recipe'" method="POST" th:object="${recipe}" enctype="multipart/form-data">
+		<div th:if="${#fields.hasGlobalErrors()}">
+			<span class="error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</span>
+	  	</div>
 		<div th:if="${admin==true}">
 			<span>Autore</span>
 			<br>

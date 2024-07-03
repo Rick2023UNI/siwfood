@@ -12,7 +12,9 @@
 	<link rel="stylesheet" href="/css/_menu.css"/>
 	
 	<link rel="stylesheet" href="/css/admin/_modal.css"/>
-		<script src="/js/admin/_modal.js"></script>
+	<script src="/js/admin/_modal.js"></script>
+		
+	<link rel="stylesheet" href="/css/_error.css"/>
   </head>
   <body>
 		<section id="Home">
@@ -44,6 +46,9 @@
 	<br>
     <h1>Aggiungi una ricetta</h1>
     <form th:action="${admin} ? @{'/admin/updateRecipe/'+${recipe.id}} : @{'/updateRecipe/'+${recipe.id}}" method="POST" th:object="${recipe}" enctype="multipart/form-data">
+		<div th:if="${#fields.hasGlobalErrors()}">
+			<span class="error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</span>
+	  	</div>
 		<div th:if="${admin==true}">
 			<span>Autore</span>
 			<br>

@@ -34,7 +34,7 @@ width: 100%;
   background-color: #45a049;
 }
 
-img {
+thumbnail {
   width: 10rem;
   height: 10rem;
   object-fit: cover;

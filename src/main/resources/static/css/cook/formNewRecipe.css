@@ -20,7 +20,8 @@
   border-radius: 4px;
   resize: vertical;
   height: 200px;
-  width: 100%;
+  width: 98.6%;
+  font-family: inherit;
 }
 
 .name {

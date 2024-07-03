@@ -31,6 +31,7 @@ import it.uniroma3.siwfood.service.CredentialsService;
 import it.uniroma3.siwfood.service.ImageService;
 import it.uniroma3.siwfood.service.RecipeService;
 import it.uniroma3.siwfood.validator.CredentialsValidator;
+import it.uniroma3.siwfood.validator.MultipartFileValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -46,7 +47,7 @@ public class AuthenticationController {
 	
 	//Validazione
 	@Autowired CredentialsValidator credentialsValidator;
-
+	@Autowired MultipartFileValidator multipartFileValidator;
 
 	@GetMapping("/login")
 	public String formLoginCook(Model model) {
@@ -66,45 +67,27 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/register")
-	public String registerCook(@Valid @ModelAttribute("credentials") Credentials credentials, BindingResult bindingResult,
+	public String registerCook(@Valid @ModelAttribute("credentials") Credentials credentials, 
+			BindingResult bindingResult,
 			@ModelAttribute("cook") Cook cook,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
 		//Validazione
 		this.credentialsValidator.validate(credentials, bindingResult);
+		this.multipartFileValidator.validate(multipartFile, bindingResult);
 		if (!bindingResult.hasErrors()) {
 			//Primo salvataggio per far assegnare al cuoco un id
 			this.cookService.save(cook);
 			//Caricamento dell'immagine
 			String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-			Image image=new Image();
 			//Impostazione del nome del file all'id dell'ingrediente e dell'estensione originale del file
 			fileName=cook.getId()+fileName.substring(fileName.lastIndexOf('.'));
-			image.setFileName(fileName);
+			Image image=new Image();
 			image.setFolder("cook");
-			cook.setPhoto(image);
+			image.setFileName(fileName);
 			this.imageService.save(image);
-			this.cookService.save(cook);
-			//Percorso del file
-			String uploadDir="./images/cook/";
-			Path uploadPath = Paths.get(uploadDir);
-			System.out.println();
+			image.uploadImage(fileName, multipartFile);
 
-			if (!Files.exists(uploadPath)) {
-				try {
-					Files.createDirectories(uploadPath);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			try {
-				InputStream inputStream = multipartFile.getInputStream();
-				Path filePath = uploadPath.resolve(fileName);
-				Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-			} catch (IOException e) {
-				throw new IOException("Could not save the upload file: " + fileName);
-			}
-			//
+			cook.setPhoto(image);		
 			this.cookService.save(cook);
 
 			credentials.setPassword(passwordEncoder.encode(credentials.getPassword()));

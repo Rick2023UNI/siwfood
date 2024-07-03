@@ -7,6 +7,7 @@
     <script src="/js/3.7.1_jquery.min.js"></script>
 	<script src="/js/admin/_previewFormUpdate.js"></script>
 	<link rel="stylesheet" href="/css/_menu.css"/>
+	<link rel="stylesheet" href="/css/_error.css"/>
   </head>
   <body>
 		<section id="Home">
@@ -37,6 +38,9 @@
 		</section>
 	<br>
 	<form th:action="@{/admin/ingredient}" method="POST" th:object="${ingredient}" enctype="multipart/form-data">
+		<div th:if="${#fields.hasGlobalErrors()}">
+			<span class="error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</span>
+	  	</div>
     <div>
       Nome
 	  <br><span><input type="text" name='name' th:field="${ingredient.name}" class="input"/></span>

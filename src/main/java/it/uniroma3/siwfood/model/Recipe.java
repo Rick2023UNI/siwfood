@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Recipe {
@@ -108,7 +109,8 @@ public class Recipe {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
+	
+	@NotBlank(message = "è necessario dare un nome alla ricetta")
 	private String name;
 	
 	@Column(columnDefinition = "text")

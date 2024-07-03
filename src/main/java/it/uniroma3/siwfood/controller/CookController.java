@@ -29,6 +29,7 @@ import it.uniroma3.siwfood.service.CookService;
 import it.uniroma3.siwfood.service.CredentialsService;
 import it.uniroma3.siwfood.service.ImageService;
 import it.uniroma3.siwfood.validator.CredentialsValidator;
+import it.uniroma3.siwfood.validator.MultipartFileValidator;
 import jakarta.validation.Valid;
 
 @Controller 
@@ -38,8 +39,10 @@ public class CookController {
 	@Autowired CredentialsService credentialsService;
 	
 	@Autowired PasswordEncoder passwordEncoder;
+	
 	//Validazione
 	@Autowired CredentialsValidator credentialsValidator;
+	@Autowired MultipartFileValidator multipartFileValidator;
 
 	@GetMapping("/admin/newCook")
 	public String addCook(Model model) {
@@ -50,11 +53,13 @@ public class CookController {
 
 	@PostMapping("/admin/cook")
 	public String newCook(@Valid @ModelAttribute("credentials") Credentials credentials,
-			@ModelAttribute("cook") Cook cook,
 			BindingResult bindingResult,
+			@ModelAttribute("cook") Cook cook,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
 		//Validazione
 		this.credentialsValidator.validate(credentials, bindingResult);
+		this.multipartFileValidator.validate(multipartFile, bindingResult);
+		
 		if (!bindingResult.hasErrors()) {
 			//Primo salvataggio per far assegnare al cuoco un id
 			this.cookService.save(cook);
@@ -77,7 +82,7 @@ public class CookController {
 			return "redirect:/admin/manageCooks";
 		} 
 		else {
-			return "redirect:/admin/newCook";
+			return "/admin/formNewCook.html";
 		}
 	}
 

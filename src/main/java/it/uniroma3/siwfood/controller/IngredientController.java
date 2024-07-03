@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ import it.uniroma3.siwfood.service.ImageService;
 import it.uniroma3.siwfood.service.IngredientService;
 import it.uniroma3.siwfood.service.QuantityService;
 import it.uniroma3.siwfood.service.RecipeService;
+import it.uniroma3.siwfood.validator.MultipartFileValidator;
 
 @Controller 
 public class IngredientController {
@@ -34,6 +36,8 @@ public class IngredientController {
 	@Autowired ImageService imageService;
 	@Autowired QuantityService quantityService;
 	@Autowired RecipeService recipeService;
+	
+	@Autowired MultipartFileValidator multipartFileValidator;
 
 	@GetMapping("admin/manageIngredients")
 	public String manageIngredients(Model model) {
@@ -43,22 +47,27 @@ public class IngredientController {
 	
 	@PostMapping("/admin/ingredient")
 	public String newIngredient(@ModelAttribute("ingredient") Ingredient ingredient,
+			BindingResult bindingResult,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
-		//Caricamento dell'immagine
-		String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
-		//Primo salvataggio per far assegnare all'ingrediente un id
-		this.ingredientService.save(ingredient);
-		//Impostazione del nome del file all'id dell'ingrediente, mantenendo l'estensione del file originale
-		fileName=ingredient.getId()+fileName.substring(fileName.lastIndexOf('.'));
-		Image image=new Image();
-		image.setFolder("ingredient");
-		this.imageService.save(image);
-		
-		image.uploadImage(fileName, multipartFile);
-		ingredient.setImage(image);
-		this.imageService.save(image);
-		this.ingredientService.save(ingredient);
-		return "redirect:/admin/manageIngredients";
+		this.multipartFileValidator.validate(multipartFile, bindingResult);
+		if (!bindingResult.hasErrors()) {
+			//Caricamento dell'immagine
+			String fileName=StringUtils.cleanPath(multipartFile.getOriginalFilename());
+			//Primo salvataggio per far assegnare all'ingrediente un id
+			this.ingredientService.save(ingredient);
+			//Impostazione del nome del file all'id dell'ingrediente, mantenendo l'estensione del file originale
+			fileName=ingredient.getId()+fileName.substring(fileName.lastIndexOf('.'));
+			Image image=new Image();
+			image.setFolder("ingredient");
+			this.imageService.save(image);
+			
+			image.uploadImage(fileName, multipartFile);
+			ingredient.setImage(image);
+			this.imageService.save(image);
+			this.ingredientService.save(ingredient);
+			return "redirect:/admin/manageIngredients";
+		}
+		return "/admin/formNewIngredient.html";
 	}
 	
 	@GetMapping("/admin/newIngredient")
