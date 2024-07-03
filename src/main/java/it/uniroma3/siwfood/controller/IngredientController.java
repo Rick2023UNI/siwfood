@@ -83,7 +83,6 @@ public class IngredientController {
 	@GetMapping("admin/removeIngredient/{id}")
 	public String removeIngredient(@PathVariable("id") Long id, Model model) {
 		Ingredient ingredient = this.ingredientService.findById(id);
-		ingredient.getImage().delete();
 		List<Quantity> quantities = ingredient.getQuantities();
 		for (Quantity quantity : quantities) {
 			Recipe recipe = quantity.getRecipe();

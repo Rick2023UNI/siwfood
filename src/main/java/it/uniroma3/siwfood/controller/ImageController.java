@@ -41,7 +41,6 @@ public class ImageController {
 			Recipe recipe = this.recipeService.findById(idRecipe);
 			Image image = this.imageService.findById(idImage);
 			recipe.removeImage(image);
-			image.delete();
 
 			this.recipeService.save(recipe);
 			this.imageService.delete(image);
